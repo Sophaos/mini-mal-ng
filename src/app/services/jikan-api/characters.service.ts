@@ -16,83 +16,37 @@ interface CharacterQueryParams {
   providedIn: 'root',
 })
 export class CharactersService {
-  // TODO: do not rely on this file for now
-
   constructor(private http: HttpClient) {}
   readonly category = 'characters';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
-  private characterFullSubject = new Subject<number>();
-  private characterSubject = new Subject<number>();
-  private characterAnimeSubject = new Subject<number>();
-  private characterMangaSubject = new Subject<number>();
-  private characterVoicesSubject = new Subject<number>();
-  private characterPicturesSubject = new Subject<number>();
-  private characterSearchSubject = new Subject<CharacterQueryParams>();
-
-  characterFullAction$ = this.characterFullSubject.asObservable();
-  characterAction$ = this.characterSubject.asObservable();
-  characterAnimeAction$ = this.characterAnimeSubject.asObservable();
-  characterMangaAction$ = this.characterMangaSubject.asObservable();
-  characterVoicesAction$ = this.characterVoicesSubject.asObservable();
-  characterPicturesAction$ = this.characterPicturesSubject.asObservable();
-  characterSearchAction$ = this.characterSearchSubject.asObservable();
-
-  characterFull$ = this.characterFullAction$.pipe(
-    switchMap((data) => this.getCharacterFullById$(data))
-  );
-  character$ = this.characterAction$.pipe(
-    switchMap((data) => this.getCharacterById$(data))
-  );
-  characterAnime$ = this.characterAnimeAction$.pipe(
-    switchMap((data) => this.getCharacterAnime$(data))
-  );
-  characterManga$ = this.characterMangaAction$.pipe(
-    switchMap((data) => this.getCharacterManga$(data))
-  );
-  characterVoices$ = this.characterVoicesAction$.pipe(
-    switchMap((data) => this.getCharacterVoices$(data))
-  );
-  characterPictures$ = this.characterPicturesAction$.pipe(
-    switchMap((data) => this.getCharacterPictures$(data))
-  );
-  characterSearch$ = this.characterSearchAction$.pipe(
-    switchMap((data) => this.getCharactersSearch$(data))
-  );
-
   getCharacterFullById$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/full`).pipe(tap(console.group));
+    return this.http.get(`${this.apiUrl}/${id}/full`).pipe();
   }
 
   getCharacterById$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`).pipe(tap(console.group));
+    return this.http.get(`${this.apiUrl}/${id}`).pipe();
   }
 
   getCharacterAnime$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/anime`).pipe(tap(console.group));
+    return this.http.get(`${this.apiUrl}/${id}/anime`).pipe();
   }
 
   getCharacterManga$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/manga`).pipe(tap(console.group));
+    return this.http.get(`${this.apiUrl}/${id}/manga`).pipe();
   }
 
   getCharacterVoices$(id: number): Observable<any> {
-    return this.http
-      .get(`${this.apiUrl}/${id}/voices`)
-      .pipe(tap(console.group));
+    return this.http.get(`${this.apiUrl}/${id}/voices`).pipe();
   }
 
   getCharacterPictures$(id: number): Observable<any> {
-    return this.http
-      .get(`${this.apiUrl}/${id}/pictures`)
-      .pipe(tap(console.group));
+    return this.http.get(`${this.apiUrl}/${id}/pictures`).pipe();
   }
 
   getCharactersSearch$(params?: CharacterQueryParams): Observable<any> {
     const httpParams = this.buildParams(params);
-    return this.http
-      .get(`${this.apiUrl}`, { params: httpParams })
-      .pipe(tap(console.group));
+    return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe();
   }
 
   private buildParams(params?: CharacterQueryParams): HttpParams {
