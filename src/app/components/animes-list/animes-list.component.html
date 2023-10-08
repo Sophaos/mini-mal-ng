@@ -1,0 +1,122 @@
+<form [formGroup]="formGroup" class="selectors">
+  <div class="p-float-label">
+    <label for="float-label">Media</label>
+    <p-dropdown
+      [options]="medias"
+      formControlName="media"
+      placeholder="Media"
+      optionLabel="name"
+      optionValue="code"
+      inputId="float-label"
+      (onChange)="filterChange()"
+    ></p-dropdown>
+  </div>
+  <div class="p-float-label">
+    <p-dropdown
+      [options]="seasons"
+      formControlName="season"
+      placeholder="Season"
+      optionLabel="name"
+      optionValue="code"
+      inputId="float-label"
+      (onChange)="filterChange()"
+    ></p-dropdown>
+    <label for="float-label">Season</label>
+  </div>
+  <div class="p-float-label">
+    <p-dropdown
+      [options]="years"
+      formControlName="year"
+      placeholder="Year"
+      optionLabel="name"
+      optionValue="code"
+      inputId="float-label"
+      (onChange)="filterChange()"
+    ></p-dropdown>
+    <label for="float-label">Year</label>
+  </div>
+</form>
+
+<div class="data-view" *ngIf="animes$ | async as animes">
+  <p-dataView #dv [value]="animes" [layout]="layout">
+    <ng-template pTemplate="header">
+      <div class="flex justify-content-end">
+        <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
+      </div>
+    </ng-template>
+    <ng-template let-anime pTemplate="listItem">
+      <div class="col-6">
+        <div
+          class="flex flex-column xl:flex-row xl:align-items-start p-4 gap-4"
+        >
+          <img
+            class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+            [src]="anime.images"
+          />
+          <div
+            class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
+          >
+            <div
+              class="flex flex-column align-items-center sm:align-items-start gap-3"
+            >
+              <div class="text-2xl font-bold text-900">{{ anime.title }}</div>
+              <div class="flex align-items-center gap-3">
+                <span class="flex align-items-center gap-2">
+                  <i class="pi pi-tag"></i>
+                  <span class="font-semibold">{{ anime.title }}</span>
+                </span>
+              </div>
+            </div>
+            <div
+              class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2"
+            >
+              <span class="text-2xl font-semibold">2132132</span>
+              <button
+                pButton
+                icon="pi pi-shopping-cart"
+                class="md:align-self-end mb-2 p-button-rounded"
+              ></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template let-anime pTemplate="gridItem">
+      <div class="col-3 sm:col-3 lg:col-3 xl:col-3 p-2">
+        <div class="p-4 border-1 surface-border surface-card border-round">
+          <div
+            class="flex flex-wrap align-items-center justify-content-between gap-2"
+          >
+            <span class="flex align-items-center gap-2">
+              <i class="pi pi-tag"></i>
+              <span class="font-semibold">{{ anime.title }}</span>
+            </span>
+          </div>
+          <div class="flex flex-column align-items-center gap-3 py-5">
+            <img class="w-9 shadow-2 border-round" [src]="anime.images" />
+            <div class="text-2xl font-bold">{{ anime.title }}</div>
+          </div>
+          <div class="flex align-items-center justify-content-between">
+            <span class="text-2xl font-semibold">123</span>
+            <button
+              pButton
+              icon="pi pi-shopping-cart"
+              class="p-button-rounded"
+            ></button>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-dataView>
+</div>
+
+<div class="card flex justify-content-center">
+  <p-paginator
+    locale="en-US"
+    (onPageChange)="onPageChange($event)"
+    [first]="first"
+    [rows]="rows"
+    [totalRecords]="120"
+    [rowsPerPageOptions]="[10, 20, 30]"
+  ></p-paginator>
+</div>

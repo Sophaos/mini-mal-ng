@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, Subject, switchMap, tap } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../apiUrl';
 
-interface AnimeQueryParams {
+export interface AnimeQueryParams {
   filter?: string;
   page?: number;
   limit?: number;

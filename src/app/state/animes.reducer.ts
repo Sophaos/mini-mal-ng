@@ -10,6 +10,7 @@ const initialState: AppState = {
   topPopularity: [],
   error: '',
   seasonNow: [],
+  season: [],
 };
 export const animesReducer = createReducer(
   initialState,
@@ -27,10 +28,6 @@ export const animesReducer = createReducer(
     ...state,
     error: message,
   })),
-  // on(AnimesAPIActions.topAnimeLoadedSuccess, (state, { animes }) => ({
-  //   ...state,
-  //   top: animes,
-  // })),
   on(AnimesAPIActions.topAnimeLoadedError, (state, { message }) => ({
     ...state,
     error: message,
@@ -61,5 +58,24 @@ export const animesReducer = createReducer(
   on(AnimesPagesActions.loadTopAnimesByUpcoming, (state) => ({
     ...state,
     topPopular: [],
+  })),
+  on(AnimesPagesActions.loadSeason, (state) => ({
+    ...state,
+  })),
+  on(AnimesAPIActions.seasonLoadedSuccess, (state, { animes }) => ({
+    ...state,
+    season: animes,
+  })),
+  on(AnimesAPIActions.seasonLoadedError, (state, { message }) => ({
+    ...state,
+    error: message,
+  })),
+  on(AnimesAPIActions.animesLoadedSuccess, (state, { animes }) => ({
+    ...state,
+    animes: animes,
+  })),
+  on(AnimesAPIActions.animesLoadedError, (state, { message }) => ({
+    ...state,
+    error: message,
   }))
 );

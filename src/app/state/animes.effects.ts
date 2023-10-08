@@ -5,20 +5,41 @@ import { concatMap, map } from 'rxjs';
 import { AnimesAPIActions, AnimesPagesActions } from './animes.actions';
 import { AnimeBasicInfo } from '../models/AnimeBasicInfo';
 import { TopService } from '../services/jikan-api/top.service';
+import { AnimeService } from '../services/jikan-api/anime.service';
 
 @Injectable()
 export class AnimesEffects {
   constructor(
     private actions$: Actions,
-    private animeService: SeasonsService,
-    private topService: TopService
+    private seasonsService: SeasonsService,
+    private topService: TopService,
+    private animeService: AnimeService
   ) {}
+
+  loadSeason$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AnimesPagesActions.loadSeason),
+      concatMap((action) =>
+        this.seasonsService.getSeason$(action.params).pipe(
+          map((response: any) => {
+            const data: AnimeBasicInfo[] = response.data.map((item: any) => ({
+              id: item.mal_id,
+              images: item.images.jpg.image_url,
+              url: item.url,
+              title: item.name,
+            }));
+            return AnimesAPIActions.seasonLoadedSuccess({ animes: data });
+          })
+        )
+      )
+    )
+  );
 
   loadSeasonNow$ = createEffect(() =>
     this.actions$.pipe(
       ofType(AnimesPagesActions.loadSeasonNow),
       concatMap((action) =>
-        this.animeService.getSeasonNow$(action.params).pipe(
+        this.seasonsService.getSeasonNow$(action.params).pipe(
           map((response: any) => {
             const data: AnimeBasicInfo[] = response.data.map((item: any) => ({
               id: item.mal_id,
@@ -107,6 +128,27 @@ export class AnimesEffects {
               title: item.name,
             }));
             return AnimesAPIActions.topAnimeByUpcomingLoadedSuccess({
+              animes: data,
+            });
+          })
+        )
+      )
+    )
+  );
+
+  loadAnimes$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AnimesPagesActions.loadAnimes),
+      concatMap((action) =>
+        this.animeService.getAnimeSearch$(action.params).pipe(
+          map((response: any) => {
+            const data: AnimeBasicInfo[] = response.data.map((item: any) => ({
+              id: item.mal_id,
+              images: item.images.jpg.image_url,
+              url: item.url,
+              title: item.name,
+            }));
+            return AnimesAPIActions.animesLoadedSuccess({
               animes: data,
             });
           })

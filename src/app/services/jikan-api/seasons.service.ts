@@ -10,13 +10,9 @@ export interface SeasonQueryParams {
   limit?: number;
 }
 
-interface SeasonNowQueryParams {
-  page?: number;
-}
-interface SeasonParams {
+export interface SeasonParams extends SeasonQueryParams {
   year: number;
   season: string;
-  queryParams?: SeasonQueryParams;
 }
 
 enum SubCategory {
@@ -33,7 +29,7 @@ export class SeasonsService {
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
   getSeason$(params: SeasonParams): Observable<any> {
-    const httpParams = this.buildParams(params.queryParams);
+    const httpParams = this.buildParams(params);
     return this.http
       .get(`${this.apiUrl}/${params.year}/${params.season}`, {
         params: httpParams,

@@ -5,5 +5,6 @@ export interface AppState {
   topUpcoming: any[];
   topPopularity: any[];
   seasonNow: any[];
+  season: any[];
   error: string;
 }

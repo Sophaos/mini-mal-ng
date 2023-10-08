@@ -32,3 +32,8 @@ export const selectSeasonNow = createSelector(
   selectAnimesState,
   (animesState) => animesState.seasonNow
 );
+
+export const selectSeason = createSelector(
+  selectAnimesState,
+  (animesState) => animesState.season
+);
