@@ -11,10 +11,11 @@ const initialState: AppState = {
   error: '',
   seasonNow: [],
   season: [],
+  anime: null,
 };
 export const animesReducer = createReducer(
   initialState,
-  on(AnimesPagesActions.loadAnimes, (state) => ({
+  on(AnimesPagesActions.loadAnimeSearch, (state) => ({
     ...state,
   })),
   on(AnimesPagesActions.loadTopAnimes, (state) => ({
@@ -70,12 +71,16 @@ export const animesReducer = createReducer(
     ...state,
     error: message,
   })),
-  on(AnimesAPIActions.animesLoadedSuccess, (state, { animes }) => ({
+  on(AnimesAPIActions.animeSearchLoadedSuccess, (state, { animes }) => ({
     ...state,
     animes: animes,
   })),
-  on(AnimesAPIActions.animesLoadedError, (state, { message }) => ({
+  on(AnimesAPIActions.animeSearchLoadedError, (state, { message }) => ({
     ...state,
     error: message,
+  })),
+  on(AnimesAPIActions.animeFullByIdLoadedSuccess, (state, { anime }) => ({
+    ...state,
+    anime: anime,
   }))
 );

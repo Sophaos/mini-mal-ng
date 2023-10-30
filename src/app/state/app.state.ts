@@ -7,4 +7,5 @@ export interface AppState {
   seasonNow: any[];
   season: any[];
   error: string;
+  anime: any;
 }

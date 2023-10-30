@@ -5,7 +5,10 @@ import {
   SeasonParams,
   SeasonQueryParams,
 } from '../services/jikan-api/seasons.service';
-import { AnimeQueryParams } from '../services/jikan-api/anime.service';
+import {
+  AnimeQueryParams,
+  AnimeQueryParamsWithId,
+} from '../services/jikan-api/anime.service';
 
 export const AnimesPagesActions = createActionGroup({
   source: 'Animes Page',
@@ -17,7 +20,8 @@ export const AnimesPagesActions = createActionGroup({
     'Load Top Animes By Airing': props<{ params?: TopAnimeMangaParams }>(),
     'Load Top Animes By Upcoming': props<{ params?: TopAnimeMangaParams }>(),
     'Load Season': props<{ params: SeasonParams }>(),
-    'Load Animes': props<{ params?: AnimeQueryParams }>(),
+    'Load Anime Search': props<{ params?: AnimeQueryParams }>(),
+    'Load Anime Full By Id': props<{ id: number }>(),
   },
 });
 
@@ -34,13 +38,16 @@ export const AnimesAPIActions = createActionGroup({
     'Top Anime By Upcoming Loaded Success': props<{
       animes: AnimeBasicInfo[];
     }>(),
-    'Animes Loaded Success': props<{ animes: AnimeBasicInfo[] }>(),
+    'Anime Search Loaded Success': props<{ animes: AnimeBasicInfo[] }>(),
+    'Anime Full By Id Loaded Success': props<{ anime: AnimeBasicInfo }>(),
+
     'Top Anime Loaded Error': props<{ message: string }>(),
     'Season Now Loaded Error': props<{ message: string }>(),
     'Season Loaded Error': props<{ message: string }>(),
     'Top Anime By Popularity Loaded Error': props<{ message: string }>(),
     'Top Anime By Airing Loaded Error': props<{ message: string }>(),
     'Top Anime By Upcoming Loaded Error': props<{ message: string }>(),
-    'Animes Loaded Error': props<{ message: string }>(),
+    'Anime Search Loaded Error': props<{ message: string }>(),
+    'Anime Full By Id Loaded Error': props<{ message: string }>(),
   },
 });

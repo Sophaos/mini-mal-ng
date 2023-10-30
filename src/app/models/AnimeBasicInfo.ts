@@ -1,6 +1,6 @@
 export interface AnimeBasicInfo {
-  id: number;
+  mal_id: number;
   images: any;
   url: string;
-  title: string;
+  name: string;
 }

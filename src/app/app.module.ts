@@ -20,6 +20,7 @@ import { DataViewModule, DataViewLayoutOptions } from 'primeng/dataview';
 import { DropdownModule } from 'primeng/dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
 import { AnimesListComponent } from './components/animes-list/animes-list.component';
+import { InputTextModule } from 'primeng/inputtext';
 @NgModule({
   declarations: [
     AppComponent,
@@ -39,6 +40,7 @@ import { AnimesListComponent } from './components/animes-list/animes-list.compon
     PaginatorModule,
     DropdownModule,
     ReactiveFormsModule,
+    InputTextModule,
     StoreModule.forRoot({ animes: animesReducer }),
     EffectsModule.forRoot([AnimesEffects]),
     StoreRouterConnectingModule.forRoot(),

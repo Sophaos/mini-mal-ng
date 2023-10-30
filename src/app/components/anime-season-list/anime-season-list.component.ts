@@ -71,6 +71,8 @@ export class AnimeSeasonListComponent implements OnInit {
     );
   }
 
+  test() {}
+
   filterChange() {
     this.store.dispatch(
       AnimesPagesActions.loadSeason({

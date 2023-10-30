@@ -23,10 +23,11 @@ export class AnimesEffects {
         this.seasonsService.getSeason$(action.params).pipe(
           map((response: any) => {
             const data: AnimeBasicInfo[] = response.data.map((item: any) => ({
-              id: item.mal_id,
+              ...item,
+              // id: item.mal_id,
               images: item.images.jpg.image_url,
-              url: item.url,
-              title: item.name,
+              // url: item.url,
+              // title: item.name,
             }));
             return AnimesAPIActions.seasonLoadedSuccess({ animes: data });
           })
@@ -42,10 +43,11 @@ export class AnimesEffects {
         this.seasonsService.getSeasonNow$(action.params).pipe(
           map((response: any) => {
             const data: AnimeBasicInfo[] = response.data.map((item: any) => ({
-              id: item.mal_id,
+              ...item,
+              // id: item.mal_id,
               images: item.images.jpg.image_url,
-              url: item.url,
-              title: item.name,
+              // url: item.url,
+              // title: item.name,
             }));
             return AnimesAPIActions.seasonNowLoadedSuccess({ animes: data });
           })
@@ -61,10 +63,11 @@ export class AnimesEffects {
         this.topService.getAnime$(action.params).pipe(
           map((response: any) => {
             const data: AnimeBasicInfo[] = response.data.map((item: any) => ({
-              id: item.mal_id,
+              ...item,
+              // id: item.mal_id,
               images: item.images.jpg.image_url,
-              url: item.url,
-              title: item.name,
+              // url: item.url,
+              // title: item.name,
             }));
             return AnimesAPIActions.topAnimeLoadedSuccess({ animes: data });
           })
@@ -80,10 +83,11 @@ export class AnimesEffects {
         this.topService.getAnime$(action.params).pipe(
           map((response: any) => {
             const data: AnimeBasicInfo[] = response.data.map((item: any) => ({
-              id: item.mal_id,
+              ...item,
+              // id: item.mal_id,
               images: item.images.jpg.image_url,
-              url: item.url,
-              title: item.name,
+              // url: item.url,
+              // title: item.name,
             }));
             return AnimesAPIActions.topAnimeByAiringLoadedSuccess({
               animes: data,
@@ -101,10 +105,11 @@ export class AnimesEffects {
         this.topService.getAnime$(action.params).pipe(
           map((response: any) => {
             const data: AnimeBasicInfo[] = response.data.map((item: any) => ({
-              id: item.mal_id,
+              ...item,
+              // id: item.mal_id,
               images: item.images.jpg.image_url,
-              url: item.url,
-              title: item.name,
+              // url: item.url,
+              // title: item.name,
             }));
             return AnimesAPIActions.topAnimeByPopularityLoadedSuccess({
               animes: data,
@@ -122,10 +127,11 @@ export class AnimesEffects {
         this.topService.getAnime$(action.params).pipe(
           map((response: any) => {
             const data: AnimeBasicInfo[] = response.data.map((item: any) => ({
-              id: item.mal_id,
+              ...item,
+              // id: item.mal_id,
               images: item.images.jpg.image_url,
-              url: item.url,
-              title: item.name,
+              // url: item.url,
+              // title: item.name,
             }));
             return AnimesAPIActions.topAnimeByUpcomingLoadedSuccess({
               animes: data,
@@ -136,20 +142,43 @@ export class AnimesEffects {
     )
   );
 
-  loadAnimes$ = createEffect(() =>
+  loadSearchAnimes$ = createEffect(() =>
     this.actions$.pipe(
-      ofType(AnimesPagesActions.loadAnimes),
+      ofType(AnimesPagesActions.loadAnimeSearch),
       concatMap((action) =>
         this.animeService.getAnimeSearch$(action.params).pipe(
           map((response: any) => {
             const data: AnimeBasicInfo[] = response.data.map((item: any) => ({
-              id: item.mal_id,
+              ...item,
+              // id: item.mal_id,
               images: item.images.jpg.image_url,
-              url: item.url,
-              title: item.name,
+              // url: item.url,
+              // title: item.name,
             }));
-            return AnimesAPIActions.animesLoadedSuccess({
+            return AnimesAPIActions.animeSearchLoadedSuccess({
               animes: data,
+            });
+          })
+        )
+      )
+    )
+  );
+
+  loadAnimeByFullId$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(AnimesPagesActions.loadAnimeFullById),
+      concatMap((action) =>
+        this.animeService.getAnimeFullById$(action.id).pipe(
+          map((response: any) => {
+            const data: AnimeBasicInfo = {
+              ...response,
+              // id: item.mal_id,
+              images: response.data.images?.jpg?.image_url,
+              // url: item.url,
+              // title: item.name,
+            };
+            return AnimesAPIActions.animeFullByIdLoadedSuccess({
+              anime: data,
             });
           })
         )

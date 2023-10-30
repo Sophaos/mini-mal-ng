@@ -25,7 +25,7 @@ export interface AnimeQueryParams {
   end_date?: string;
 }
 
-interface AnimeQueryParamsWithId extends AnimeQueryParams {
+export interface AnimeQueryParamsWithId extends AnimeQueryParams {
   id: number;
 }
 

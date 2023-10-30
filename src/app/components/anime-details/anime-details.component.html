@@ -1,1 +1,5 @@
-<p>anime-details works!</p>
+<div *ngIf="anime$ | async as anime" class="animes-container">
+  <img src="{{ anime.images }}" class="w-6 shadow-2" />
+  <span>{{ anime.mal_id }}</span>
+  allo
+</div>

@@ -1,5 +1,6 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AppState } from './app.state';
+import { getRouterSelectors } from '@ngrx/router-store';
 
 export const selectAnimesState = createFeatureSelector<AppState>('animes');
 
@@ -37,3 +38,10 @@ export const selectSeason = createSelector(
   selectAnimesState,
   (animesState) => animesState.season
 );
+
+export const selectAnime = createSelector(
+  selectAnimesState,
+  (animesState) => animesState.anime
+);
+
+export const { selectRouteParams } = getRouterSelectors();
