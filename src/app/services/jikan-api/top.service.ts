@@ -9,6 +9,7 @@ import {
   tap,
 } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../apiUrl';
+import { AnimeBasicInfo } from 'src/app/models/AnimeBasicInfo';
 
 export interface TopAnimeMangaParams {
   type?: string;
@@ -43,17 +44,39 @@ export class TopService {
   readonly category = 'top';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
+  private mangasSubject = new Subject<TopAnimeMangaParams>();
+  mangasSelectedAction$ = this.mangasSubject.asObservable();
+  mangas$: Observable<AnimeBasicInfo[]> = this.mangasSelectedAction$.pipe(
+    switchMap((params) => {
+      console.log('allo');
+      return this.getMangas$(params);
+    })
+  );
+
+  getMangas$(params?: TopAnimeMangaParams): Observable<any> {
+    const httpParams = this.buildParams(params);
+    return this.http
+      .get(`${this.apiUrl}/${SubCategory.MANGA}`, { params: httpParams })
+      .pipe(
+        map((response: any) => {
+          console.log(response);
+          const data: AnimeBasicInfo[] = response.data.map((item: any) => ({
+            ...item,
+            images: item.images.jpg.image_url,
+          }));
+          return data;
+        })
+      );
+  }
+
+  mangasChanged(params: TopAnimeMangaParams): void {
+    this.mangasSubject.next(params);
+  }
+
   getAnime$(params?: TopAnimeMangaParams): Observable<any> {
     const httpParams = this.buildParams(params);
     return this.http
       .get(`${this.apiUrl}/${SubCategory.ANIME}`, { params: httpParams })
-      .pipe();
-  }
-
-  getManga$(params?: TopAnimeMangaParams): Observable<any> {
-    const httpParams = this.buildParams(params);
-    return this.http
-      .get(`${this.apiUrl}/${SubCategory.MANGA}`, { params: httpParams })
       .pipe();
   }
 

@@ -4,7 +4,6 @@ import { Observable } from 'rxjs';
 import { AnimeBasicInfo } from 'src/app/models/AnimeBasicInfo';
 import { AnimesPagesActions } from 'src/app/state/animes.actions';
 import {
-  selectAnimes,
   selectTop,
   selectTopAiring,
   selectTopUpcoming,
@@ -14,10 +13,10 @@ import {
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
+  templateUrl: './animes-home.component.html',
+  styleUrls: ['./animes-home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class AnimesHomeComponent implements OnInit {
   top$: Observable<AnimeBasicInfo[]> = this.store.select(selectTop);
   topAiring$: Observable<AnimeBasicInfo[]> = this.store.select(selectTopAiring);
   topUpcoming$: Observable<AnimeBasicInfo[]> =

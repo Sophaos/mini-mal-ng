@@ -4,7 +4,7 @@
 <div>Trending</div>
 <div [routerLink]="'/season'">View more</div>
 
-<div *ngIf="topAiring$ | async as animes" class="animes-container">
+<ng-container *ngIf="topAiring$ | async as animes" class="animes-container">
   <ng-container *ngIf="animes">
     <p-carousel
       [value]="animes"
@@ -28,11 +28,11 @@
       </ng-template>
     </p-carousel>
   </ng-container>
-</div>
+</ng-container>
 <div>Popular this season</div>
 <div [routerLink]="'/season'">View more</div>
 
-<div *ngIf="topPopularity$ | async as animes" class="animes-container">
+<ng-container *ngIf="topPopularity$ | async as animes" class="animes-container">
   <ng-container *ngIf="animes">
     <p-carousel
       [value]="animes"
@@ -56,11 +56,11 @@
       </ng-template>
     </p-carousel>
   </ng-container>
-</div>
+</ng-container>
 <div>Upcoming</div>
 <div [routerLink]="'/season'">View more</div>
 
-<div *ngIf="topUpcoming$ | async as animes" class="animes-container">
+<ng-container *ngIf="topUpcoming$ | async as animes" class="animes-container">
   <ng-container *ngIf="animes">
     <p-carousel
       [value]="animes"
@@ -84,7 +84,7 @@
       </ng-template>
     </p-carousel>
   </ng-container>
-</div>
+</ng-container>
 <div class="card flex justify-content-center">
   <p-button label="Check" icon="pi pi-check"></p-button>
 </div>
