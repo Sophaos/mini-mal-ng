@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { AnimeBasicInfo } from 'src/app/models/AnimeBasicInfo';
+import { AnimeBasicInfo } from 'src/app/shared/data-access/AnimeBasicInfo';
 import { AnimesPagesActions } from 'src/app/state/animes.actions';
 import {
   selectTop,

@@ -1,5 +1,5 @@
 import { AfterViewInit, Component, OnInit } from '@angular/core';
-import { TopService } from 'src/app/services/jikan-api/top.service';
+import { TopService } from 'src/app/shared/data-access/top.service';
 
 @Component({
   selector: 'app-mangas-home',

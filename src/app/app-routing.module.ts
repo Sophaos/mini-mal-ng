@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AnimesHomeComponent } from './components/animes-home/animes-home.component';
-import { AnimeDetailsComponent } from './components/anime-details/anime-details.component';
-import { AnimeSeasonListComponent } from './components/anime-season-list/anime-season-list.component';
-import { AnimesListComponent } from './components/animes-list/animes-list.component';
-import { MangasHomeComponent } from './components/mangas-home/mangas-home.component';
+import { AnimeDetailsComponent } from './anime/feature/anime-details/anime-details.component';
+import { AnimesListComponent } from './anime/feature/animes-list/animes-list.component';
+import { AnimesHomeComponent } from './home/feature/animes-home/animes-home.component';
+import { MangasHomeComponent } from './home/feature/mangas-home/mangas-home.component';
+import { AnimeSeasonListComponent } from './season/feature/anime-season-list/anime-season-list.component';
 
 const routes: Routes = [
   { path: 'animes/:id', component: AnimeDetailsComponent },

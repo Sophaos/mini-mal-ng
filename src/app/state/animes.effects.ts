@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { SeasonsService } from '../services/jikan-api/seasons.service';
+import { SeasonsService } from '../season/data-access/seasons.service';
 import { concatMap, map } from 'rxjs';
 import { AnimesAPIActions, AnimesPagesActions } from './animes.actions';
-import { AnimeBasicInfo } from '../models/AnimeBasicInfo';
-import { TopService } from '../services/jikan-api/top.service';
-import { AnimeService } from '../services/jikan-api/anime.service';
+import { AnimeBasicInfo } from '../shared/data-access/AnimeBasicInfo';
+import { TopService } from '../shared/data-access/top.service';
+import { AnimeService } from '../anime/data-access/anime.service';
 
 @Injectable()
 export class AnimesEffects {

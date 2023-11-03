@@ -12,22 +12,22 @@ import { AnimesEffects } from './state/animes.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { ButtonModule } from 'primeng/button';
 import { CarouselModule } from 'primeng/carousel';
-import { AnimesHomeComponent } from './components/animes-home/animes-home.component';
-import { AnimeDetailsComponent } from './components/anime-details/anime-details.component';
-import { AnimeSeasonListComponent } from './components/anime-season-list/anime-season-list.component';
 import { PaginatorModule } from 'primeng/paginator';
 import { DataViewModule } from 'primeng/dataview';
 import { DropdownModule } from 'primeng/dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
-import { AnimesListComponent } from './components/animes-list/animes-list.component';
 import { InputTextModule } from 'primeng/inputtext';
-import { AnimeService } from './services/jikan-api/anime.service';
-import { RecommandationsService } from './services/jikan-api/recommandations.service';
-import { ReviewsService } from './services/jikan-api/reviews.service';
-import { SeasonsService } from './services/jikan-api/seasons.service';
-import { TopService } from './services/jikan-api/top.service';
-import { WatchService } from './services/jikan-api/watch.service';
-import { MangasHomeComponent } from './components/mangas-home/mangas-home.component';
+import { AnimeService } from './anime/data-access/anime.service';
+import { RecommandationsService } from './home/data-access/recommandations.service';
+import { ReviewsService } from './review/data-access/reviews.service';
+import { SeasonsService } from './season/data-access/seasons.service';
+import { TopService } from './shared/data-access/top.service';
+import { WatchService } from './shared/data-access/watch.service';
+import { AnimeDetailsComponent } from './anime/feature/anime-details/anime-details.component';
+import { AnimesListComponent } from './anime/feature/animes-list/animes-list.component';
+import { AnimesHomeComponent } from './home/feature/animes-home/animes-home.component';
+import { MangasHomeComponent } from './home/feature/mangas-home/mangas-home.component';
+import { AnimeSeasonListComponent } from './season/feature/anime-season-list/anime-season-list.component';
 @NgModule({
   declarations: [
     AppComponent,

@@ -1,14 +1,14 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { AnimeBasicInfo } from '../models/AnimeBasicInfo';
-import { TopAnimeMangaParams } from '../services/jikan-api/top.service';
+import { AnimeBasicInfo } from '../shared/data-access/AnimeBasicInfo';
+import { TopAnimeMangaParams } from '../shared/data-access/top.service';
 import {
   SeasonParams,
   SeasonQueryParams,
-} from '../services/jikan-api/seasons.service';
+} from '../season/data-access/seasons.service';
 import {
   AnimeQueryParams,
   AnimeQueryParamsWithId,
-} from '../services/jikan-api/anime.service';
+} from '../anime/data-access/anime.service';
 
 export const AnimesPagesActions = createActionGroup({
   source: 'Animes Page',

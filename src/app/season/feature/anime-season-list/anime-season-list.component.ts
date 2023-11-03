@@ -3,7 +3,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { Store } from '@ngrx/store';
 import { PaginatorState } from 'primeng/paginator';
 import { Observable } from 'rxjs';
-import { AnimeBasicInfo } from 'src/app/models/AnimeBasicInfo';
+import { AnimeBasicInfo } from 'src/app/shared/data-access/AnimeBasicInfo';
 import { AnimesPagesActions } from 'src/app/state/animes.actions';
 import { selectSeason } from 'src/app/state/animes.selector';
 

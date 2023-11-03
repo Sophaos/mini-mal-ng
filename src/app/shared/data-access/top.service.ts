@@ -8,8 +8,8 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
-import { JIKAN_API_BASE_URL } from '../apiUrl';
-import { AnimeBasicInfo } from 'src/app/models/AnimeBasicInfo';
+import { JIKAN_API_BASE_URL } from './apiUrl';
+import { AnimeBasicInfo } from 'src/app/shared/data-access/AnimeBasicInfo';
 
 export interface TopAnimeMangaParams {
   type?: string;

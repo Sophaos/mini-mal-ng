@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, switchMap, Observable, tap } from 'rxjs';
-import { JIKAN_API_BASE_URL } from '../apiUrl';
+import { JIKAN_API_BASE_URL } from './apiUrl';
 
 interface WatchQueryParams {
   limit?: number;
