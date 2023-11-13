@@ -1,10 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Store } from '@ngrx/store';
-import { Observable, switchMap } from 'rxjs';
-import { AnimeBasicInfo } from 'src/app/shared/data-access/AnimeBasicInfo';
-import { AnimesPagesActions } from 'src/app/state/animes.actions';
-import { selectAnime, selectRouteParams } from 'src/app/state/animes.selector';
+import { switchMap } from 'rxjs';
 import { AnimeService } from '../../data-access/anime.service';
 
 @Component({
@@ -21,12 +17,8 @@ export class AnimeDetailsComponent implements OnInit {
   );
 
   constructor(
-    private store: Store<any>,
     private route: ActivatedRoute,
     private animeService: AnimeService
   ) {}
-  ngOnInit(): void {
-    // const animeId = parseInt(this.activatedRoute.snapshot.params['id']);
-    // this.store.dispatch(AnimesPagesActions.loadAnimeFullById({ id: animeId }));
-  }
+  ngOnInit(): void {}
 }
