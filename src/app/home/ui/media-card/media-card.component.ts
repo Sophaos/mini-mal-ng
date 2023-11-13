@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,8 +6,9 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './media-card.component.html',
-  styleUrls: ['./media-card.component.scss']
+  styleUrls: ['./media-card.component.scss'],
 })
 export class MediaCardComponent {
-
+  @Input() image!: string;
+  @Input() title!: string;
 }

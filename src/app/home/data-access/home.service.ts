@@ -90,10 +90,11 @@ export class HomeService {
     })
     .pipe(
       map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-          // images: item.images.jpg.image_url,
-        }))
+        response.data
+          .map((item: any) => ({
+            ...item,
+          }))
+          .slice(0, 5)
       )
     );
 
@@ -103,7 +104,6 @@ export class HomeService {
       map((response: any) =>
         response.data.map((item: any) => ({
           ...item,
-          // images: item.images.jpg.image_url,
         }))
       )
     );

@@ -35,6 +35,5 @@ export class AnimesListComponent implements OnInit {
     this.first = event.first ?? 0;
     this.rows = event.rows ?? 10;
     this.page = event.page ?? 0;
-    console.log(event, this.first, this.rows);
   }
 }
