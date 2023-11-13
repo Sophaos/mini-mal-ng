@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, switchMap, tap } from 'rxjs';
+import { Observable, Subject, map, switchMap, tap } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
+import { AnimeBasicInfo } from 'src/app/shared/data-access/AnimeBasicInfo';
 
 export interface AnimeQueryParams {
   filter?: string;
@@ -41,8 +42,13 @@ export class AnimeService {
   readonly category = 'anime';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
-  getAnimeFullById$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/full`).pipe();
+  getAnimeFullById$(id: number | string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}/full`).pipe(
+      map((response: any) => ({
+        ...response.data,
+        images: response.data.images.jpg.image_url,
+      }))
+    );
   }
 
   getAnimeById$(id: number): Observable<any> {

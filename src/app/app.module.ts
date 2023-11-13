@@ -17,26 +17,8 @@ import { DataViewModule } from 'primeng/dataview';
 import { DropdownModule } from 'primeng/dropdown';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
-import { AnimeService } from './anime/data-access/anime.service';
-import { RecommandationsService } from './home/data-access/recommandations.service';
-import { ReviewsService } from './review/data-access/reviews.service';
-import { SeasonsService } from './season/data-access/seasons.service';
-import { TopService } from './shared/data-access/top.service';
-import { WatchService } from './shared/data-access/watch.service';
-import { AnimeDetailsComponent } from './anime/feature/anime-details/anime-details.component';
-import { AnimesListComponent } from './anime/feature/animes-list/animes-list.component';
-import { AnimesHomeComponent } from './home/feature/animes-home/animes-home.component';
-import { MangasHomeComponent } from './home/feature/mangas-home/mangas-home.component';
-import { AnimeSeasonListComponent } from './season/feature/anime-season-list/anime-season-list.component';
 @NgModule({
-  declarations: [
-    AppComponent,
-    AnimesHomeComponent,
-    AnimeDetailsComponent,
-    AnimeSeasonListComponent,
-    AnimesListComponent,
-    MangasHomeComponent,
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -56,14 +38,6 @@ import { AnimeSeasonListComponent } from './season/feature/anime-season-list/ani
       name: 'NgRx demo app',
       maxAge: 25,
     }),
-  ],
-  providers: [
-    AnimeService,
-    RecommandationsService,
-    ReviewsService,
-    SeasonsService,
-    TopService,
-    WatchService,
   ],
   bootstrap: [AppComponent],
 })

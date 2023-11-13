@@ -5,10 +5,7 @@ import {
   SeasonParams,
   SeasonQueryParams,
 } from '../season/data-access/seasons.service';
-import {
-  AnimeQueryParams,
-  AnimeQueryParamsWithId,
-} from '../anime/data-access/anime.service';
+import { AnimeQueryParams } from '../animes/data-access/anime.service';
 
 export const AnimesPagesActions = createActionGroup({
   source: 'Animes Page',

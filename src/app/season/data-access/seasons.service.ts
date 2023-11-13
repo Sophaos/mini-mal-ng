@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
+import { AnimeBasicInfo } from 'src/app/shared/data-access/AnimeBasicInfo';
 
 export interface SeasonQueryParams {
   filter?: string;
@@ -34,7 +35,17 @@ export class SeasonsService {
       .get(`${this.apiUrl}/${params.year}/${params.season}`, {
         params: httpParams,
       })
-      .pipe();
+      .pipe(
+        map((response: any) =>
+          response.data.map((item: any) => ({
+            ...item,
+            // id: item.mal_id,
+            images: item.images.jpg.image_url,
+            // url: item.url,
+            // title: item.name,
+          }))
+        )
+      );
   }
 
   getSeasonNow$(params?: SeasonQueryParams): Observable<any> {
@@ -45,14 +56,13 @@ export class SeasonsService {
   }
 
   getSeasonList$(): Observable<any> {
-    return this.http.get(`${this.apiUrl}`).pipe();
-  }
-
-  getSeasonUpcoming$(params?: SeasonQueryParams): Observable<any> {
-    const httpParams = this.buildParams(params);
-    return this.http
-      .get(`${this.apiUrl}/${SubCategory.UPCOMING}`, { params: httpParams })
-      .pipe();
+    return this.http.get(`${this.apiUrl}`).pipe(
+      map((res: any) =>
+        res.data.map((item: any) => ({
+          ...item,
+        }))
+      )
+    );
   }
 
   private buildParams(params?: SeasonQueryParams): HttpParams {
@@ -67,5 +77,20 @@ export class SeasonsService {
       httpParams = httpParams.set('limit', params.limit.toString());
     }
     return httpParams;
+  }
+
+  getCurrentSeason(): string {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
+
+    if (currentMonth >= 3 && currentMonth <= 5) {
+      return 'spring';
+    } else if (currentMonth >= 6 && currentMonth <= 8) {
+      return 'summer';
+    } else if (currentMonth >= 9 && currentMonth <= 11) {
+      return 'fall';
+    } else {
+      return 'winter';
+    }
   }
 }

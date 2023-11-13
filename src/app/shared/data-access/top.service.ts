@@ -48,7 +48,6 @@ export class TopService {
   mangasSelectedAction$ = this.mangasSubject.asObservable();
   mangas$: Observable<AnimeBasicInfo[]> = this.mangasSelectedAction$.pipe(
     switchMap((params) => {
-      console.log('allo');
       return this.getMangas$(params);
     })
   );

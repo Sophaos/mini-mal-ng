@@ -5,7 +5,7 @@ import { concatMap, map } from 'rxjs';
 import { AnimesAPIActions, AnimesPagesActions } from './animes.actions';
 import { AnimeBasicInfo } from '../shared/data-access/AnimeBasicInfo';
 import { TopService } from '../shared/data-access/top.service';
-import { AnimeService } from '../anime/data-access/anime.service';
+import { AnimeService } from '../animes/data-access/anime.service';
 
 @Injectable()
 export class AnimesEffects {

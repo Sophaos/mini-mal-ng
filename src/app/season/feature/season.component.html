@@ -1,41 +1,31 @@
-<form [formGroup]="formGroup" class="selectors">
-  <div class="p-float-label">
-    <label for="float-label">Media</label>
-    <p-dropdown
-      [options]="medias"
-      formControlName="media"
-      placeholder="Media"
-      optionLabel="name"
-      optionValue="code"
-      inputId="float-label"
-      (onChange)="filterChange()"
-    ></p-dropdown>
-  </div>
-  <div class="p-float-label">
-    <p-dropdown
-      [options]="seasons"
-      formControlName="season"
-      placeholder="Season"
-      optionLabel="name"
-      optionValue="code"
-      inputId="float-label"
-      (onChange)="filterChange()"
-    ></p-dropdown>
-    <label for="float-label">Season</label>
-  </div>
-  <div class="p-float-label">
-    <p-dropdown
-      [options]="years"
-      formControlName="year"
-      placeholder="Year"
-      optionLabel="name"
-      optionValue="code"
-      inputId="float-label"
-      (onChange)="filterChange()"
-    ></p-dropdown>
-    <label for="float-label">Year</label>
-  </div>
-</form>
+<!-- <form [formGroup]="formGroup" class="selectors"> -->
+<div class="p-float-label">
+  <label for="float-label">Media</label>
+  <p-dropdown
+    [options]="medias"
+    placeholder="Media"
+    optionLabel="name"
+    optionValue="code"
+    inputId="float-label"
+    (onChange)="filterChange($event, 'filter')"
+  ></p-dropdown>
+  <p-dropdown
+    [options]="seasons"
+    placeholder="Season"
+    optionLabel="name"
+    optionValue="code"
+    inputId="float-label"
+    (onChange)="filterChange($event, 'season')"
+  ></p-dropdown>
+  <p-dropdown
+    [options]="years"
+    placeholder="Years"
+    optionLabel="name"
+    optionValue="code"
+    inputId="float-label"
+    (onChange)="filterChange($event, 'year')"
+  ></p-dropdown>
+</div>
 
 <div class="data-view" *ngIf="animes$ | async as animes">
   <p-dataView #dv [value]="animes" [layout]="layout">
