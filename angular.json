@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "mini-mal": {
+    "mini-mal-ng": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/mini-mal",
+            "outputPath": "dist/mini-mal-ng",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": ["zone.js"],
@@ -63,10 +63,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "mini-mal:build:production"
+              "browserTarget": "mini-mal-ng:build:production"
             },
             "development": {
-              "browserTarget": "mini-mal:build:development"
+              "browserTarget": "mini-mal-ng:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -74,7 +74,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "mini-mal:build"
+            "browserTarget": "mini-mal-ng:build"
           }
         },
         "test": {
