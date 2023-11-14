@@ -9,7 +9,6 @@ import { AnimeService } from '../../data-access/anime.service';
   styleUrls: ['./anime-details.component.scss'],
 })
 export class AnimeDetailsComponent implements OnInit {
-  // anime$: Observable<AnimeBasicInfo> = this.store.select(selectAnime);
   anime$ = this.route.paramMap.pipe(
     switchMap((params) =>
       this.animeService.getAnimeFullById$(Number(params.get('id') || 0))
