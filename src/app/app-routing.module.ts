@@ -2,12 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  // { path: 'animes/:id', component: AnimeDetailsComponent },
-  // // { path: 'mangas-home', component: MangasHomeComponent },
-  // { path: 'animes', component: AnimesListComponent },
-  // { path: 'season', component: AnimeSeasonListComponent },
-  // { path: '', component: HomeComponent },
-  // { path: '**', component: HomeComponent },
   {
     path: 'home',
     loadChildren: () =>

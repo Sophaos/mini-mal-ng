@@ -51,106 +51,91 @@ export class AnimeService {
     );
   }
 
-  getAnimeById$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}`).pipe();
-  }
-
   getAnimeCharacters$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/characters`).pipe();
+    return this.http.get(`${this.apiUrl}/${id}/characters`).pipe(
+      map((response: any) =>
+        response.data.map((item: any) => ({
+          ...item,
+        }))
+      )
+    );
   }
 
   getAnimeStaff$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/staff`).pipe();
-  }
-
-  getAnimeEpisodes$(id: number, params?: AnimeQueryParams): Observable<any> {
-    const httpParams = this.buildParams(params);
-    return this.http
-      .get(`${this.apiUrl}/${id}/episodes`, { params: httpParams })
-      .pipe();
-  }
-
-  getAnimeEpisodeById$(id: number, episode?: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/episodes/${episode}`).pipe();
+    return this.http.get(`${this.apiUrl}/${id}/staff`).pipe(
+      map((response: any) =>
+        response.data.map((item: any) => ({
+          ...item,
+        }))
+      )
+    );
   }
 
   getAnimeNews$(id: number, params?: AnimeQueryParams): Observable<any> {
     const httpParams = this.buildParams(params);
     return this.http
       .get(`${this.apiUrl}/${id}/news`, { params: httpParams })
-      .pipe();
-  }
-
-  getAnimeForum$(id: number, params?: AnimeQueryParams): Observable<any> {
-    const httpParams = this.buildParams(params);
-    return this.http
-      .get(`${this.apiUrl}/${id}/forum`, { params: httpParams })
-      .pipe();
+      .pipe(
+        map((response: any) =>
+          response.data.map((item: any) => ({
+            ...item,
+          }))
+        )
+      );
   }
 
   getAnimeVideos$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/videos`).pipe();
-  }
-
-  getAnimeVideosEpisodes$(
-    id: number,
-    params?: AnimeQueryParams
-  ): Observable<any> {
-    const httpParams = this.buildParams(params);
-    return this.http
-      .get(`${this.apiUrl}/${id}/videos/episodes`, { params: httpParams })
-      .pipe();
-  }
-
-  getAnimePicture$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/pictures`).pipe();
-  }
-
-  getAnimeStatistics$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/statistics`).pipe();
-  }
-
-  getAnimeMoreInfo$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/moreinfo`).pipe();
+    return this.http.get(`${this.apiUrl}/${id}/videos`).pipe(
+      map((response: any) =>
+        response.data.map((item: any) => ({
+          ...item,
+        }))
+      )
+    );
   }
 
   getAnimeRecommendations$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/recommendations`).pipe();
-  }
-
-  getAnimeUserUpdates$(id: number, params?: AnimeQueryParams): Observable<any> {
-    const httpParams = this.buildParams(params);
-    return this.http
-      .get(`${this.apiUrl}/${id}/userupdates`, { params: httpParams })
-      .pipe();
+    return this.http.get(`${this.apiUrl}/${id}/recommendations`).pipe(
+      map((response: any) =>
+        response.data.map((item: any) => ({
+          ...item,
+        }))
+      )
+    );
   }
 
   getAnimeReviews$(id: number, params?: AnimeQueryParams): Observable<any> {
     const httpParams = this.buildParams(params);
     return this.http
       .get(`${this.apiUrl}/${id}/reviews`, { params: httpParams })
-      .pipe();
-  }
-
-  getAnimeRelations$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/relations`).pipe();
-  }
-
-  getAnimeThemes$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/themes`).pipe();
-  }
-
-  getAnimeExternal$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/external`).pipe();
+      .pipe(
+        map((response: any) =>
+          response.data.map((item: any) => ({
+            ...item,
+          }))
+        )
+      );
   }
 
   getAnimeStreaming$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/streaming`).pipe();
+    return this.http.get(`${this.apiUrl}/${id}/streaming`).pipe(
+      map((response: any) =>
+        response.data.map((item: any) => ({
+          ...item,
+        }))
+      )
+    );
   }
 
   getAnimeSearch$(params?: AnimeQueryParams): Observable<any> {
     const httpParams = this.buildParams(params);
-    return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe();
+    return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
+      map((response: any) =>
+        response.data.map((item: any) => ({
+          ...item,
+        }))
+      )
+    );
   }
 
   private buildParams(params?: AnimeQueryParams): HttpParams {
