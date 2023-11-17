@@ -1,9 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, Observable, switchMap, map } from 'rxjs';
-import { AnimeBasicInfo } from 'src/app/shared/data-access/AnimeBasicInfo';
 import { JIKAN_API_BASE_URL } from 'src/app/shared/data-access/apiUrl';
-import { TopAnimeMangaParams } from 'src/app/shared/data-access/top.service';
 
 const ANIME = 'anime';
 const MANGA = 'manga';
