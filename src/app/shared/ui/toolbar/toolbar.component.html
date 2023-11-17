@@ -3,5 +3,15 @@
   <!-- <div class="menu"></div> -->
   <div class="search">
     <input />
+    <div *ngIf="test.result$ | async as result" class="animes-container">
+      <div *ngIf="result.isSuccess">
+        <div *ngFor="let page of result.data.pages">
+          <div *ngFor="let anime of page">
+            {{ anime.mal_id }}
+          </div>
+        </div>
+      </div>
+      <button (click)="result.fetchNextPage()">next</button>
+    </div>
   </div>
 </div>

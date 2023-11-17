@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { AnimeQueryParams } from 'src/app/animes/data-access/anime.service';
 import { JIKAN_API_BASE_URL } from './apiUrl';
+import { injectInfiniteQuery } from '@ngneat/query';
 
 @Injectable({
   providedIn: 'root',
@@ -12,6 +13,25 @@ export class SearchService {
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
   constructor(private http: HttpClient) {}
+
+  #query = injectInfiniteQuery();
+
+  getAnimesFromSearch() {
+    return this.#query({
+      queryKey: ['animes'],
+      queryFn: ({ pageParam }) => this.getAnimeSearch$({ page: pageParam }),
+      initialPageParam: 0,
+      getPreviousPageParam: (firstPage) => {
+        console.log(firstPage);
+        return firstPage.previousId;
+      },
+      getNextPageParam: (lastPage) => {
+        console.log(lastPage);
+        console.log(lastPage.nextId);
+        return lastPage.nextId;
+      },
+    });
+  }
 
   getAnimeSearch$(params?: AnimeQueryParams): Observable<any> {
     const httpParams = this.buildParams(params);
