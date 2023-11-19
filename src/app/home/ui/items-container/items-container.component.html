@@ -1,0 +1,10 @@
+<div>
+  <div class="items-container">
+    <span class="title">{{ title }}</span>
+    <span class="link">
+      <a [routerLink]="link" [queryParams]="queryParams">View more</a>
+    </span>
+  </div>
+  <hr />
+  <ng-content></ng-content>
+</div>

@@ -12,6 +12,8 @@ import { PaginatorModule } from 'primeng/paginator';
 import { HomeService } from '../data-access/home.service';
 import { MediaCardComponent } from '../ui/media-card/media-card.component';
 import { ReviewRowComponent } from '../ui/review-row/review-row.component';
+import { DividerModule } from 'primeng/divider';
+import { ItemsContainerComponent } from '../ui/items-container/items-container.component';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -27,6 +29,8 @@ import { ReviewRowComponent } from '../ui/review-row/review-row.component';
     InputTextModule,
     MediaCardComponent,
     ReviewRowComponent,
+    DividerModule,
+    ItemsContainerComponent,
   ],
   providers: [HomeService],
 })

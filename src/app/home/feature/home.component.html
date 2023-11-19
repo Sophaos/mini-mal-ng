@@ -1,12 +1,9 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <div>Current season</div>
-  <div
-    [routerLink]="'/season'"
+  <app-items-container
+    title="Current season"
+    link="/season"
     [queryParams]="{ year: currentYear, season: currentSeason }"
   >
-    View more
-  </div>
-  <ng-container *ngIf="vm.currentSeason">
     <p-carousel
       [value]="vm.currentSeason"
       [numVisible]="7"
@@ -23,10 +20,9 @@
         />
       </ng-template>
     </p-carousel>
-  </ng-container>
+  </app-items-container>
 
-  <!-- <ng-container *ngIf="vm.recentEpisodes">
-    <div>Latest Updated Episode Videos</div>
+  <app-items-container title="Latest Updated Episode Videos" link="">
     <p-carousel
       [value]="vm.recentEpisodes"
       [numVisible]="8"
@@ -43,11 +39,9 @@
         />
       </ng-template>
     </p-carousel>
-  </ng-container> -->
+  </app-items-container>
 
-  <div>Latest Anime Reviews</div>
-  <div>View more</div>
-  <ng-container *ngIf="vm.animeReviews" class="animes-container">
+  <app-items-container title="Latest Anime Review" link="">
     <div class="card">
       <p-dataView #dv [value]="vm.animeReviews">
         <ng-template let-anime pTemplate="listItem">
@@ -60,5 +54,5 @@
         </ng-template>
       </p-dataView>
     </div>
-  </ng-container>
+  </app-items-container>
 </ng-container>

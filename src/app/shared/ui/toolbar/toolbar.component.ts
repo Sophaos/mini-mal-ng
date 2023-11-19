@@ -14,12 +14,7 @@ import { ButtonModule } from 'primeng/button';
 })
 export class ToolbarComponent {
   @Output() toggleSideNavEvent = new EventEmitter();
-  animes = this.searchService.getAnimesFromSearch();
-  constructor(private searchService: SearchService) {}
-
-  coucou() {
-    // this.test = this.searchService.getAnimesFromSearch('haruhi');
-  }
+  constructor() {}
 
   toggleSideNav() {
     this.toggleSideNavEvent.emit();

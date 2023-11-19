@@ -42,6 +42,7 @@ export class SearchService {
       map((response: any) => {
         const data = response.data.map((item: any) => ({
           ...item,
+          images: item.images.jpg.image_url,
         }));
         const pagination = { ...response.pagination };
         return { data, pagination };

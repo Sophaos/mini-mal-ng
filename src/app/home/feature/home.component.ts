@@ -13,16 +13,16 @@ export class HomeComponent {
   currentYear = new Date().getFullYear();
   animeReviews$ = this.homeService.animeReviews$;
   currentSeason$ = this.homeService.currentSeason$;
-  // recentEpisodes$ = this.homeService.recentEpisodes$;
+  recentEpisodes$ = this.homeService.recentEpisodes$;
   vm$ = combineLatest([
     this.animeReviews$,
     this.currentSeason$,
-    // this.recentEpisodes$,
+    this.recentEpisodes$,
   ]).pipe(
-    map(([animeReviews, currentSeason]) => ({
+    map(([animeReviews, currentSeason, recentEpisodes]) => ({
       animeReviews,
       currentSeason,
-      // recentEpisodes,
+      recentEpisodes,
     }))
   );
 
