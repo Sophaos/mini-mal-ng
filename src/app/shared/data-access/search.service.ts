@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, Subject, map, switchMap } from 'rxjs';
 import { AnimeQueryParams } from 'src/app/animes/data-access/anime.service';
 import { JIKAN_API_BASE_URL } from './apiUrl';
 import { injectInfiniteQuery } from '@ngneat/query';
@@ -16,38 +16,43 @@ export class SearchService {
 
   #query = injectInfiniteQuery();
 
-  getAnimesFromSearch() {
+  // private mangasSubject = new Subject<string>();
+  // mangasSelectedAction$ = this.mangasSubject.asObservable();
+  // mangas$: Observable<any> = this.mangasSelectedAction$.pipe(
+  //   switchMap((params) => {
+  //     return this.getAnimesFromSearch(params);
+  //   })
+  // );
+
+  getAnimesFromSearch(searchTerm: string = '') {
     return this.#query({
       queryKey: ['animes'],
-      queryFn: ({ pageParam }) => this.getAnimeSearch$({ page: pageParam }),
-      initialPageParam: 0,
-      getPreviousPageParam: (firstPage) => {
-        console.log(firstPage);
-        return firstPage.previousId;
+      queryFn: ({ pageParam }) => {
+        console.log(pageParam);
+        return this.getAnimeSearch$({ page: pageParam, q: searchTerm });
       },
-      getNextPageParam: (lastPage) => {
-        console.log(lastPage);
-        console.log(lastPage.nextId);
-        return lastPage.nextId;
-      },
+      initialPageParam: 1,
+      getNextPageParam: (lastPage) => lastPage.pagination.current_page + 1,
     });
   }
 
   getAnimeSearch$(params?: AnimeQueryParams): Observable<any> {
     const httpParams = this.buildParams(params);
     return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
-      map((response: any) =>
-        response.data.map((item: any) => ({
+      map((response: any) => {
+        const data = response.data.map((item: any) => ({
           ...item,
-        }))
-      )
+        }));
+        const pagination = { ...response.pagination };
+        return { data, pagination };
+      })
     );
   }
 
   private buildParams(params?: AnimeQueryParams): HttpParams {
     let httpParams = new HttpParams();
     if (params?.q) {
-      httpParams = httpParams.set('filter', params.q);
+      httpParams = httpParams.set('q', params.q);
     }
     if (params?.page) {
       httpParams = httpParams.set('page', params.page.toString());

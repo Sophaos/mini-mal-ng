@@ -5,13 +5,18 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ToolbarComponent } from './shared/ui/toolbar/toolbar.component';
+import { DropdownModule } from 'primeng/dropdown';
+import { SearchBarComponent } from './shared/ui/search-bar/search-bar.component';
 @NgModule({
-  declarations: [AppComponent, ToolbarComponent],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
     HttpClientModule,
+    DropdownModule,
+    ToolbarComponent,
+    SearchBarComponent,
   ],
   bootstrap: [AppComponent],
 })

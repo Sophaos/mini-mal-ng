@@ -1,17 +1,33 @@
-<div class="toolbar">
+<div class="card">
+  <p-menubar>
+    <ng-template pTemplate="start">
+      <img
+        src="https://primefaces.org/cdn/primeng/images/primeng.svg"
+        height="40"
+        class="mr-2"
+      />
+    </ng-template>
+    <ng-template pTemplate="end">
+      <div class="card flex justify-content-center">
+        <p-button (click)="toggleSideNav()" icon="pi pi-arrow-right"></p-button>
+      </div>
+    </ng-template>
+  </p-menubar>
+</div>
+<!-- <div class="toolbar">
   <div class="title">mini-MAL</div>
-  <!-- <div class="menu"></div> -->
   <div class="search">
     <input />
-    <div *ngIf="test.result$ | async as result" class="animes-container">
+    <div *ngIf="animes.result$ | async as result">
       <div *ngIf="result.isSuccess">
         <div *ngFor="let page of result.data.pages">
-          <div *ngFor="let anime of page">
+          <div *ngFor="let anime of page.data">
             {{ anime.mal_id }}
           </div>
         </div>
+        <button (click)="result.fetchNextPage()">test</button>
       </div>
-      <button (click)="result.fetchNextPage()">next</button>
     </div>
   </div>
-</div>
+  <button (click)="coucou()">testo</button>"
+</div> -->
