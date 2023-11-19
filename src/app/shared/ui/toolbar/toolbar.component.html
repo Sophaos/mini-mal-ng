@@ -1,5 +1,5 @@
 <div class="card">
-  <p-menubar>
+  <p-menubar [model]="items">
     <ng-template pTemplate="start">
       <img
         src="https://primefaces.org/cdn/primeng/images/primeng.svg"
@@ -9,25 +9,8 @@
     </ng-template>
     <ng-template pTemplate="end">
       <div class="card flex justify-content-center">
-        <p-button (click)="toggleSideNav()" icon="pi pi-arrow-right"></p-button>
+        <p-button (click)="toggleSideNav()" icon="pi pi-search"></p-button>
       </div>
     </ng-template>
   </p-menubar>
 </div>
-<!-- <div class="toolbar">
-  <div class="title">mini-MAL</div>
-  <div class="search">
-    <input />
-    <div *ngIf="animes.result$ | async as result">
-      <div *ngIf="result.isSuccess">
-        <div *ngFor="let page of result.data.pages">
-          <div *ngFor="let anime of page.data">
-            {{ anime.mal_id }}
-          </div>
-        </div>
-        <button (click)="result.fetchNextPage()">test</button>
-      </div>
-    </div>
-  </div>
-  <button (click)="coucou()">testo</button>"
-</div> -->

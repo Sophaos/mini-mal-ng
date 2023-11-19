@@ -1,8 +1,10 @@
-<div>
+<div class="wrapper">
   <div class="items-container">
     <span class="title">{{ title }}</span>
     <span class="link">
-      <a [routerLink]="link" [queryParams]="queryParams">View more</a>
+      <a *ngIf="link" [routerLink]="link" [queryParams]="queryParams"
+        >View more</a
+      >
     </span>
   </div>
   <hr />

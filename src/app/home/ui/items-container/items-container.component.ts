@@ -11,6 +11,6 @@ import { Params, RouterLink, RouterOutlet } from '@angular/router';
 })
 export class ItemsContainerComponent {
   @Input() title: string = '';
-  @Input() link: string = '';
+  @Input() link?: string;
   @Input() queryParams: Params = {};
 }

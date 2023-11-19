@@ -22,7 +22,7 @@
     </p-carousel>
   </app-items-container>
 
-  <app-items-container title="Latest Updated Episode Videos" link="">
+  <app-items-container title="Latest Updated Episode Videos">
     <p-carousel
       [value]="vm.recentEpisodes"
       [numVisible]="8"
@@ -41,7 +41,7 @@
     </p-carousel>
   </app-items-container>
 
-  <app-items-container title="Latest Anime Review" link="">
+  <app-items-container title="Latest Anime Review">
     <div class="card">
       <p-dataView #dv [value]="vm.animeReviews">
         <ng-template let-anime pTemplate="listItem">
