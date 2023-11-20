@@ -1,15 +1,25 @@
 <p-sidebar [(visible)]="sideBarVisible" position="right">
-  <h3>Sidebar</h3>
   <div class="search">
-    <input />
+    <div class="search-container">
+      <span class="p-input-icon-left">
+        <input type="text" pInputText [(ngModel)]="searchTerm" />
+      </span>
+      <p-button (click)="search()" icon="pi pi-search"></p-button>
+    </div>
     <div *ngIf="animes.result$ | async as result">
       <div *ngIf="result.isSuccess">
-        <div *ngFor="let page of result.data.pages">
-          <div *ngFor="let anime of page.data">
+        <div *ngFor="let page of result.data.pages" class="pages">
+          <div *ngFor="let anime of page.data" class="pages">
             <app-media-card [image]="anime.images" [title]="anime.title" />
           </div>
         </div>
-        <button (click)="result.fetchNextPage()">test</button>
+        <div class="load-button">
+          <p-button
+            (click)="result.fetchNextPage()"
+            [disabled]="!result.hasNextPage"
+            label="Load More"
+          ></p-button>
+        </div>
       </div>
     </div>
   </div>

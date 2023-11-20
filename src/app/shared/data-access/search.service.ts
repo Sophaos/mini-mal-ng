@@ -16,14 +16,6 @@ export class SearchService {
 
   #query = injectInfiniteQuery();
 
-  // private mangasSubject = new Subject<string>();
-  // mangasSelectedAction$ = this.mangasSubject.asObservable();
-  // mangas$: Observable<any> = this.mangasSelectedAction$.pipe(
-  //   switchMap((params) => {
-  //     return this.getAnimesFromSearch(params);
-  //   })
-  // );
-
   getAnimesFromSearch(searchTerm: string = '') {
     return this.#query({
       queryKey: ['animes'],
@@ -32,7 +24,10 @@ export class SearchService {
         return this.getAnimeSearch$({ page: pageParam, q: searchTerm });
       },
       initialPageParam: 1,
-      getNextPageParam: (lastPage) => lastPage.pagination.current_page + 1,
+      getNextPageParam: (lastPage) =>
+        lastPage.pagination.has_next_page
+          ? lastPage.pagination.current_page + 1
+          : undefined,
     });
   }
 

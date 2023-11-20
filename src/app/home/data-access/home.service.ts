@@ -91,6 +91,7 @@ export class HomeService {
         response.data
           .map((item: any) => ({
             ...item,
+            image: item.entry.images.jpg.image_url,
           }))
           .slice(0, 5)
       )
@@ -102,6 +103,7 @@ export class HomeService {
       map((response: any) =>
         response.data.map((item: any) => ({
           ...item,
+          images: item.entry.images.jpg.image_url,
         }))
       )
     );

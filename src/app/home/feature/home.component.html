@@ -6,7 +6,7 @@
   >
     <p-carousel
       [value]="vm.currentSeason"
-      [numVisible]="7"
+      [numVisible]="8"
       [numScroll]="1"
       [circular]="false"
       [autoplayInterval]="3000"
@@ -48,7 +48,7 @@
           <app-review-row
             [text]="anime.review"
             [title]="anime.entry.title"
-            [image]="anime.entry.images.jpg.image_url"
+            [image]="anime.image"
             [score]="anime.score"
           />
         </ng-template>
