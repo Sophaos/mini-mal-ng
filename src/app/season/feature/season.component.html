@@ -1,4 +1,3 @@
-<div>allo</div>
 <div class="card">
   <div class="p-float-label">
     <label for="float-label">Media</label>
@@ -11,29 +10,20 @@
       (onChange)="filterChange($event, 'filter')"
     ></p-dropdown>
     <p-dropdown
-      [options]="seasons"
-      placeholder="Season"
-      optionLabel="name"
-      optionValue="code"
-      inputId="float-label"
-      (onChange)="filterChange($event, 'season')"
-    ></p-dropdown>
-    <p-dropdown
+      *ngIf="years$ | async as years"
       [options]="years"
+      [(ngModel)]="year"
       placeholder="Years"
       optionLabel="name"
       optionValue="code"
       inputId="float-label"
-      (onChange)="filterChange($event, 'year')"
+      (onChange)="yearChange($event)"
     ></p-dropdown>
   </div>
-  <!-- <p-tabView *ngIf="seasons$ | async as seasons">
-    <p-tabPanel *ngFor="let season of seasons[1].seasons" [header]="season">
-    </p-tabPanel>
-  </p-tabView> -->
   <p-tabMenu
     *ngIf="seasons$ | async as seasons"
     [model]="seasons[1].labels"
+    (activeItemChange)="onActiveItemChange($event)"
   ></p-tabMenu>
   <div>
     <div class="data-view" *ngIf="animes$ | async as animes">

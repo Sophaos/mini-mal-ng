@@ -5,10 +5,12 @@ import {
   combineLatest,
   debounceTime,
   distinctUntilChanged,
+  map,
   switchMap,
 } from 'rxjs';
 import { SeasonsService } from '../data-access/seasons.service';
 import { __param } from 'tslib';
+import { MenuItem } from 'primeng/api';
 
 @Component({
   selector: 'app-season',
@@ -17,31 +19,24 @@ import { __param } from 'tslib';
 })
 export class SeasonComponent implements OnInit {
   layout: any = 'list';
-  seasons$ = this.seasonService.getSeasonList$();
+  activeItem: MenuItem | undefined;
+  seasons$ = this.seasonService.seasons$;
+  years$ = this.seasonService.years$;
+
+  year = new Date().getFullYear();
+  // currentSeason =
+
   animes$ = combineLatest([this.route.paramMap, this.route.queryParamMap]).pipe(
     switchMap(([params, queryParams]) =>
       this.seasonService.getSeason$({
         year: Number(params.get('year')),
-        season: params.get('season') ?? this.seasonService.getCurrentSeason(),
+        season: params.get('season') ?? this.getCurrentSeason(),
         filter: queryParams.get('filter') ?? 'tv',
         page: Number(queryParams.get('page')),
         limit: Number(queryParams.get('limit')),
       })
     )
   );
-  // animes$ = this.route.queryParamMap.pipe(
-  //   debounceTime(300),
-  //   distinctUntilChanged(),
-  //   switchMap((params) =>
-  //     this.seasonService.getSeason$({
-  //       year: Number(params.get('year')),
-  //       season: params?.get('season') ?? this.seasonService.getCurrentSeason(),
-  //       filter: params?.get('filter') ?? 'tv',
-  //       page: Number(params.get('page')),
-  //       limit: Number(params.get('limit')),
-  //     })
-  //   )
-  // );
 
   first: number = 0;
   rows: number = 10;
@@ -56,34 +51,13 @@ export class SeasonComponent implements OnInit {
     { code: 'music', name: 'Music' },
   ];
 
-  seasons: any = [
-    { code: 'winter', name: 'Winter' },
-    { code: 'spring', name: 'Spring' },
-    { code: 'summer', name: 'Summer' },
-    { code: 'fall', name: 'Fall' },
-  ];
-
-  years: any = [
-    { code: 2015, name: '2015' },
-    { code: 2016, name: '2016' },
-    { code: 2017, name: '2017' },
-    { code: 2018, name: '2018' },
-    { code: 2019, name: '2019' },
-    { code: 2020, name: '2020' },
-    { code: 2021, name: '2021' },
-    { code: 2022, name: '2022' },
-    { code: 2023, name: '2023' },
-    { code: 2024, name: '2024' },
-    { code: 2025, name: '2025' },
-    { code: 2026, name: '2026' },
-    { code: 2027, name: '2027' },
-  ];
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private seasonService: SeasonsService
   ) {}
   ngOnInit(): void {
+    this.year = Number(this.route.snapshot.params['year']);
     // console.log('ALLO');
     // const queryParams = this.route.snapshot.queryParams;
     // console.log(queryParams, 'coco');
@@ -102,10 +76,16 @@ export class SeasonComponent implements OnInit {
   }
 
   filterChange(event: any, filterParamName: string) {
+    console.log('ALLOOO');
     const currentParams = this.route.snapshot.queryParams;
     const updatedParams = { ...currentParams, [filterParamName]: event.value };
 
     this.updateRouteQueryParams(updatedParams);
+  }
+
+  yearChange(event: any) {
+    const currentParams = this.route.snapshot.queryParams;
+    this.router.navigate(['/season', this.year, 'fall']);
   }
 
   updateRouteQueryParams(updatedParams: any): void {
@@ -127,5 +107,25 @@ export class SeasonComponent implements OnInit {
       limit: event.rows,
     };
     this.updateRouteQueryParams(updatedParams);
+  }
+
+  onActiveItemChange(event: MenuItem) {
+    console.log(event);
+    this.activeItem = event;
+  }
+
+  getCurrentSeason(): string {
+    const currentDate = new Date();
+    const currentMonth = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
+
+    if (currentMonth >= 3 && currentMonth <= 5) {
+      return 'spring';
+    } else if (currentMonth >= 6 && currentMonth <= 8) {
+      return 'summer';
+    } else if (currentMonth >= 9 && currentMonth <= 11) {
+      return 'fall';
+    } else {
+      return 'winter';
+    }
   }
 }

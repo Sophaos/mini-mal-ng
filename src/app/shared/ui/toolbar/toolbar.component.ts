@@ -26,16 +26,16 @@ export class ToolbarComponent implements OnInit {
       {
         label: 'Home',
         icon: 'pi pi-fw pi-file',
-        url: '/home',
+        routerLink: '/home',
       },
       {
         label: 'Season',
         icon: 'pi pi-fw pi-pencil',
-        url: seasonUrl,
+        routerLink: seasonUrl,
       },
       {
         label: 'Manga',
-        icon: 'pi pi-fw pi-user',
+        routerLink: 'pi pi-fw pi-user',
       },
     ];
   }

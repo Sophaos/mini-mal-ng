@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
 import { AnimeBasicInfo } from 'src/app/shared/data-access/AnimeBasicInfo';
 
@@ -55,18 +55,22 @@ export class SeasonsService {
       .pipe();
   }
 
-  getSeasonList$(): Observable<any> {
-    return this.http.get(`${this.apiUrl}`).pipe(
-      map((res: any) =>
-        res.data.map((item: any) => ({
-          ...item,
-          labels: item.seasons.map((s: string) => ({
-            label: s,
-          })),
-        }))
-      )
-    );
-  }
+  seasons$ = this.http.get(`${this.apiUrl}`).pipe(
+    map((res: any) =>
+      res.data.map((item: any) => ({
+        ...item,
+        labels: item.seasons.map((s: string) => ({
+          label: s,
+        })),
+      }))
+    )
+  );
+
+  years$ = this.seasons$.pipe(
+    map((seasons) => {
+      return seasons.map((s: any) => ({ code: s.year, name: s.year }));
+    })
+  );
 
   private buildParams(params?: SeasonQueryParams): HttpParams {
     let httpParams = new HttpParams();

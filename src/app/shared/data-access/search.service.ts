@@ -20,7 +20,6 @@ export class SearchService {
     return this.#query({
       queryKey: ['animes'],
       queryFn: ({ pageParam }) => {
-        console.log(pageParam);
         return this.getAnimeSearch$({ page: pageParam, q: searchTerm });
       },
       initialPageParam: 1,
