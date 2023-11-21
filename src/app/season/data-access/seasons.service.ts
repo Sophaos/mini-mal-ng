@@ -60,6 +60,9 @@ export class SeasonsService {
       map((res: any) =>
         res.data.map((item: any) => ({
           ...item,
+          labels: item.seasons.map((s: string) => ({
+            label: s,
+          })),
         }))
       )
     );

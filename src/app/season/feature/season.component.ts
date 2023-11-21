@@ -1,7 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
-import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs';
+import {
+  combineLatest,
+  debounceTime,
+  distinctUntilChanged,
+  switchMap,
+} from 'rxjs';
 import { SeasonsService } from '../data-access/seasons.service';
 import { __param } from 'tslib';
 
@@ -13,19 +18,30 @@ import { __param } from 'tslib';
 export class SeasonComponent implements OnInit {
   layout: any = 'list';
   seasons$ = this.seasonService.getSeasonList$();
-  animes$ = this.route.queryParamMap.pipe(
-    debounceTime(300),
-    distinctUntilChanged(),
-    switchMap((params) =>
+  animes$ = combineLatest([this.route.paramMap, this.route.queryParamMap]).pipe(
+    switchMap(([params, queryParams]) =>
       this.seasonService.getSeason$({
         year: Number(params.get('year')),
-        season: params?.get('season') ?? this.seasonService.getCurrentSeason(),
-        filter: params?.get('filter') ?? 'tv',
-        page: Number(params.get('page')),
-        limit: Number(params.get('limit')),
+        season: params.get('season') ?? this.seasonService.getCurrentSeason(),
+        filter: queryParams.get('filter') ?? 'tv',
+        page: Number(queryParams.get('page')),
+        limit: Number(queryParams.get('limit')),
       })
     )
   );
+  // animes$ = this.route.queryParamMap.pipe(
+  //   debounceTime(300),
+  //   distinctUntilChanged(),
+  //   switchMap((params) =>
+  //     this.seasonService.getSeason$({
+  //       year: Number(params.get('year')),
+  //       season: params?.get('season') ?? this.seasonService.getCurrentSeason(),
+  //       filter: params?.get('filter') ?? 'tv',
+  //       page: Number(params.get('page')),
+  //       limit: Number(params.get('limit')),
+  //     })
+  //   )
+  // );
 
   first: number = 0;
   rows: number = 10;
@@ -68,24 +84,21 @@ export class SeasonComponent implements OnInit {
     private seasonService: SeasonsService
   ) {}
   ngOnInit(): void {
-    const queryParams = this.route.snapshot.queryParams;
-
-    // Define default query parameters
-    const defaultQueryParams = {
-      year: new Date().getFullYear(),
-      season: this.seasonService.getCurrentSeason(),
-      page: 1,
-      limit: 10,
-    };
-
-    const updatedQueryParams = { ...defaultQueryParams, ...queryParams };
-
-    // Navigate to the same route with default query parameters
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: updatedQueryParams,
-      queryParamsHandling: 'merge',
-    });
+    // console.log('ALLO');
+    // const queryParams = this.route.snapshot.queryParams;
+    // console.log(queryParams, 'coco');
+    // // Define default query parameters
+    // const defaultQueryParams = {
+    //   page: 1,
+    //   limit: 10,
+    // };
+    // const updatedQueryParams = { ...defaultQueryParams, ...queryParams };
+    // // Navigate to the same route with default query parameters
+    // this.router.navigate([], {
+    //   relativeTo: this.route,
+    //   queryParams: updatedQueryParams,
+    //   queryParamsHandling: 'merge',
+    // });
   }
 
   filterChange(event: any, filterParamName: string) {

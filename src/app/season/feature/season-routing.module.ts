@@ -5,7 +5,7 @@ import { SeasonComponent } from './season.component';
 
 const routes: Routes = [
   {
-    path: '',
+    path: ':year/:season',
     component: SeasonComponent,
   },
 ];

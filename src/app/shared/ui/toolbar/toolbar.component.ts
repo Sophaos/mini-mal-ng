@@ -21,7 +21,7 @@ export class ToolbarComponent implements OnInit {
   constructor() {}
   ngOnInit(): void {
     this.currentSeason = this.getCurrentSeason();
-    const seasonUrl = `season?year=${this.currentYear}&season=${this.currentSeason}&page=1&limit=10`;
+    const seasonUrl = `/season/${this.currentYear}/${this.currentSeason}`;
     this.items = [
       {
         label: 'Home',

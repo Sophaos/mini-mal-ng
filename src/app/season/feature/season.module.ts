@@ -10,6 +10,8 @@ import { InputTextModule } from 'primeng/inputtext';
 import { PaginatorModule } from 'primeng/paginator';
 import { SeasonRoutingModule } from './season-routing.module';
 import { SeasonsService } from '../data-access/seasons.service';
+import { TabViewModule } from 'primeng/tabview';
+import { TabMenuModule } from 'primeng/tabmenu';
 
 @NgModule({
   declarations: [SeasonComponent],
@@ -23,6 +25,8 @@ import { SeasonsService } from '../data-access/seasons.service';
     DropdownModule,
     ReactiveFormsModule,
     InputTextModule,
+    TabViewModule,
+    TabMenuModule,
   ],
   providers: [SeasonsService],
 })
