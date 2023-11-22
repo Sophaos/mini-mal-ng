@@ -12,6 +12,7 @@ import { SeasonRoutingModule } from './season-routing.module';
 import { SeasonsService } from '../data-access/seasons.service';
 import { TabViewModule } from 'primeng/tabview';
 import { TabMenuModule } from 'primeng/tabmenu';
+import { SelectButtonModule } from 'primeng/selectbutton';
 
 @NgModule({
   declarations: [SeasonComponent],
@@ -27,6 +28,7 @@ import { TabMenuModule } from 'primeng/tabmenu';
     InputTextModule,
     TabViewModule,
     TabMenuModule,
+    SelectButtonModule,
   ],
   providers: [SeasonsService],
 })

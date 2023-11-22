@@ -1,33 +1,32 @@
 <div class="card">
-  <div class="p-float-label">
-    <label for="float-label">Media</label>
-    <p-dropdown
-      [options]="medias"
-      placeholder="Media"
-      optionLabel="name"
-      optionValue="code"
-      inputId="float-label"
-      (onChange)="filterChange($event, 'filter')"
-    ></p-dropdown>
-    <p-dropdown
-      *ngIf="years$ | async as years"
-      [options]="years"
-      [(ngModel)]="year"
-      placeholder="Years"
-      optionLabel="name"
-      optionValue="code"
-      inputId="float-label"
-      (onChange)="yearChange($event)"
-    ></p-dropdown>
-  </div>
+  <p-dropdown
+    *ngIf="years$ | async as years"
+    [options]="years"
+    [(ngModel)]="year"
+    placeholder="Years"
+    optionLabel="name"
+    optionValue="code"
+    inputId="float-label"
+    (onChange)="yearChange($event)"
+  ></p-dropdown>
   <p-tabMenu
-    *ngIf="seasons$ | async as seasons"
-    [model]="seasons[1].labels"
+    *ngIf="seasonLabels$ | async as seasons"
+    [model]="seasons.labels"
+    [activeItem]="seasons.season"
     (activeItemChange)="onActiveItemChange($event)"
   ></p-tabMenu>
-  <div>
-    <div class="data-view" *ngIf="animes$ | async as animes">
-      <p-dataView #dv [value]="animes" [layout]="layout">
+  <div class="p-float-label">
+    <p-selectButton
+      [options]="medias"
+      [(ngModel)]="media"
+      optionLabel="label"
+      optionValue="value"
+      (onOptionClick)="filterChange($event, 'filter')"
+    ></p-selectButton>
+  </div>
+  <div *ngIf="animes$ | async as animes">
+    <div class="data-view">
+      <p-dataView #dv [value]="animes.data" [layout]="layout">
         <ng-template pTemplate="header">
           <div class="flex justify-content-end">
             <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
@@ -99,17 +98,16 @@
           </div>
         </ng-template>
       </p-dataView>
-    </div>
-
-    <div class="card flex justify-content-center">
-      <p-paginator
-        locale="en-US"
-        (onPageChange)="onPageChange($event)"
-        [first]="first"
-        [rows]="rows"
-        [totalRecords]="120"
-        [rowsPerPageOptions]="[10, 20, 30]"
-      ></p-paginator>
+      <div class="card flex justify-content-center mx-auto">
+        <p-paginator
+          locale="en-US"
+          (onPageChange)="onPageChange($event)"
+          [first]="first"
+          [rows]="rows"
+          [totalRecords]="animes.pagination.items.total"
+          [rowsPerPageOptions]="[10, 20, 30]"
+        ></p-paginator>
+      </div>
     </div>
   </div>
 </div>

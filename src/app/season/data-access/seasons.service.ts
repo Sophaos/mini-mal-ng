@@ -36,15 +36,14 @@ export class SeasonsService {
         params: httpParams,
       })
       .pipe(
-        map((response: any) =>
-          response.data.map((item: any) => ({
+        map((response: any) => ({
+          data: response.data.map((item: any) => ({
             ...item,
-            // id: item.mal_id,
             images: item.images.jpg.image_url,
-            // url: item.url,
-            // title: item.name,
-          }))
-        )
+          })),
+          pagination: { ...response.pagination },
+        })),
+        tap((res) => console.log(res))
       );
   }
 

@@ -7,6 +7,7 @@ import {
   distinctUntilChanged,
   map,
   switchMap,
+  tap,
 } from 'rxjs';
 import { SeasonsService } from '../data-access/seasons.service';
 import { __param } from 'tslib';
@@ -18,13 +19,20 @@ import { MenuItem } from 'primeng/api';
   styleUrls: ['./season.component.scss'],
 })
 export class SeasonComponent implements OnInit {
-  layout: any = 'list';
-  activeItem: MenuItem | undefined;
   seasons$ = this.seasonService.seasons$;
   years$ = this.seasonService.years$;
 
-  year = new Date().getFullYear();
-  // currentSeason =
+  seasonLabels$ = combineLatest([this.seasons$, this.route.paramMap]).pipe(
+    map(([seasons, params]) => {
+      const labels = seasons.find(
+        (s: any) => s.year === Number(params.get('year'))
+      ).labels;
+      return {
+        labels,
+        season: labels.find((l: MenuItem) => l.label === params.get('season')),
+      };
+    })
+  );
 
   animes$ = combineLatest([this.route.paramMap, this.route.queryParamMap]).pipe(
     switchMap(([params, queryParams]) =>
@@ -38,17 +46,22 @@ export class SeasonComponent implements OnInit {
     )
   );
 
-  first: number = 0;
-  rows: number = 10;
-  page: number = 0;
+  totalCount$ = this.animes$.pipe();
 
+  first: number = 0;
+  rows: number = 10; // limit
+  page: number = 1;
+  layout: any = 'list';
+  activeItem: MenuItem | undefined;
+  year = new Date().getFullYear();
+  media = { value: 'tv', label: 'TV' };
   medias: any = [
-    { code: 'tv', name: 'TV' },
-    { code: 'movie', name: 'Movie' },
-    { code: 'ova', name: 'OVA' },
-    { code: 'special', name: 'Special' },
-    { code: 'ona', name: 'ONA' },
-    { code: 'music', name: 'Music' },
+    { value: 'tv', label: 'TV' },
+    { value: 'movie', label: 'Movie' },
+    { value: 'ova', label: 'OVA' },
+    { value: 'special', label: 'Special' },
+    { value: 'ona', label: 'ONA' },
+    { value: 'music', label: 'Music' },
   ];
 
   constructor(
@@ -57,35 +70,39 @@ export class SeasonComponent implements OnInit {
     private seasonService: SeasonsService
   ) {}
   ngOnInit(): void {
-    this.year = Number(this.route.snapshot.params['year']);
-    // console.log('ALLO');
-    // const queryParams = this.route.snapshot.queryParams;
-    // console.log(queryParams, 'coco');
-    // // Define default query parameters
-    // const defaultQueryParams = {
-    //   page: 1,
-    //   limit: 10,
-    // };
-    // const updatedQueryParams = { ...defaultQueryParams, ...queryParams };
-    // // Navigate to the same route with default query parameters
-    // this.router.navigate([], {
-    //   relativeTo: this.route,
-    //   queryParams: updatedQueryParams,
-    //   queryParamsHandling: 'merge',
-    // });
+    const queryParams = this.route.snapshot.queryParams;
+    const params = this.route.snapshot.params;
+
+    this.year = Number(params['year']);
+    this.media = queryParams['filter'];
+    // Define default query parameters
+    const defaultQueryParams = {
+      page: 1,
+      limit: 10,
+      filter: 'tv',
+    };
+    const updatedQueryParams = { ...defaultQueryParams, ...queryParams };
+    // Navigate to the same route with default query parameters
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: updatedQueryParams,
+      queryParamsHandling: 'merge',
+    });
   }
 
   filterChange(event: any, filterParamName: string) {
     console.log('ALLOOO');
     const currentParams = this.route.snapshot.queryParams;
-    const updatedParams = { ...currentParams, [filterParamName]: event.value };
+    const updatedParams = {
+      ...currentParams,
+      [filterParamName]: event.option.value,
+    };
 
     this.updateRouteQueryParams(updatedParams);
   }
 
   yearChange(event: any) {
-    const currentParams = this.route.snapshot.queryParams;
-    this.router.navigate(['/season', this.year, 'fall']);
+    this.router.navigate(['/season', event.value, 'winter']);
   }
 
   updateRouteQueryParams(updatedParams: any): void {
@@ -97,21 +114,22 @@ export class SeasonComponent implements OnInit {
   }
 
   onPageChange(event: PaginatorState) {
+    console.log(event);
     this.first = event.first ?? 0;
     this.rows = event.rows ?? 10;
-    this.page = event.page ?? 0;
+    this.page = (event.page ?? 0) + 1;
     const currentParams = this.route.snapshot.queryParams;
     const updatedParams = {
       ...currentParams,
-      page: event.page,
-      limit: event.rows,
+      page: this.page,
+      limit: this.rows,
     };
     this.updateRouteQueryParams(updatedParams);
   }
 
   onActiveItemChange(event: MenuItem) {
-    console.log(event);
-    this.activeItem = event;
+    const year = this.route.snapshot.params['year'];
+    this.router.navigate(['/season', year, event.label]);
   }
 
   getCurrentSeason(): string {
