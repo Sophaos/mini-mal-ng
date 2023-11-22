@@ -99,14 +99,13 @@
         </ng-template>
       </p-dataView>
       <div class="card flex justify-content-center mx-auto">
-        <p-paginator
-          locale="en-US"
-          (onPageChange)="onPageChange($event)"
-          [first]="first"
-          [rows]="rows"
-          [totalRecords]="animes.pagination.items.total"
-          [rowsPerPageOptions]="[10, 20, 30]"
-        ></p-paginator>
+        <ng-container *ngIf="pagination$ | async as pagination">
+          <app-paginator
+            class="paginator"
+            [pagination]="pagination"
+            (onPageChange)="handlePageChange($event)"
+          />
+        </ng-container>
       </div>
     </div>
   </div>

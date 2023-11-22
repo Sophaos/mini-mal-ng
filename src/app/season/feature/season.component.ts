@@ -46,11 +46,16 @@ export class SeasonComponent implements OnInit {
     )
   );
 
-  totalCount$ = this.animes$.pipe();
+  pagination$ = combineLatest([this.route.queryParamMap, this.animes$]).pipe(
+    map(([queryParams, animes]) => ({
+      first:
+        (Number(queryParams.get('page')) - 1) *
+        Number(queryParams.get('limit')),
+      rows: Number(queryParams.get('limit')),
+      total: animes.pagination.items.total,
+    }))
+  );
 
-  first: number = 0;
-  rows: number = 10; // limit
-  page: number = 1;
   layout: any = 'list';
   activeItem: MenuItem | undefined;
   year = new Date().getFullYear();
@@ -91,10 +96,10 @@ export class SeasonComponent implements OnInit {
   }
 
   filterChange(event: any, filterParamName: string) {
-    console.log('ALLOOO');
-    const currentParams = this.route.snapshot.queryParams;
+    // const currentParams = this.route.snapshot.queryParams;
     const updatedParams = {
-      ...currentParams,
+      page: 1,
+      limit: 10,
       [filterParamName]: event.option.value,
     };
 
@@ -113,16 +118,13 @@ export class SeasonComponent implements OnInit {
     });
   }
 
-  onPageChange(event: PaginatorState) {
+  handlePageChange(event: PaginatorState) {
     console.log(event);
-    this.first = event.first ?? 0;
-    this.rows = event.rows ?? 10;
-    this.page = (event.page ?? 0) + 1;
     const currentParams = this.route.snapshot.queryParams;
     const updatedParams = {
       ...currentParams,
-      page: this.page,
-      limit: this.rows,
+      page: (event.page ?? 0) + 1,
+      limit: event.rows,
     };
     this.updateRouteQueryParams(updatedParams);
   }
