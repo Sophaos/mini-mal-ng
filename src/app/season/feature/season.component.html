@@ -1,32 +1,29 @@
 <div class="card">
-  <p-dropdown
-    *ngIf="years$ | async as years"
-    [options]="years"
-    [(ngModel)]="year"
-    placeholder="Years"
-    optionLabel="name"
-    optionValue="code"
-    inputId="float-label"
-    (onChange)="yearChange($event)"
-  ></p-dropdown>
-  <p-tabMenu
-    *ngIf="seasonLabels$ | async as seasons"
-    [model]="seasons.labels"
-    [activeItem]="seasons.season"
-    (activeItemChange)="onActiveItemChange($event)"
-  ></p-tabMenu>
-  <div class="p-float-label">
-    <p-selectButton
-      [options]="medias"
-      [(ngModel)]="media"
+  <ng-container *ngIf="vm$ | async as vm">
+    <p-dropdown
+      [options]="vm.seasons.years"
+      [formControl]="yearFormControl"
+      placeholder="Years"
       optionLabel="label"
       optionValue="value"
-      (onOptionClick)="filterChange($event, 'filter')"
+      inputId="float-label"
+    ></p-dropdown>
+    <p-selectButton
+      [options]="vm.seasonLabels.labels"
+      [formControl]="seasonFormControl"
+      optionLabel="label"
+      optionValue="value"
     ></p-selectButton>
-  </div>
-  <div *ngIf="animes$ | async as animes">
+    <div class="p-float-label">
+      <p-selectButton
+        [options]="medias"
+        [formControl]="mediaFormControl"
+        optionLabel="label"
+        optionValue="value"
+      ></p-selectButton>
+    </div>
     <div class="data-view">
-      <p-dataView #dv [value]="animes.data" [layout]="layout">
+      <p-dataView #dv [value]="vm.animes.data" [layout]="layout">
         <ng-template pTemplate="header">
           <div class="flex justify-content-end">
             <p-dataViewLayoutOptions></p-dataViewLayoutOptions>
@@ -98,15 +95,10 @@
           </div>
         </ng-template>
       </p-dataView>
-      <div class="card flex justify-content-center mx-auto">
-        <ng-container *ngIf="pagination$ | async as pagination">
-          <app-paginator
-            class="paginator"
-            [pagination]="pagination"
-            (onPageChange)="handlePageChange($event)"
-          />
-        </ng-container>
-      </div>
     </div>
-  </div>
+    <app-paginator
+      [pagination]="vm.pagination"
+      (onPageChange)="handlePageChange($event)"
+    />
+  </ng-container>
 </div>

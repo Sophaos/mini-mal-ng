@@ -42,8 +42,7 @@ export class SeasonsService {
             images: item.images.jpg.image_url,
           })),
           pagination: { ...response.pagination },
-        })),
-        tap((res) => console.log(res))
+        }))
       );
   }
 
@@ -55,19 +54,16 @@ export class SeasonsService {
   }
 
   seasons$ = this.http.get(`${this.apiUrl}`).pipe(
-    map((res: any) =>
-      res.data.map((item: any) => ({
+    map((res: any) => {
+      const labels = res.data.map((item: any) => ({
         ...item,
         labels: item.seasons.map((s: string) => ({
           label: s,
+          value: s,
         })),
-      }))
-    )
-  );
-
-  years$ = this.seasons$.pipe(
-    map((seasons) => {
-      return seasons.map((s: any) => ({ code: s.year, name: s.year }));
+      }));
+      const years = labels.map((s: any) => ({ label: s.year, value: s.year }));
+      return { labels, years };
     })
   );
 

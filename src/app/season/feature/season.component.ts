@@ -1,65 +1,118 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 import {
   combineLatest,
   debounceTime,
   distinctUntilChanged,
   map,
+  startWith,
   switchMap,
   tap,
 } from 'rxjs';
 import { SeasonsService } from '../data-access/seasons.service';
 import { __param } from 'tslib';
 import { MenuItem } from 'primeng/api';
+import { FormControl } from '@angular/forms';
 
 @Component({
   selector: 'app-season',
   templateUrl: './season.component.html',
   styleUrls: ['./season.component.scss'],
 })
-export class SeasonComponent implements OnInit {
-  seasons$ = this.seasonService.seasons$;
-  years$ = this.seasonService.years$;
+export class SeasonComponent {
+  defaultQueryParams = {
+    page: 1,
+    limit: 10,
+    filter: 'tv',
+  };
 
-  seasonLabels$ = combineLatest([this.seasons$, this.route.paramMap]).pipe(
-    map(([seasons, params]) => {
-      const labels = seasons.find(
-        (s: any) => s.year === Number(params.get('year'))
-      ).labels;
-      return {
-        labels,
-        season: labels.find((l: MenuItem) => l.label === params.get('season')),
-      };
-    })
+  yearFormControl = new FormControl(Number(this.route.snapshot.params['year']));
+  seasonFormControl = new FormControl(this.route.snapshot.params['season']);
+  mediaFormControl = new FormControl(
+    this.route.snapshot.queryParams['filter'] ?? this.defaultQueryParams.filter
   );
 
-  animes$ = combineLatest([this.route.paramMap, this.route.queryParamMap]).pipe(
-    switchMap(([params, queryParams]) =>
-      this.seasonService.getSeason$({
-        year: Number(params.get('year')),
-        season: params.get('season') ?? this.getCurrentSeason(),
-        filter: queryParams.get('filter') ?? 'tv',
-        page: Number(queryParams.get('page')),
-        limit: Number(queryParams.get('limit')),
-      })
+  year$ = this.yearFormControl.valueChanges.pipe(
+    startWith(Number(this.route.snapshot.params['year'])),
+    tap((res) =>
+      this.router.navigate(
+        ['/season', res, this.route.snapshot.params['season']],
+        {
+          relativeTo: this.route,
+          queryParams: this.defaultQueryParams,
+          queryParamsHandling: 'merge',
+        }
+      )
     )
   );
 
-  pagination$ = combineLatest([this.route.queryParamMap, this.animes$]).pipe(
-    map(([queryParams, animes]) => ({
-      first:
-        (Number(queryParams.get('page')) - 1) *
-        Number(queryParams.get('limit')),
-      rows: Number(queryParams.get('limit')),
-      total: animes.pagination.items.total,
-    }))
+  season$ = this.seasonFormControl.valueChanges.pipe(
+    startWith(this.route.snapshot.params['season']),
+    tap((res) => {
+      this.router.navigate(
+        ['/season', this.route.snapshot.params['year'], res],
+        {
+          relativeTo: this.route,
+          queryParams: {
+            ...this.defaultQueryParams,
+            ...this.route.snapshot.queryParams,
+          },
+          queryParamsHandling: 'merge',
+        }
+      );
+    }),
+    tap((res) => console.log(res, 'coco'))
+  );
+
+  media$ = this.mediaFormControl.valueChanges.pipe(
+    startWith(
+      this.route.snapshot.queryParams['filter'] ??
+        this.defaultQueryParams.filter
+    ),
+    tap((res) => {
+      let updatedQueryParams = {
+        page: 1,
+        limit: 10,
+        filter: res,
+      };
+
+      updatedQueryParams = {
+        ...this.defaultQueryParams,
+        ...updatedQueryParams,
+      };
+      this.updateRouteQueryParams(updatedQueryParams);
+    })
+  );
+
+  seasons$ = this.seasonService.seasons$;
+  animes$ = combineLatest([this.route.paramMap, this.route.queryParamMap]).pipe(
+    switchMap(([params, queryParams]) =>
+      this.getSeasonAnimes(params, queryParams)
+    )
+  );
+
+  vm$ = combineLatest([
+    this.seasons$,
+    this.animes$,
+    this.route.paramMap,
+    this.route.queryParamMap,
+    this.year$,
+    this.media$,
+    this.season$,
+  ]).pipe(
+    map(([seasons, animes, params, queryParams]) => ({
+      seasons,
+      seasonLabels: this.getSeasonData(seasons, params),
+      pagination: this.getPagination(queryParams, animes),
+      animes,
+    })),
+    tap((res) => console.log(res))
   );
 
   layout: any = 'list';
   activeItem: MenuItem | undefined;
   year = new Date().getFullYear();
-  media = { value: 'tv', label: 'TV' };
   medias: any = [
     { value: 'tv', label: 'TV' },
     { value: 'movie', label: 'Movie' },
@@ -74,41 +127,33 @@ export class SeasonComponent implements OnInit {
     private router: Router,
     private seasonService: SeasonsService
   ) {}
-  ngOnInit(): void {
-    const queryParams = this.route.snapshot.queryParams;
-    const params = this.route.snapshot.params;
-
-    this.year = Number(params['year']);
-    this.media = queryParams['filter'];
-    // Define default query parameters
-    const defaultQueryParams = {
-      page: 1,
-      limit: 10,
-      filter: 'tv',
+  getSeasonData(seasons: any, params: ParamMap) {
+    const labels = seasons.labels.find(
+      (s: any) => s.year === Number(params.get('year'))
+    ).labels;
+    return {
+      labels,
+      season: labels.find((l: any) => l.label === params.get('season')),
     };
-    const updatedQueryParams = { ...defaultQueryParams, ...queryParams };
-    // Navigate to the same route with default query parameters
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: updatedQueryParams,
-      queryParamsHandling: 'merge',
+  }
+
+  getYear = (year: number) => year;
+
+  getPagination = (queryParams: ParamMap, animes: any) => ({
+    first:
+      (Number(queryParams.get('page')) - 1) * Number(queryParams.get('limit')),
+    rows: Number(queryParams.get('limit')),
+    total: animes.pagination.items.total,
+  });
+
+  getSeasonAnimes = (params: ParamMap, queryParams: ParamMap) =>
+    this.seasonService.getSeason$({
+      year: Number(params.get('year')),
+      season: params.get('season') ?? this.getCurrentSeason(),
+      filter: queryParams.get('filter') ?? 'tv',
+      page: Number(queryParams.get('page')),
+      limit: Number(queryParams.get('limit')),
     });
-  }
-
-  filterChange(event: any, filterParamName: string) {
-    // const currentParams = this.route.snapshot.queryParams;
-    const updatedParams = {
-      page: 1,
-      limit: 10,
-      [filterParamName]: event.option.value,
-    };
-
-    this.updateRouteQueryParams(updatedParams);
-  }
-
-  yearChange(event: any) {
-    this.router.navigate(['/season', event.value, 'winter']);
-  }
 
   updateRouteQueryParams(updatedParams: any): void {
     this.router.navigate([], {
@@ -119,7 +164,6 @@ export class SeasonComponent implements OnInit {
   }
 
   handlePageChange(event: PaginatorState) {
-    console.log(event);
     const currentParams = this.route.snapshot.queryParams;
     const updatedParams = {
       ...currentParams,
