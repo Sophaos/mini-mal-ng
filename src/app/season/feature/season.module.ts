@@ -14,6 +14,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { TabMenuModule } from 'primeng/tabmenu';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { PaginatorComponent } from 'src/app/shared/ui/paginator/paginator.component';
+import { DataViewComponent } from 'src/app/shared/ui/data-view/data-view.component';
 
 @NgModule({
   declarations: [SeasonComponent],
@@ -31,6 +32,7 @@ import { PaginatorComponent } from 'src/app/shared/ui/paginator/paginator.compon
     TabMenuModule,
     SelectButtonModule,
     PaginatorComponent,
+    DataViewComponent,
   ],
   providers: [SeasonsService],
 })

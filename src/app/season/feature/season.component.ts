@@ -1,18 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
-import {
-  combineLatest,
-  debounceTime,
-  distinctUntilChanged,
-  map,
-  startWith,
-  switchMap,
-  tap,
-} from 'rxjs';
+import { combineLatest, map, startWith, switchMap, tap } from 'rxjs';
 import { SeasonsService } from '../data-access/seasons.service';
-import { __param } from 'tslib';
-import { MenuItem } from 'primeng/api';
 import { FormControl } from '@angular/forms';
 
 @Component({
@@ -61,8 +51,7 @@ export class SeasonComponent {
           queryParamsHandling: 'merge',
         }
       );
-    }),
-    tap((res) => console.log(res, 'coco'))
+    })
   );
 
   media$ = this.mediaFormControl.valueChanges.pipe(
@@ -111,8 +100,6 @@ export class SeasonComponent {
   );
 
   layout: any = 'list';
-  activeItem: MenuItem | undefined;
-  year = new Date().getFullYear();
   medias: any = [
     { value: 'tv', label: 'TV' },
     { value: 'movie', label: 'Movie' },
@@ -136,8 +123,6 @@ export class SeasonComponent {
       season: labels.find((l: any) => l.label === params.get('season')),
     };
   }
-
-  getYear = (year: number) => year;
 
   getPagination = (queryParams: ParamMap, animes: any) => ({
     first:
@@ -171,11 +156,6 @@ export class SeasonComponent {
       limit: event.rows,
     };
     this.updateRouteQueryParams(updatedParams);
-  }
-
-  onActiveItemChange(event: MenuItem) {
-    const year = this.route.snapshot.params['year'];
-    this.router.navigate(['/season', year, event.label]);
   }
 
   getCurrentSeason(): string {
