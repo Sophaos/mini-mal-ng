@@ -1,59 +1,12 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <app-items-container
-    title="Current season"
-    [routerLink]="['/season', currentYear, currentSeason]"
-  >
-    <!-- [routerLink]="['/season', currentYear, currentSeason]" -->
-    <!-- [queryParams]="{ year: currentYear, season: currentSeason }" -->
-    <p-carousel
-      [value]="vm.currentSeason"
-      [numVisible]="8"
-      [numScroll]="1"
-      [circular]="false"
-      [autoplayInterval]="3000"
-      [showIndicators]="false"
-    >
-      <ng-template let-anime pTemplate="item">
-        <app-media-card
-          [image]="anime.images"
-          [title]="anime.title"
-          [routerLink]="['/animes', anime.mal_id]"
-        />
-      </ng-template>
-    </p-carousel>
-  </app-items-container>
-
-  <app-items-container title="Latest Updated Episode Videos">
-    <p-carousel
-      [value]="vm.recentEpisodes"
-      [numVisible]="8"
-      [numScroll]="1"
-      [circular]="false"
-      [autoplayInterval]="3000"
-      [showIndicators]="false"
-    >
-      <ng-template let-anime pTemplate="item">
-        <app-media-card
-          [image]="anime?.entry?.images?.jpg?.image_url"
-          [title]="anime.entry.title"
-          [routerLink]="['/animes', anime.entry.mal_id]"
-        />
-      </ng-template>
-    </p-carousel>
-  </app-items-container>
-
-  <app-items-container title="Latest Anime Review">
-    <div class="card">
-      <p-dataView #dv [value]="vm.animeReviews">
-        <ng-template let-anime pTemplate="listItem">
-          <app-review-row
-            [text]="anime.review"
-            [title]="anime.entry.title"
-            [image]="anime.image"
-            [score]="anime.score"
-          />
-        </ng-template>
-      </p-dataView>
-    </div>
-  </app-items-container>
+  <app-media-carousel
+    [data]="vm.currentSeason"
+    title="Current Season"
+    [link]="['/season', currentYear, currentSeason]"
+  />
+  <app-media-carousel
+    [data]="vm.recentEpisodes"
+    title="Latest Updated Episode Videos"
+  />
+  <app-reviews title="Latest Anime Review" [data]="vm.animeReviews" />
 </ng-container>

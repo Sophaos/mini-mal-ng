@@ -1,1 +1,14 @@
-<p>media-carousel works!</p>
+<app-items-container [title]="title" [link]="link">
+  <p-carousel
+    [value]="data"
+    [numVisible]="8"
+    [numScroll]="1"
+    [circular]="false"
+    [autoplayInterval]="3000"
+    [showIndicators]="false"
+  >
+    <ng-template let-anime pTemplate="item">
+      <app-media-card [anime]="anime" />
+    </ng-template>
+  </p-carousel>
+</app-items-container>

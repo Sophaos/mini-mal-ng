@@ -1,9 +1,9 @@
-<div class="container">
+<div class="container" [routerLink]="['/animes', anime.mal_id]">
   <img
-    [src]="image"
+    [src]="anime.image"
     class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block border-round"
   />
   <div class="overlay-text">
-    <div>{{ title }}</div>
+    <div>{{ anime.title }}</div>
   </div>
 </div>

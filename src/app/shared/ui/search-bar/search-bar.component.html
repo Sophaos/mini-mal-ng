@@ -10,7 +10,7 @@
       <div *ngIf="result.isSuccess">
         <div *ngFor="let page of result.data.pages" class="pages">
           <div *ngFor="let anime of page.data" class="pages">
-            <app-media-card [image]="anime.images" [title]="anime.title" />
+            <app-media-card [anime]="anime" />
           </div>
         </div>
         <div class="load-button">

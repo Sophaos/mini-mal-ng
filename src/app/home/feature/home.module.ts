@@ -14,6 +14,8 @@ import { MediaCardComponent } from '../ui/media-card/media-card.component';
 import { ReviewRowComponent } from '../ui/review-row/review-row.component';
 import { DividerModule } from 'primeng/divider';
 import { ItemsContainerComponent } from '../ui/items-container/items-container.component';
+import { MediaCarouselComponent } from '../ui/media-carousel/media-carousel.component';
+import { ReviewsComponent } from '../ui/reviews/reviews.component';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -31,6 +33,8 @@ import { ItemsContainerComponent } from '../ui/items-container/items-container.c
     ReviewRowComponent,
     DividerModule,
     ItemsContainerComponent,
+    MediaCarouselComponent,
+    ReviewsComponent,
   ],
   providers: [HomeService],
 })

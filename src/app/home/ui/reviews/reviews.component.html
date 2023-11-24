@@ -1,0 +1,14 @@
+<app-items-container [title]="title">
+  <div class="card">
+    <p-dataView #dv [value]="data">
+      <ng-template let-anime pTemplate="listItem">
+        <app-review-row
+          [text]="anime.review"
+          [title]="anime.title"
+          [image]="anime.image"
+          [score]="anime.score"
+        />
+      </ng-template>
+    </p-dataView>
+  </div>
+</app-items-container>

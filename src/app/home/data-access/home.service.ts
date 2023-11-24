@@ -51,7 +51,7 @@ export class HomeService {
       map((response: any) =>
         response.data.map((item: any) => ({
           ...item,
-          images: item.images.jpg.image_url,
+          image: item.images.jpg.image_url,
         }))
       )
     );
@@ -64,7 +64,7 @@ export class HomeService {
       map((response: any) =>
         response.data.map((item: any) => ({
           ...item,
-          images: item.images.jpg.image_url,
+          image: item.images.jpg.image_url,
         }))
       )
     );
@@ -77,7 +77,7 @@ export class HomeService {
       map((response: any) =>
         response.data.map((item: any) => ({
           ...item,
-          images: item.images.jpg.image_url,
+          image: item.images.jpg.image_url,
         }))
       )
     );
@@ -90,7 +90,9 @@ export class HomeService {
       map((response: any) =>
         response.data
           .map((item: any) => ({
-            ...item,
+            ...item.entry,
+            review: item.review,
+            score: item.score,
             image: item.entry.images.jpg.image_url,
           }))
           .slice(0, 5)
@@ -102,8 +104,8 @@ export class HomeService {
     .pipe(
       map((response: any) =>
         response.data.map((item: any) => ({
-          ...item,
-          images: item.entry.images.jpg.image_url,
+          ...item.entry,
+          image: item.entry.images.jpg.image_url,
         }))
       )
     );
