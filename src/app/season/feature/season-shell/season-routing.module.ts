@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
-import { SeasonComponent } from './season.component';
+import { SeasonListComponent } from '../season-list/season-list.component';
 
 const routes: Routes = [
   {
     path: ':year/:season',
-    component: SeasonComponent,
+    component: SeasonListComponent,
   },
 ];
 

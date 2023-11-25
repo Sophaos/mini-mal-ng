@@ -10,7 +10,9 @@ const routes: Routes = [
   {
     path: 'season',
     loadChildren: () =>
-      import('./season/feature/season.module').then((m) => m.SeasonModule),
+      import('./season/feature/season-shell/season.module').then(
+        (m) => m.SeasonModule
+      ),
   },
   {
     path: 'animes',

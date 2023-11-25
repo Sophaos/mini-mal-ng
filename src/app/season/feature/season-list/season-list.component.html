@@ -1,0 +1,12 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <app-data-view [data]="vm.animes.data">
+    <app-season-filter
+      [years]="vm.seasons.years"
+      [labels]="vm.seasonLabels.labels"
+    />
+  </app-data-view>
+  <app-paginator
+    [pagination]="vm.pagination"
+    (onPageChange)="handlePageChange($event)"
+  />
+</ng-container>

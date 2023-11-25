@@ -1,78 +1,20 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
-import { combineLatest, map, startWith, switchMap, tap } from 'rxjs';
-import { SeasonsService } from '../data-access/seasons.service';
-import { FormControl } from '@angular/forms';
+import { combineLatest, map, switchMap } from 'rxjs';
+import { SeasonsService } from '../../data-access/seasons.service';
 
 @Component({
-  selector: 'app-season',
-  templateUrl: './season.component.html',
-  styleUrls: ['./season.component.scss'],
+  selector: 'app-season-list',
+  templateUrl: './season-list.component.html',
+  styleUrls: ['./season-list.component.scss'],
 })
-export class SeasonComponent {
+export class SeasonListComponent {
   defaultQueryParams = {
     page: 1,
     limit: 10,
     filter: 'tv',
   };
-
-  yearFormControl = new FormControl(Number(this.route.snapshot.params['year']));
-  seasonFormControl = new FormControl(this.route.snapshot.params['season']);
-  mediaFormControl = new FormControl(
-    this.route.snapshot.queryParams['filter'] ?? this.defaultQueryParams.filter
-  );
-
-  year$ = this.yearFormControl.valueChanges.pipe(
-    startWith(Number(this.route.snapshot.params['year'])),
-    tap((res) =>
-      this.router.navigate(
-        ['/season', res, this.route.snapshot.params['season']],
-        {
-          relativeTo: this.route,
-          queryParams: this.defaultQueryParams,
-          queryParamsHandling: 'merge',
-        }
-      )
-    )
-  );
-
-  season$ = this.seasonFormControl.valueChanges.pipe(
-    startWith(this.route.snapshot.params['season']),
-    tap((res) => {
-      this.router.navigate(
-        ['/season', this.route.snapshot.params['year'], res],
-        {
-          relativeTo: this.route,
-          queryParams: {
-            ...this.defaultQueryParams,
-            ...this.route.snapshot.queryParams,
-          },
-          queryParamsHandling: 'merge',
-        }
-      );
-    })
-  );
-
-  media$ = this.mediaFormControl.valueChanges.pipe(
-    startWith(
-      this.route.snapshot.queryParams['filter'] ??
-        this.defaultQueryParams.filter
-    ),
-    tap((res) => {
-      let updatedQueryParams = {
-        page: 1,
-        limit: 10,
-        filter: res,
-      };
-
-      updatedQueryParams = {
-        ...this.defaultQueryParams,
-        ...updatedQueryParams,
-      };
-      this.updateRouteQueryParams(updatedQueryParams);
-    })
-  );
 
   seasons$ = this.seasonService.seasons$;
   animes$ = combineLatest([this.route.paramMap, this.route.queryParamMap]).pipe(
@@ -86,34 +28,23 @@ export class SeasonComponent {
     this.animes$,
     this.route.paramMap,
     this.route.queryParamMap,
-    this.year$,
-    this.media$,
-    this.season$,
   ]).pipe(
     map(([seasons, animes, params, queryParams]) => ({
       seasons,
       seasonLabels: this.getSeasonData(seasons, params),
       pagination: this.getPagination(queryParams, animes),
       animes,
-    })),
-    tap((res) => console.log(res))
+    }))
   );
 
   layout: any = 'list';
-  medias: any = [
-    { value: 'tv', label: 'TV' },
-    { value: 'movie', label: 'Movie' },
-    { value: 'ova', label: 'OVA' },
-    { value: 'special', label: 'Special' },
-    { value: 'ona', label: 'ONA' },
-    { value: 'music', label: 'Music' },
-  ];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private seasonService: SeasonsService
   ) {}
+
   getSeasonData(seasons: any, params: ParamMap) {
     const labels = seasons.labels.find(
       (s: any) => s.year === Number(params.get('year'))
