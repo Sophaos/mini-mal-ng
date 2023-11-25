@@ -14,18 +14,26 @@ export class HomeComponent implements OnInit {
   animeReviews$ = this.homeService.animeReviews$;
   currentSeason$ = this.homeService.currentSeason$;
   recentEpisodes$ = this.homeService.recentEpisodes$;
+  mangas$ = this.homeService.topMangas$;
 
   // responsiveOptions: any[] | undefined;
 
-  vm$ = combineLatest([
-    this.animeReviews$,
+  // api rate limited to 3 requests per second so it is splitted in different vms
+  vmCarousels$ = combineLatest([
     this.currentSeason$,
+    this.mangas$,
     this.recentEpisodes$,
   ]).pipe(
-    map(([animeReviews, currentSeason, recentEpisodes]) => ({
-      animeReviews,
+    map(([currentSeason, mangas, recentEpisodes]) => ({
       currentSeason,
+      mangas,
       recentEpisodes,
+    }))
+  );
+
+  vm$ = combineLatest([this.animeReviews$]).pipe(
+    map(([animeReviews]) => ({
+      animeReviews,
     }))
   );
 

@@ -34,7 +34,11 @@ export class ToolbarComponent implements OnInit {
         routerLink: seasonUrl,
       },
       {
-        label: 'Manga',
+        label: 'Mangas',
+        routerLink: 'pi pi-fw pi-user',
+      },
+      {
+        label: 'Animes',
         routerLink: 'pi pi-fw pi-user',
       },
     ];

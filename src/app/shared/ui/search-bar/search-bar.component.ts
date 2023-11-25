@@ -22,13 +22,11 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./search-bar.component.scss'],
 })
 export class SearchBarComponent {
-  searchTerm: string = '';
-  animes = this.searchService.getAnimesFromSearch();
-
-  constructor(private searchService: SearchService) {}
+  // searchTerm: string = '';
+  // animes = this.searchService.getAnimesFromSearch();
+  // constructor(private searchService: SearchService) {}
   public sideBarVisible: boolean = false;
-
-  search() {
-    this.animes = this.searchService.getAnimesFromSearch(this.searchTerm);
-  }
+  // search() {
+  //   this.animes = this.searchService.getAnimesFromSearch(this.searchTerm);
+  // }
 }

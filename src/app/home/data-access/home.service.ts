@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Subject, Observable, switchMap, map } from 'rxjs';
+import { Subject, Observable, switchMap, map, timer } from 'rxjs';
 import { JIKAN_API_BASE_URL } from 'src/app/shared/data-access/apiUrl';
 
 const ANIME = 'anime';
@@ -82,22 +82,26 @@ export class HomeService {
       )
     );
 
-  animeReviews$ = this.http
-    .get(`${this.apiUrl}/${REVIEWS}/${ANIME}`, {
-      params: this.buildParams(REVIEWS_PARAMS),
-    })
-    .pipe(
-      map((response: any) =>
-        response.data
-          .map((item: any) => ({
-            ...item.entry,
-            review: item.review,
-            score: item.score,
-            image: item.entry.images.jpg.image_url,
-          }))
-          .slice(0, 5)
-      )
-    );
+  animeReviews$ = timer(1100).pipe(
+    switchMap(() =>
+      this.http
+        .get(`${this.apiUrl}/${REVIEWS}/${ANIME}`, {
+          params: this.buildParams(REVIEWS_PARAMS),
+        })
+        .pipe(
+          map((response: any) =>
+            response.data
+              .map((item: any) => ({
+                ...item.entry,
+                review: item.review,
+                score: item.score,
+                image: item.entry.images.jpg.image_url,
+              }))
+              .slice(0, 5)
+          )
+        )
+    )
+  );
 
   recentEpisodes$ = this.http
     .get(`${this.apiUrl}/${WATCH_CATEGORY}/episodes`)

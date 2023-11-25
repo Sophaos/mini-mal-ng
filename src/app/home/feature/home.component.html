@@ -1,12 +1,19 @@
-<ng-container *ngIf="vm$ | async as vm">
+<ng-container *ngIf="vmCarousels$ | async as vm">
   <app-media-carousel
     [data]="vm.currentSeason"
     title="Current Season"
     [link]="['/season', currentYear, currentSeason]"
   />
   <app-media-carousel
+    [data]="vm.mangas"
+    title="Mangas"
+    [link]="['/season', currentYear, currentSeason]"
+  />
+  <app-media-carousel
     [data]="vm.recentEpisodes"
     title="Latest Updated Episode Videos"
   />
+</ng-container>
+<ng-container *ngIf="vm$ | async as vm">
   <app-reviews title="Latest Anime Review" [data]="vm.animeReviews" />
 </ng-container>
