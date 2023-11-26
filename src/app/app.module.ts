@@ -4,9 +4,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import { ToolbarComponent } from './shared/ui/toolbar/toolbar.component';
 import { DropdownModule } from 'primeng/dropdown';
 import { SearchBarComponent } from './shared/ui/search-bar/search-bar.component';
+import { HeaderComponent } from './layout/ui/header/header.component';
+import { FooterComponent } from './layout/ui/footer/footer.component';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,8 +17,9 @@ import { SearchBarComponent } from './shared/ui/search-bar/search-bar.component'
     AppRoutingModule,
     HttpClientModule,
     DropdownModule,
-    ToolbarComponent,
+    HeaderComponent,
     SearchBarComponent,
+    FooterComponent,
   ],
   bootstrap: [AppComponent],
 })

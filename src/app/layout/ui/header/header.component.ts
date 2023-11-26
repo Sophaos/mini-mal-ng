@@ -1,5 +1,5 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
-import { SearchService } from '../../data-access/search.service';
+import { SearchService } from '../../../shared/data-access/search.service';
 import { MenubarModule } from 'primeng/menubar';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { CommonModule } from '@angular/common';
@@ -7,13 +7,13 @@ import { ButtonModule } from 'primeng/button';
 import { MenuItem } from 'primeng/api';
 
 @Component({
-  selector: 'app-toolbar',
+  selector: 'app-header',
   standalone: true,
   imports: [CommonModule, MenubarModule, ButtonModule],
-  templateUrl: './toolbar.component.html',
-  styleUrls: ['./toolbar.component.scss'],
+  templateUrl: './header.component.html',
+  styleUrls: ['./header.component.scss'],
 })
-export class ToolbarComponent implements OnInit {
+export class HeaderComponent implements OnInit {
   @Output() toggleSideNavEvent = new EventEmitter();
   items: MenuItem[] | undefined;
   currentSeason = '';

@@ -10,12 +10,6 @@ import { SeasonsService } from '../../data-access/seasons.service';
   styleUrls: ['./season-list.component.scss'],
 })
 export class SeasonListComponent {
-  defaultQueryParams = {
-    page: 1,
-    limit: 10,
-    filter: 'tv',
-  };
-
   seasons$ = this.seasonService.seasons$;
   animes$ = combineLatest([this.route.paramMap, this.route.queryParamMap]).pipe(
     switchMap(([params, queryParams]) =>
