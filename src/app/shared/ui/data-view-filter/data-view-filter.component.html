@@ -1,0 +1,12 @@
+<p-dropdown
+  *ngFor="let filter of filterData"
+  class="border-round m-1"
+  [options]="filter.options"
+  [placeholder]="filter.label"
+  [(ngModel)]="filter.value"
+  optionLabel="label"
+  optionValue="value"
+  (onChange)="
+    filter.change ? filter.change($event) : defaultChange($event, filter.param)
+  "
+/>

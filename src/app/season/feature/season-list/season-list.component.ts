@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
-import { combineLatest, map, switchMap } from 'rxjs';
+import { combineLatest, distinctUntilChanged, map, switchMap } from 'rxjs';
 import { SeasonsService } from '../../data-access/seasons.service';
 import { getPagination } from 'src/app/shared/data-access/models/Pagination';
 
@@ -24,15 +24,32 @@ export class SeasonListComponent {
     this.route.paramMap,
     this.route.queryParamMap,
   ]).pipe(
-    map(([seasons, animes, params, queryParams]) => ({
-      seasons,
-      seasonLabels: this.getSeasonData(seasons, params),
-      pagination: getPagination(queryParams, animes.pagination.items.total),
-      animes,
-    }))
+    map(([seasons, animes, params, queryParams]) => {
+      const seasonOptions = this.seasonOptions(seasons, params);
+      const pagination = getPagination(
+        queryParams,
+        animes.pagination.items.total
+      );
+      const years = seasons.years;
+      return {
+        years,
+        seasons: seasonOptions,
+        pagination,
+        animes: animes.data,
+        seasonFilterData: this.getSeasonFilterData(years, seasonOptions),
+      };
+    })
   );
 
   layout: any = 'list';
+  medias: any = [
+    { value: 'tv', label: 'TV' },
+    { value: 'movie', label: 'Movie' },
+    { value: 'ova', label: 'OVA' },
+    { value: 'special', label: 'Special' },
+    { value: 'ona', label: 'ONA' },
+    { value: 'music', label: 'Music' },
+  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -40,15 +57,57 @@ export class SeasonListComponent {
     private seasonService: SeasonsService
   ) {}
 
-  getSeasonData(seasons: any, params: ParamMap) {
-    const labels = seasons.labels.find(
-      (s: any) => s.year === Number(params.get('year'))
-    ).labels;
-    return {
-      labels,
-      season: labels.find((l: any) => l.label === params.get('season')),
-    };
+  getSeasonFilterData(years: any, seasons: any) {
+    return [
+      {
+        label: 'Year',
+        value: Number(this.route.snapshot.params['year']),
+        param: 'year',
+        options: years,
+        change: (event: any) => this.yearChange(event),
+      },
+      {
+        label: 'Season',
+        param: 'season',
+        value: this.route.snapshot.params['season'],
+
+        options: seasons,
+        change: (event: any) => this.seasonChange(event),
+      },
+      {
+        label: 'Media',
+        value: this.route.snapshot.queryParams['filter'],
+        param: 'filter',
+        options: this.medias,
+      },
+    ];
   }
+
+  yearChange(event: any) {
+    this.router.navigate(
+      ['/season', event.value, this.route.snapshot.params['season']],
+      {
+        relativeTo: this.route,
+        queryParams: this.getQueryParamstWithDefaultPagination(),
+        queryParamsHandling: 'merge',
+      }
+    );
+  }
+
+  seasonChange(event: any) {
+    this.router.navigate(
+      ['/season', this.route.snapshot.params['year'], event.value],
+      {
+        relativeTo: this.route,
+        queryParams: this.getQueryParamstWithDefaultPagination(),
+        queryParamsHandling: 'merge',
+      }
+    );
+  }
+
+  seasonOptions = (seasons: any, params: ParamMap) =>
+    seasons.labels.find((s: any) => s.year === Number(params.get('year')))
+      .labels;
 
   getSeasonAnimes = (params: ParamMap, queryParams: ParamMap) =>
     this.seasonService.getSeason$({
@@ -68,13 +127,20 @@ export class SeasonListComponent {
   }
 
   handlePageChange(event: PaginatorState) {
-    const currentParams = this.route.snapshot.queryParams;
     const updatedParams = {
-      ...currentParams,
+      ...this.route.snapshot.queryParams,
       page: (event.page ?? 0) + 1,
       limit: event.rows,
     };
     this.updateRouteQueryParams(updatedParams);
+  }
+
+  getQueryParamstWithDefaultPagination() {
+    return {
+      ...this.route.snapshot.queryParams,
+      page: 1,
+      limit: 10,
+    };
   }
 
   getCurrentSeason(): string {

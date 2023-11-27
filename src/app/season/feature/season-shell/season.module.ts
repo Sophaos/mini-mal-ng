@@ -14,10 +14,10 @@ import { TabMenuModule } from 'primeng/tabmenu';
 import { SelectButtonModule } from 'primeng/selectbutton';
 import { PaginatorComponent } from 'src/app/shared/ui/paginator/paginator.component';
 import { DataViewComponent } from 'src/app/shared/ui/data-view/data-view.component';
-import { SeasonFilterComponent } from '../season-filter/season-filter.component';
+import { DataViewFilterComponent } from 'src/app/shared/ui/data-view-filter/data-view-filter.component';
 
 @NgModule({
-  declarations: [SeasonListComponent, SeasonFilterComponent],
+  declarations: [SeasonListComponent],
   imports: [
     SeasonRoutingModule,
     CommonModule,
@@ -32,6 +32,7 @@ import { SeasonFilterComponent } from '../season-filter/season-filter.component'
     SelectButtonModule,
     PaginatorComponent,
     DataViewComponent,
+    DataViewFilterComponent,
   ],
   providers: [SeasonsService],
 })
