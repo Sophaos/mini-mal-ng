@@ -1,0 +1,20 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <p-dropdown
+    class="border-round m-1"
+    [options]="medias"
+    [formControl]="mediaFormControl"
+    placeholder="Media"
+    optionLabel="label"
+    optionValue="value"
+    inputId="float-label"
+  ></p-dropdown>
+  <p-dropdown
+    class="border-round m-1"
+    [options]="statuses"
+    [formControl]="statusFormControl"
+    placeholder="Status"
+    optionLabel="label"
+    optionValue="value"
+    inputId="float-label"
+  ></p-dropdown>
+</ng-container>

@@ -1,7 +1,7 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Subject, Observable, switchMap, map, timer } from 'rxjs';
-import { JIKAN_API_BASE_URL } from 'src/app/shared/data-access/apiUrl';
+import { JIKAN_API_BASE_URL } from 'src/app/shared/data-access/models/apiUrl';
 
 const ANIME = 'anime';
 const MANGA = 'manga';

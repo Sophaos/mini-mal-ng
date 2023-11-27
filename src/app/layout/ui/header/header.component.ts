@@ -29,16 +29,16 @@ export class HeaderComponent implements OnInit {
         routerLink: '/home',
       },
       {
+        label: 'Animes',
+        routerLink: '/animes',
+      },
+      {
         label: 'Season',
         icon: 'pi pi-fw pi-pencil',
         routerLink: seasonUrl,
       },
       {
         label: 'Mangas',
-        routerLink: 'pi pi-fw pi-user',
-      },
-      {
-        label: 'Animes',
         routerLink: 'pi pi-fw pi-user',
       },
     ];

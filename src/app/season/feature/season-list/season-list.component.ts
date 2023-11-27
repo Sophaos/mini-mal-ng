@@ -3,6 +3,7 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 import { combineLatest, map, switchMap } from 'rxjs';
 import { SeasonsService } from '../../data-access/seasons.service';
+import { getPagination } from 'src/app/shared/data-access/models/Pagination';
 
 @Component({
   selector: 'app-season-list',
@@ -26,7 +27,7 @@ export class SeasonListComponent {
     map(([seasons, animes, params, queryParams]) => ({
       seasons,
       seasonLabels: this.getSeasonData(seasons, params),
-      pagination: this.getPagination(queryParams, animes),
+      pagination: getPagination(queryParams, animes.pagination.items.total),
       animes,
     }))
   );
@@ -49,20 +50,13 @@ export class SeasonListComponent {
     };
   }
 
-  getPagination = (queryParams: ParamMap, animes: any) => ({
-    first:
-      (Number(queryParams.get('page')) - 1) * Number(queryParams.get('limit')),
-    rows: Number(queryParams.get('limit')),
-    total: animes.pagination.items.total,
-  });
-
   getSeasonAnimes = (params: ParamMap, queryParams: ParamMap) =>
     this.seasonService.getSeason$({
-      year: Number(params.get('year')),
+      year: params.get('year') ?? new Date().getFullYear(),
       season: params.get('season') ?? this.getCurrentSeason(),
       filter: queryParams.get('filter') ?? 'tv',
-      page: Number(queryParams.get('page')),
-      limit: Number(queryParams.get('limit')),
+      page: queryParams.get('page') ?? 1,
+      limit: queryParams.get('limit') ?? 10,
     });
 
   updateRouteQueryParams(updatedParams: any): void {

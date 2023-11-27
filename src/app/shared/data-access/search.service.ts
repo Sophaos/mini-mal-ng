@@ -2,7 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, map, switchMap } from 'rxjs';
 import { AnimeQueryParams } from 'src/app/animes/data-access/anime.service';
-import { JIKAN_API_BASE_URL } from './apiUrl';
+import { JIKAN_API_BASE_URL } from './models/apiUrl';
 import { injectInfiniteQuery } from '@ngneat/query';
 
 @Injectable({

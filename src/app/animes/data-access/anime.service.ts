@@ -1,22 +1,22 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, map, switchMap, tap } from 'rxjs';
-import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
-import { AnimeBasicInfo } from 'src/app/shared/data-access/AnimeBasicInfo';
+import { JIKAN_API_BASE_URL } from '../../shared/data-access/models/apiUrl';
+import { AnimeBasicInfo } from 'src/app/shared/data-access/models/AnimeBasicInfo';
 
 export interface AnimeQueryParams {
   filter?: string;
-  page?: number;
-  limit?: number;
+  page?: number | string;
+  limit?: number | string;
   q?: string;
   type?: string;
-  score?: number;
-  min_score?: number;
-  max_score?: number;
+  score?: number | string;
+  min_score?: number | string;
+  max_score?: number | string;
   status?: string;
   rating?: string;
   sfw?: boolean;
-  genres?: string;
+  genres?: string | string;
   genres_exclude?: string;
   order_by?: string;
   sort?: string;
@@ -41,6 +41,19 @@ export class AnimeService {
   constructor(private http: HttpClient) {}
   readonly category = 'anime';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
+
+  getAnimeSearch$(params?: AnimeQueryParams): Observable<any> {
+    const httpParams = this.buildParams(params);
+    return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
+      map((response: any) => ({
+        data: response.data.map((item: any) => ({
+          ...item,
+          images: item.images.jpg.image_url,
+        })),
+        pagination: { ...response.pagination },
+      }))
+    );
+  }
 
   getAnimeFullById$(id: number | string): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}/full`).pipe(
@@ -119,17 +132,6 @@ export class AnimeService {
 
   getAnimeStreaming$(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}/streaming`).pipe(
-      map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-        }))
-      )
-    );
-  }
-
-  getAnimeSearch$(params?: AnimeQueryParams): Observable<any> {
-    const httpParams = this.buildParams(params);
-    return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
       map((response: any) =>
         response.data.map((item: any) => ({
           ...item,

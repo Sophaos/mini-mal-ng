@@ -1,19 +1,18 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map, tap } from 'rxjs';
-import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
-import { AnimeBasicInfo } from 'src/app/shared/data-access/AnimeBasicInfo';
+import { JIKAN_API_BASE_URL } from '../../shared/data-access/models/apiUrl';
 
 export interface SeasonQueryParams {
   filter?: string;
-  page?: number;
-  sfw?: boolean;
-  limit?: number;
+  page?: number | string;
+  sfw?: boolean | string;
+  limit?: number | string;
 }
 
 export interface SeasonParams extends SeasonQueryParams {
-  year: number;
-  season: string;
+  year: number | string;
+  season: string | string;
 }
 
 enum SubCategory {

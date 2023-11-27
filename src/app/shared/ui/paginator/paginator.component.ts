@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
-import { Pagination } from '../../data-access/Pagination';
+import { Pagination } from '../../data-access/models/Pagination';
 
 @Component({
   selector: 'app-paginator',
