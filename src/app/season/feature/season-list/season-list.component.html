@@ -1,6 +1,6 @@
 <ng-container *ngIf="vm$ | async as vm">
   <app-data-view [data]="vm.animes">
-    <app-data-view-filter [filterData]="vm.seasonFilterData" />
+    <app-data-view-filter [filterDropdowns]="vm.filters" />
   </app-data-view>
   <app-paginator
     [pagination]="vm.pagination"

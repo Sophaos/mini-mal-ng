@@ -36,7 +36,7 @@ export class SeasonListComponent {
         seasons: seasonOptions,
         pagination,
         animes: animes.data,
-        seasonFilterData: this.getSeasonFilterData(years, seasonOptions),
+        filters: this.getSeasonFilterData(years, seasonOptions),
       };
     })
   );
@@ -70,7 +70,6 @@ export class SeasonListComponent {
         label: 'Season',
         param: 'season',
         value: this.route.snapshot.params['season'],
-
         options: seasons,
         change: (event: any) => this.seasonChange(event),
       },

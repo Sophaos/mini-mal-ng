@@ -143,7 +143,7 @@ export class AnimeService {
   private buildParams(params?: AnimeQueryParams): HttpParams {
     let httpParams = new HttpParams();
     if (params?.q) {
-      httpParams = httpParams.set('filter', params.q);
+      httpParams = httpParams.set('q', params.q);
     }
     if (params?.page) {
       httpParams = httpParams.set('page', params.page.toString());

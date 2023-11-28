@@ -6,16 +6,12 @@ import { AnimesListComponent } from '../anime-list/animes-list.component';
 import { AnimeRoutingModule } from './animes-routing.module';
 import { AnimeService } from '../../data-access/anime.service';
 import { DataViewComponent } from 'src/app/shared/ui/data-view/data-view.component';
-import { AnimesFilterComponent } from '../animes-filter/animes-filter.component';
 import { PaginatorComponent } from 'src/app/shared/ui/paginator/paginator.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DataViewFilterComponent } from 'src/app/shared/ui/data-view-filter/data-view-filter.component';
 
 @NgModule({
-  declarations: [
-    AnimesListComponent,
-    AnimeDetailsComponent,
-    AnimesFilterComponent,
-  ],
+  declarations: [AnimesListComponent, AnimeDetailsComponent],
   imports: [
     CommonModule,
     AnimeRoutingModule,
@@ -23,6 +19,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     PaginatorComponent,
     DropdownModule,
     ReactiveFormsModule,
+    DataViewFilterComponent,
   ],
   providers: [AnimeService],
 })
