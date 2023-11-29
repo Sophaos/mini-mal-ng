@@ -1,6 +1,10 @@
-<span class="p-input-icon-left" *ngIf="filterText">
-  <i class="pi pi-search"></i>
-  <input [formControl]="searchControl" type="text" pInputText />
+<span class="p-input-icon-left" *ngFor="let filter of filterInputs">
+  <input
+    type="text"
+    pInputText
+    [(ngModel)]="filter.value"
+    (ngModelChange)="filter.change($event, filter.param)"
+  />
 </span>
 <p-dropdown
   *ngFor="let filter of filterDropdowns"

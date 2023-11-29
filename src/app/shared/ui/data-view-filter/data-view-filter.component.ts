@@ -20,25 +20,25 @@ import { Subscription, debounceTime, distinctUntilChanged, tap } from 'rxjs';
   styleUrls: ['./data-view-filter.component.scss'],
 })
 export class DataViewFilterComponent implements OnInit, OnDestroy {
-  @Input() filterDropdowns!: any[];
-  @Input() filterText: any;
-  searchSubscription: Subscription | undefined;
-  searchControl = new FormControl(this.route.snapshot.queryParams['q']);
+  @Input() filterDropdowns: any[] = [];
+  @Input() filterInputs: any[] = [];
+  // searchSubscription: Subscription | undefined;
+  // searchControl = new FormControl(this.route.snapshot.queryParams['q']);
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 
   ngOnInit() {
-    this.searchSubscription = this.searchControl.valueChanges
-      .pipe(debounceTime(500), distinctUntilChanged())
-      .subscribe((searchResult: any) => {
-        this.defaultChange(searchResult, this.filterText.param);
-      });
+    // this.searchSubscription = this.searchControl.valueChanges
+    //   .pipe(debounceTime(500), distinctUntilChanged())
+    //   .subscribe((searchResult: any) => {
+    //     this.defaultChange(searchResult, this.filterText.param);
+    //   });
   }
 
   ngOnDestroy() {
-    if (this.searchSubscription) {
-      this.searchSubscription.unsubscribe();
-    }
+    // if (this.searchSubscription) {
+    //   this.searchSubscription.unsubscribe();
+    // }
   }
 
   defaultChange(value: string | number, param: string) {
@@ -61,4 +61,8 @@ export class DataViewFilterComponent implements OnInit, OnDestroy {
   changeQueryParams(event: any, param: string) {
     this.defaultChange(event.value, param);
   }
+
+  // test(event: any) {
+  //   console.log(event);
+  // }
 }

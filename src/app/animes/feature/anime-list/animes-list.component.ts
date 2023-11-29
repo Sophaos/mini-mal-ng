@@ -2,7 +2,17 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 import { AnimeService } from '../../data-access/anime.service';
-import { combineLatest, switchMap, map, of } from 'rxjs';
+import {
+  combineLatest,
+  switchMap,
+  map,
+  of,
+  BehaviorSubject,
+  distinctUntilChanged,
+  debounceTime,
+  tap,
+  Subject,
+} from 'rxjs';
 import { getPagination } from 'src/app/shared/data-access/models/Pagination';
 
 @Component({
@@ -11,16 +21,30 @@ import { getPagination } from 'src/app/shared/data-access/models/Pagination';
   styleUrls: ['./animes-list.component.scss'],
 })
 export class AnimesListComponent {
+  private inputsSubject = new BehaviorSubject<any>(null);
+  inputsChange = this.inputsSubject.asObservable();
+  inputs$ = this.inputsChange.pipe(
+    debounceTime(500),
+    distinctUntilChanged(),
+    tap((res) => {
+      if (res) this.defaultChange(res.event, res.param);
+    })
+  );
+
   animes$ = this.route.queryParamMap.pipe(
     switchMap((queryParams) => this.getAnimes(queryParams))
   );
 
-  vm$ = combineLatest([this.animes$, this.route.queryParamMap]).pipe(
+  vm$ = combineLatest([
+    this.animes$,
+    this.route.queryParamMap,
+    this.inputs$,
+  ]).pipe(
     map(([animes, queryParams]) => ({
       pagination: getPagination(queryParams, animes.pagination.items.total),
       animes,
-      filters: this.getAnimesFilterData(),
-      filterText: this.getFilterBySearchTermData(),
+      filterDropdowns: this.getFilterDropdowns(),
+      filterInputs: this.getFilterInputs(),
     }))
   );
 
@@ -75,7 +99,7 @@ export class AnimesListComponent {
     private animeService: AnimeService
   ) {}
 
-  getAnimesFilterData() {
+  getFilterDropdowns() {
     return [
       {
         label: 'Media',
@@ -110,12 +134,16 @@ export class AnimesListComponent {
     ];
   }
 
-  getFilterBySearchTermData() {
-    return {
-      label: 'Filter',
-      value: this.route.snapshot.queryParams['q'],
-      param: 'q',
-    };
+  getFilterInputs() {
+    return [
+      {
+        label: 'Filter',
+        value: this.route.snapshot.queryParams['q'],
+        param: 'q',
+        change: (event: any, param: any) =>
+          this.inputsSubject.next({ event, param }),
+      },
+    ];
   }
 
   getAnimes = (queryParams: ParamMap) =>
@@ -146,5 +174,26 @@ export class AnimesListComponent {
       limit: event.rows,
     };
     this.updateRouteQueryParams(updatedParams);
+  }
+
+  defaultChange(value: string | number, param: string) {
+    let updatedQueryParams = {
+      page: 1,
+      limit: 10,
+      [param]: value,
+    };
+    updatedQueryParams = {
+      ...this.route.snapshot.queryParams,
+      ...updatedQueryParams,
+    };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: updatedQueryParams,
+      queryParamsHandling: 'merge',
+    });
+  }
+
+  changeQueryParams(event: any, param: string) {
+    this.defaultChange(event.value, param);
   }
 }

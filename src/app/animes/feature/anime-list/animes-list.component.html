@@ -1,8 +1,8 @@
 <ng-container *ngIf="vm$ | async as vm">
   <app-data-view [data]="vm.animes.data">
     <app-data-view-filter
-      [filterDropdowns]="vm.filters"
-      [filterText]="vm.filterText"
+      [filterDropdowns]="vm.filterDropdowns"
+      [filterInputs]="vm.filterInputs"
     />
   </app-data-view>
   <app-paginator
