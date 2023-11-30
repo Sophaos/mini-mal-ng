@@ -34,16 +34,19 @@ export class AnimesListComponent {
   animes$ = this.route.queryParamMap.pipe(
     switchMap((queryParams) => this.getAnimes(queryParams))
   );
+  genres$ = this.animeService.animeGenres$;
 
   vm$ = combineLatest([
     this.animes$,
+    this.genres$,
     this.route.queryParamMap,
     this.inputs$,
   ]).pipe(
-    map(([animes, queryParams]) => ({
+    map(([animes, genres, queryParams]) => ({
       pagination: getPagination(queryParams, animes.pagination.items.total),
       animes,
-      filterDropdowns: this.getFilterDropdowns(),
+      genres,
+      filterDropdowns: this.getFilterDropdowns(genres),
       filterInputs: this.getFilterInputs(),
     }))
   );
@@ -99,7 +102,7 @@ export class AnimesListComponent {
     private animeService: AnimeService
   ) {}
 
-  getFilterDropdowns() {
+  getFilterDropdowns(genres: any[]) {
     return [
       {
         label: 'Media',
@@ -107,6 +110,12 @@ export class AnimesListComponent {
         param: 'type',
         options: this.medias,
       },
+      // {
+      //   label: 'Genre(s)',
+      //   value: this.route.snapshot.queryParams['genres'],
+      //   param: 'genres',
+      //   options: genres,
+      // },
       {
         label: 'Status',
         value: this.route.snapshot.queryParams['status'],
@@ -140,6 +149,23 @@ export class AnimesListComponent {
         label: 'Filter',
         value: this.route.snapshot.queryParams['q'],
         param: 'q',
+        type: 'string',
+        change: (event: any, param: any) =>
+          this.inputsSubject.next({ event, param }),
+      },
+      {
+        label: 'Min Score',
+        value: this.route.snapshot.queryParams['min_score'],
+        param: 'min_score',
+        type: 'number',
+        change: (event: any, param: any) =>
+          this.inputsSubject.next({ event, param }),
+      },
+      {
+        label: 'Max Score',
+        value: this.route.snapshot.queryParams['max_score'],
+        param: 'max_score',
+        type: 'number',
         change: (event: any, param: any) =>
           this.inputsSubject.next({ event, param }),
       },
@@ -153,6 +179,8 @@ export class AnimesListComponent {
       rating: queryParams.get('rating') ?? '',
       order_by: queryParams.get('order_by') ?? '',
       q: queryParams.get('q') ?? '',
+      min_score: queryParams.get('min_score') ?? '',
+      max_score: queryParams.get('max_score') ?? '',
       sort: queryParams.get('sort') ?? '',
       page: queryParams.get('page') ?? 1,
       limit: queryParams.get('limit') ?? 10,

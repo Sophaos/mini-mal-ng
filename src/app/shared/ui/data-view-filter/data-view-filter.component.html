@@ -1,22 +1,45 @@
-<span class="p-input-icon-left" *ngFor="let filter of filterInputs">
-  <input
-    type="text"
-    pInputText
-    [(ngModel)]="filter.value"
-    (ngModelChange)="filter.change($event, filter.param)"
-  />
-</span>
-<p-dropdown
-  *ngFor="let filter of filterDropdowns"
-  class="border-round m-1"
-  [options]="filter.options"
-  [placeholder]="filter.label"
-  [(ngModel)]="filter.value"
-  optionLabel="label"
-  optionValue="value"
-  (onChange)="
-    filter.change
-      ? filter.change($event)
-      : changeQueryParams($event, filter.param)
-  "
-/>
+<div class="flex flex-row">
+  <div
+    *ngFor="let filter of filterInputs"
+    class="flex flex-column gap-2 border-round m-1"
+  >
+    <label htmlFor="username">{{ filter.label }}</label>
+    <ng-container *ngIf="filter.type === 'string'">
+      <input
+        [id]="filter.label"
+        type="text"
+        pInputText
+        [(ngModel)]="filter.value"
+        (ngModelChange)="filter.change($event, filter.param)"
+      />
+    </ng-container>
+    <ng-container *ngIf="filter.type === 'number'">
+      <p-inputNumber
+        [id]="filter.label"
+        [(ngModel)]="filter.value"
+        (ngModelChange)="filter.change($event, filter.param)"
+      />
+    </ng-container>
+  </div>
+
+  <div
+    *ngFor="let filter of filterDropdowns"
+    class="flex flex-column gap-2 border-round m-1"
+  >
+    <label htmlFor="username">{{ filter.label }}</label>
+
+    <p-dropdown
+      [filter]="filter.options.length >= 8"
+      filterBy="label"
+      [options]="filter.options"
+      [(ngModel)]="filter.value"
+      optionLabel="label"
+      optionValue="value"
+      (onChange)="
+        filter.change
+          ? filter.change($event)
+          : changeQueryParams($event, filter.param)
+      "
+    />
+  </div>
+</div>

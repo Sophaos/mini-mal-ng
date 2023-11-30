@@ -64,6 +64,15 @@ export class AnimeService {
     );
   }
 
+  animeGenres$ = this.http.get(`${JIKAN_API_BASE_URL}/genres/anime`).pipe(
+    map((response: any) =>
+      response.data.map((item: any) => ({
+        value: item.mal_id,
+        label: item.name,
+      }))
+    )
+  );
+
   getAnimeCharacters$(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}/characters`).pipe(
       map((response: any) =>
