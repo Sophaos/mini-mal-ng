@@ -1,10 +1,47 @@
-<div class="card">
-  <div class="title"></div>
-  <div class="infos"></div>
-  <div class="genres"></div>
+<div
+  class="p-4 border-1 surface-border surface-card border-round flex flex-column justify-content-center"
+>
+  <div class="font-semibold flex align-items-center justify-content-center">
+    <div>
+      {{ media.title_english ?? media.title }}
+    </div>
+  </div>
+  <div
+    class="flex align-items-center align-items-center justify-content-center"
+  >
+    <div>
+      {{ media.aired.from | date : "yyyy-MM-dd HH:mm:ss" }}
+    </div>
+    <div>|</div>
+    <div>{{ media.episodes }} eps</div>
+  </div>
+  <div
+    class="flex align-items-center align-items-center justify-content-center"
+  >
+    <div *ngFor="let g of media.genres" class="mx-1 flex-wrap">
+      <p-chip [label]="g.name" />
+    </div>
+  </div>
   <div class="body">
-    <div class="image"></div>
+    <div class="image flex align-items-center justify-content-center">
+      <img class="w-9 shadow-2 border-round" [src]="media.images" />
+    </div>
     <div class="synopsis"></div>
   </div>
   <div class="footer"></div>
 </div>
+
+<!-- <div class="p-4 border-1 surface-border surface-card border-round">
+  <div class="flex flex-wrap align-items-center justify-content-between gap-2">
+    <div class="flex align-items-center gap-2 align-items-center">
+      <div class="font-semibold">{{ media.title }}</div>
+    </div>
+  </div>
+  <div class="flex flex-column align-items-center gap-3 py-5">
+    <img class="w-9 shadow-2 border-round" [src]="media.images" />
+    <div class="text-2xl font-bold">{{ media.name }}</div>
+  </div>
+  <div class="flex align-items-center justify-content-between">
+    <span class="text-2xl font-semibold">{{ media.score }}</span>
+  </div>
+</div> -->

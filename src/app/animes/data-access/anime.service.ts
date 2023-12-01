@@ -2,8 +2,6 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, map, switchMap, tap } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/models/apiUrl';
-import { AnimeBasicInfo } from 'src/app/shared/data-access/models/AnimeBasicInfo';
-
 export interface AnimeQueryParams {
   filter?: string;
   page?: number | string;
