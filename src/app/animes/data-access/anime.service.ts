@@ -67,7 +67,7 @@ export class AnimeService {
   animeGenres$ = this.http.get(`${JIKAN_API_BASE_URL}/genres/anime`).pipe(
     map((response: any) =>
       response.data.map((item: any) => ({
-        value: item.mal_id,
+        value: item.mal_id.toString(),
         label: item.name,
       }))
     )

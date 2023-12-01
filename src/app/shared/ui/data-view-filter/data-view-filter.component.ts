@@ -5,6 +5,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @Component({
   selector: 'app-data-view-filter',
@@ -16,6 +17,7 @@ import { InputNumberModule } from 'primeng/inputnumber';
     InputTextModule,
     InputNumberModule,
     ReactiveFormsModule,
+    MultiSelectModule,
   ],
   templateUrl: './data-view-filter.component.html',
   styleUrls: ['./data-view-filter.component.scss'],
@@ -45,5 +47,9 @@ export class DataViewFilterComponent {
 
   changeQueryParams(event: any, param: string) {
     this.defaultChange(event.value, param);
+  }
+
+  changeQueryParamsMulti(event: any, param: string, asas: any) {
+    this.defaultChange(event.value.toString(), param);
   }
 }

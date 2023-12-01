@@ -110,12 +110,14 @@ export class AnimesListComponent {
         param: 'type',
         options: this.medias,
       },
-      // {
-      //   label: 'Genre(s)',
-      //   value: this.route.snapshot.queryParams['genres'],
-      //   param: 'genres',
-      //   options: genres,
-      // },
+      {
+        label: 'Genre(s)',
+        value: this.route.snapshot.queryParams['genres']
+          ? this.route.snapshot.queryParams['genres'].split(',')
+          : '',
+        param: 'genres',
+        options: genres,
+      },
       {
         label: 'Status',
         value: this.route.snapshot.queryParams['status'],
@@ -181,6 +183,7 @@ export class AnimesListComponent {
       q: queryParams.get('q') ?? '',
       min_score: queryParams.get('min_score') ?? '',
       max_score: queryParams.get('max_score') ?? '',
+      genres: queryParams.get('genres') ?? '',
       sort: queryParams.get('sort') ?? '',
       page: queryParams.get('page') ?? 1,
       limit: queryParams.get('limit') ?? 10,

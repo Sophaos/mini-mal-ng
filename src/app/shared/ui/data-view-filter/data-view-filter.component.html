@@ -27,19 +27,33 @@
     class="flex flex-column gap-2 border-round m-1"
   >
     <label htmlFor="username">{{ filter.label }}</label>
-
-    <p-dropdown
-      [filter]="filter.options.length >= 8"
-      filterBy="label"
-      [options]="filter.options"
-      [(ngModel)]="filter.value"
-      optionLabel="label"
-      optionValue="value"
-      (onChange)="
-        filter.change
-          ? filter.change($event)
-          : changeQueryParams($event, filter.param)
-      "
-    />
+    <ng-container *ngIf="filter.options.length >= 8">
+      <p-multiSelect
+        [options]="filter.options"
+        [(ngModel)]="filter.value"
+        optionLabel="label"
+        optionValue="value"
+        (onChange)="
+          filter.change
+            ? filter.change($event)
+            : changeQueryParamsMulti($event, filter.param, filter.value)
+        "
+      ></p-multiSelect>
+    </ng-container>
+    <ng-container *ngIf="filter.options.length < 8">
+      <p-dropdown
+        [filter]="filter.options.length >= 8"
+        filterBy="label"
+        [options]="filter.options"
+        [(ngModel)]="filter.value"
+        optionLabel="label"
+        optionValue="value"
+        (onChange)="
+          filter.change
+            ? filter.change($event)
+            : changeQueryParams($event, filter.param)
+        "
+      />
+    </ng-container>
   </div>
 </div>
