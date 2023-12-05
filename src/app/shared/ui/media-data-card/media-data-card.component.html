@@ -22,13 +22,40 @@
       <p-chip [label]="g.name" />
     </div>
   </div>
-  <div class="body">
+  <div
+    class="flex align-items-center align-items-center justify-content-center"
+  >
     <div class="image flex align-items-center justify-content-center">
       <img class="w-9 shadow-2 border-round" [src]="media.images" />
     </div>
-    <div class="synopsis"></div>
+    <!-- <div class="text-xs">{{ media.synopsis }}</div> -->
   </div>
-  <div class="footer"></div>
+  <div
+    class="flex align-items-center align-items-center justify-content-center"
+  >
+    <div>
+      {{ media.score }}
+    </div>
+    <div>|</div>
+    <div>
+      {{ media.scored_by }}
+    </div>
+    <div>|</div>
+
+    <div>
+      {{ media.rank }}
+    </div>
+    <div>|</div>
+
+    <div>
+      {{ media.members }}
+    </div>
+    <div>|</div>
+
+    <div>
+      {{ media.favorites }}
+    </div>
+  </div>
 </div>
 
 <!-- <div class="p-4 border-1 surface-border surface-card border-round">

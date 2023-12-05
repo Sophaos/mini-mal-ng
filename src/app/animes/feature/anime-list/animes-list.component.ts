@@ -186,7 +186,7 @@ export class AnimesListComponent {
       genres: queryParams.get('genres') ?? '',
       sort: queryParams.get('sort') ?? '',
       page: queryParams.get('page') ?? 1,
-      limit: queryParams.get('limit') ?? 10,
+      limit: queryParams.get('limit') ?? 16,
     });
 
   updateRouteQueryParams(updatedParams: any): void {
@@ -210,7 +210,7 @@ export class AnimesListComponent {
   defaultChange(value: string | number, param: string) {
     let updatedQueryParams = {
       page: 1,
-      limit: 10,
+      limit: 16,
       [param]: value,
     };
     updatedQueryParams = {

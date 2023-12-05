@@ -11,7 +11,7 @@ import { Pagination } from '../../data-access/models/Pagination';
   styleUrls: ['./paginator.component.scss'],
 })
 export class PaginatorComponent {
-  @Input() rowsPerPageOptions = [10, 20, 25];
+  @Input() rowsPerPageOptions = [8, 16, 24];
   @Input({ required: true }) pagination!: Pagination;
   @Output() onPageChange = new EventEmitter<PaginatorState>();
 

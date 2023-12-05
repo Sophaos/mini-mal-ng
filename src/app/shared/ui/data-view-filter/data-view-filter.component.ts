@@ -31,7 +31,7 @@ export class DataViewFilterComponent {
   defaultChange(value: string | number, param: string) {
     let updatedQueryParams = {
       page: 1,
-      limit: 10,
+      limit: 16,
       [param]: value,
     };
     updatedQueryParams = {

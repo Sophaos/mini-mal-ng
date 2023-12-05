@@ -114,7 +114,7 @@ export class SeasonListComponent {
       season: params.get('season') ?? this.getCurrentSeason(),
       filter: queryParams.get('filter') ?? 'tv',
       page: queryParams.get('page') ?? 1,
-      limit: queryParams.get('limit') ?? 10,
+      limit: queryParams.get('limit') ?? 16,
     });
 
   updateRouteQueryParams(updatedParams: any): void {
