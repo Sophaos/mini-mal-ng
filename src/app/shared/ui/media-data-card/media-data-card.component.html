@@ -25,8 +25,11 @@
   <div
     class="flex align-items-center align-items-center justify-content-center"
   >
-    <div class="image flex align-items-center justify-content-center">
-      <img class="w-9 shadow-2 border-round" [src]="media.images" />
+    <div>
+      <img class="shadow-2 border-round" [src]="media.images" />
+    </div>
+    <div class="synopsis px-3 text-sm">
+      <p>{{ media.synopsis }}</p>
     </div>
   </div>
   <div

@@ -1,0 +1,6 @@
+.synopsis {
+  display: -webkit-box;
+  -webkit-line-clamp: 15;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
