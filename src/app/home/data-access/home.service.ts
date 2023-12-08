@@ -96,6 +96,8 @@ export class HomeService {
                 review: item.review,
                 score: item.score,
                 image: item.entry.images.jpg.image_url,
+                user: item.user.username,
+                tags: [...item.tags],
               }))
               .slice(0, 5)
           )

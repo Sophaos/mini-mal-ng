@@ -13,4 +13,6 @@ export class ReviewRowComponent {
   @Input() text!: string;
   @Input() image!: string;
   @Input() title!: string;
+  @Input() user!: string;
+  @Input() tags!: string[];
 }
