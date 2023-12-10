@@ -1,17 +1,17 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, switchMap, tap } from 'rxjs';
+import { Observable, Subject, map, switchMap, tap } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/models/apiUrl';
 
 export interface AnimeQueryParams {
   filter?: string;
-  page?: number;
-  limit?: number;
+  page?: number | string;
+  limit?: number | string;
   q?: string;
   type?: string;
   score?: number;
-  min_score?: number;
-  max_score?: number;
+  min_score?: number | string;
+  max_score?: number | string;
   status?: string;
   rating?: string;
   sfw?: boolean;
@@ -40,6 +40,28 @@ export class MangaService {
   constructor(private http: HttpClient) {}
   readonly category = 'manga';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
+
+  genres$ = this.http.get(`${JIKAN_API_BASE_URL}/genres/manga`).pipe(
+    map((response: any) =>
+      response.data.map((item: any) => ({
+        value: item.mal_id.toString(),
+        label: item.name,
+      }))
+    )
+  );
+
+  search$(params?: AnimeQueryParams): Observable<any> {
+    const httpParams = this.buildParams(params);
+    return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
+      map((response: any) => ({
+        data: response.data.map((item: any) => ({
+          ...item,
+          images: item.images.jpg.image_url,
+        })),
+        pagination: { ...response.pagination },
+      }))
+    );
+  }
 
   // getAnimeFullById$(id: number): Observable<any> {
   //   return this.http.get(`${this.apiUrl}/${id}/full`).pipe();
@@ -146,11 +168,10 @@ export class MangaService {
   //   const httpParams = this.buildParams(params);
   //   return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe();
   // }
-
   private buildParams(params?: AnimeQueryParams): HttpParams {
     let httpParams = new HttpParams();
     if (params?.q) {
-      httpParams = httpParams.set('filter', params.q);
+      httpParams = httpParams.set('q', params.q);
     }
     if (params?.page) {
       httpParams = httpParams.set('page', params.page.toString());

@@ -1,1 +1,13 @@
-<p>manga-list works!</p>
+<ng-container *ngIf="vm$ | async as vm">
+  <app-data-view [data]="vm.animes.data">
+    <app-data-view-filter
+      [filterDropdowns]="vm.filterDropdowns"
+      [filterInputs]="vm.filterInputs"
+    />
+  </app-data-view>
+  <app-paginator
+    [pagination]="vm.pagination"
+    (onPageChange)="handlePageChange($event)"
+  />
+</ng-container>
+<div>caca</div>

@@ -82,7 +82,7 @@ export class HomeService {
       )
     );
 
-  animeReviews$ = timer(1100).pipe(
+  animeReviews$ = timer(1750).pipe(
     switchMap(() =>
       this.http
         .get(`${this.apiUrl}/${REVIEWS}/${ANIME}`, {

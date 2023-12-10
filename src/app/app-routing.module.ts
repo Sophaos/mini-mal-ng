@@ -22,6 +22,13 @@ const routes: Routes = [
       ),
   },
   {
+    path: 'mangas',
+    loadChildren: () =>
+      import('./manga/feature/manga-shell/manga.module').then(
+        (m) => m.MangaModule
+      ),
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',

@@ -9,17 +9,20 @@ import { DataViewComponent } from 'src/app/shared/ui/data-view/data-view.compone
 import { PaginatorComponent } from 'src/app/shared/ui/paginator/paginator.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DataViewFilterComponent } from 'src/app/shared/ui/data-view-filter/data-view-filter.component';
-
+import { ItemsContainerComponent } from 'src/app/home/ui/items-container/items-container.component';
+import { CardModule } from 'primeng/card';
 @NgModule({
   declarations: [AnimesListComponent, AnimeDetailsComponent],
   imports: [
     CommonModule,
     AnimeRoutingModule,
+    DropdownModule,
+    CardModule,
     DataViewComponent,
     PaginatorComponent,
-    DropdownModule,
     ReactiveFormsModule,
     DataViewFilterComponent,
+    ItemsContainerComponent,
   ],
   providers: [AnimeService],
 })

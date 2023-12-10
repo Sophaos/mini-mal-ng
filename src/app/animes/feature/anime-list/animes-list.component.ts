@@ -6,12 +6,10 @@ import {
   combineLatest,
   switchMap,
   map,
-  of,
   BehaviorSubject,
   distinctUntilChanged,
   debounceTime,
   tap,
-  Subject,
 } from 'rxjs';
 import { getPagination } from 'src/app/shared/data-access/models/Pagination';
 
