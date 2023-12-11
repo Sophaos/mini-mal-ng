@@ -52,28 +52,22 @@ export class MangaListComponent {
   layout: any = 'list';
   medias: any = [
     { value: '', label: 'None' },
-    { value: 'tv', label: 'TV' },
-    { value: 'movie', label: 'Movie' },
-    { value: 'ova', label: 'OVA' },
-    { value: 'special', label: 'Special' },
-    { value: 'ona', label: 'ONA' },
-    { value: 'music', label: 'Music' },
+    { value: 'manga', label: 'Manga' },
+    { value: 'novel', label: 'Novel' },
+    { value: 'lightnovel', label: 'Lightnovel' },
+    { value: 'oneshot', label: 'Oneshot' },
+    { value: 'doujin', label: 'Doujin' },
+    { value: 'manhwa', label: 'Manhwa' },
+    { value: 'manhua', label: 'Manhua' },
   ];
 
   statuses: any = [
     { value: '', label: 'None' },
-    { value: 'airing', label: 'Airing' },
+    { value: 'publishing', label: 'Publishing' },
     { value: 'complete', label: 'Complete' },
+    { value: 'hiatus', label: 'Hiatus' },
+    { value: 'discontinued', label: 'Discontinued' },
     { value: 'upcoming', label: 'Upcoming' },
-  ];
-
-  ratings: any = [
-    { value: '', label: 'None' },
-    { value: 'g', label: 'G - All Ages' },
-    { value: 'pg', label: 'PG - Children' },
-    { value: 'pg13', label: 'PG-13 - Teens 13 or older' },
-    { value: 'r17', label: 'R - 17+ (violence & profanity)' },
-    { value: 'r', label: 'R+ - Mild Nudity' },
   ];
 
   orders: any = [
@@ -81,7 +75,8 @@ export class MangaListComponent {
     { value: 'title', label: 'Title' },
     { value: 'start_date', label: 'Start Date' },
     { value: 'end_date', label: 'End Date' },
-    { value: 'episodes', label: 'Episodes' },
+    { value: 'chapters', label: 'Chapters' },
+    { value: 'volumes', label: 'Volumes' },
     { value: 'score', label: 'Score' },
     { value: 'rank', label: 'Rank' },
     { value: 'popularity', label: 'Popularity' },
@@ -121,12 +116,6 @@ export class MangaListComponent {
         value: this.route.snapshot.queryParams['status'],
         param: 'status',
         options: this.statuses,
-      },
-      {
-        label: 'Rating',
-        value: this.route.snapshot.queryParams['rating'],
-        param: 'rating',
-        options: this.ratings,
       },
       {
         label: 'Order By',
@@ -176,7 +165,6 @@ export class MangaListComponent {
     this.mangaService.search$({
       type: queryParams.get('type') ?? '',
       status: queryParams.get('status') ?? '',
-      rating: queryParams.get('rating') ?? '',
       order_by: queryParams.get('order_by') ?? '',
       q: queryParams.get('q') ?? '',
       min_score: queryParams.get('min_score') ?? '',
