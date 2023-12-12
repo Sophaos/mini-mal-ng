@@ -6,6 +6,8 @@ import { HomeService } from '../data-access/home.service';
 import { ItemsContainerComponent } from '../ui/items-container/items-container.component';
 import { MediaCarouselComponent } from '../ui/media-carousel/media-carousel.component';
 import { ReviewsComponent } from '../ui/reviews/reviews.component';
+import { CarouselModule } from 'primeng/carousel';
+import { ChipModule } from 'primeng/chip';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -15,6 +17,8 @@ import { ReviewsComponent } from '../ui/reviews/reviews.component';
     ItemsContainerComponent,
     MediaCarouselComponent,
     ReviewsComponent,
+    CarouselModule, // TODO: remove this,
+    ChipModule, // TODO: remove this,
   ],
   providers: [HomeService],
 })

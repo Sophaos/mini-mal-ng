@@ -78,6 +78,7 @@ export class HomeService {
         response.data.map((item: any) => ({
           ...item,
           image: item.images.jpg.image_url,
+          image_large: item.images.jpg.large_image_url,
         }))
       )
     );
