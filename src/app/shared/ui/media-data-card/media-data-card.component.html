@@ -1,61 +1,50 @@
 <div
   class="p-4 border-1 surface-border surface-card border-round flex flex-column justify-content-center"
 >
-  <div class="font-semibold flex align-items-center justify-content-center">
-    <div>
+  <div
+    class="font-semibold flex align-items-center justify-content-center text-primary"
+  >
+    <div class="white-space-nowrap text-overflow-ellipsis overflow-hidden">
       {{ media.title_english ?? media.title }}
     </div>
   </div>
   <div
     class="flex align-items-center align-items-center justify-content-center"
   >
-    <div *ngIf="media.aired?.from">
+    <div *ngIf="media.aired?.from" class="mx-3 text-color-secondary">
       {{ media.aired.from | date : "yyyy-MM-dd HH:mm:ss" }}
     </div>
-    <div>|</div>
-    <div *ngIf="media.episodes">{{ media.episodes }} eps</div>
-  </div>
-  <div
-    class="flex align-items-center align-items-center justify-content-center"
-  >
-    <div *ngFor="let g of media.genres" class="mx-1 flex-wrap">
-      <p-chip [label]="g.name" />
+    <div class="text-color-secondary" *ngIf="media.episodes">
+      ({{ media.episodes }} eps)
     </div>
   </div>
   <div
     class="flex align-items-center align-items-center justify-content-center"
   >
+    <div class="flex-wrap my-1">
+      <p-chip class="mx-1" *ngFor="let g of media.genres" [label]="g.name" />
+    </div>
+  </div>
+  <div class="flex justify-content-center">
     <div>
       <img class="shadow-2 border-round" [src]="media.images" />
     </div>
-    <div class="synopsis px-3 text-sm">
-      <p>{{ media.synopsis }}</p>
-    </div>
+    <p
+      class="synopsis px-3 text-sm max-h-15rem text-overflow-ellipsis overflow-hidden"
+    >
+      {{ media.synopsis }}
+    </p>
   </div>
   <div
-    class="flex align-items-center align-items-center justify-content-center"
+    class="flex align-items-center align-items-center justify-content-center gap-4"
   >
     <div>
       {{ media.score }}
+      <i class="pi pi-star"></i>
     </div>
-    <div>|</div>
-    <div>
-      {{ media.scored_by }}
-    </div>
-    <div>|</div>
-
-    <div>
-      {{ media.rank }}
-    </div>
-    <div>|</div>
-
     <div>
       {{ media.members }}
-    </div>
-    <div>|</div>
-
-    <div>
-      {{ media.favorites }}
+      <i class="pi pi-users"></i>
     </div>
   </div>
 </div>

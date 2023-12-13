@@ -1,6 +1,7 @@
 .synopsis {
-  display: -webkit-box;
-  -webkit-line-clamp: 15;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  // display: -webkit-box;
+  // -webkit-line-clamp: 17;
+  // -webkit-box-orient: vertical;
+  // overflow: hidden;
+  -webkit-mask-image: linear-gradient(180deg, #000 60%, transparent);
 }

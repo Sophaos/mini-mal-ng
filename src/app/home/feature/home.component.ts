@@ -12,7 +12,7 @@ export class HomeComponent implements OnInit {
   currentSeason = '';
   currentYear = new Date().getFullYear();
   animeReviews$ = this.homeService.animeReviews$;
-  currentSeason$ = this.homeService.currentSeason$;
+  currentSeason$ = this.homeService.topAnimes$;
   recentEpisodes$ = this.homeService.recentEpisodes$;
   mangas$ = this.homeService.topMangas$;
 

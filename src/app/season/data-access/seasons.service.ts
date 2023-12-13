@@ -57,7 +57,7 @@ export class SeasonsService {
       const labels = res.data.map((item: any) => ({
         ...item,
         labels: item.seasons.map((s: string) => ({
-          label: s,
+          label: s.charAt(0).toUpperCase() + s.slice(1),
           value: s,
         })),
       }));

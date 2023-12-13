@@ -1,12 +1,11 @@
-<div class="wrapper">
-  <div class="items-container">
-    <span class="title">{{ title }}</span>
+<p-card class="px-2" [header]="title">
+  <div class="flex">
     <span class="link">
-      <a *ngIf="link" [routerLink]="link" [queryParams]="queryParams"
-        >View more</a
-      >
+      <a *ngIf="link" [routerLink]="link" [queryParams]="queryParams">
+        View more
+      </a>
     </span>
   </div>
   <hr />
   <ng-content></ng-content>
-</div>
+</p-card>

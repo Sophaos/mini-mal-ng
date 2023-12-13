@@ -1,9 +1,11 @@
-<div class="container" [routerLink]="['/animes', anime.mal_id]">
-  <img
+<!-- [routerLink]="['/animes', anime.mal_id]" -->
+<div class="container">
+  <p-image
     [src]="anime.image"
+    [preview]="true"
     class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block border-round"
-  />
-  <div class="overlay-text">
-    <div>{{ anime.title }}</div>
-  </div>
+  >
+    <ng-template pTemplate="indicator"> Hello </ng-template>
+  </p-image>
+  <div>{{ anime.title }}</div>
 </div>

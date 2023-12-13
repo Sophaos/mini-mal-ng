@@ -8,6 +8,9 @@ import { MediaCarouselComponent } from '../ui/media-carousel/media-carousel.comp
 import { ReviewsComponent } from '../ui/reviews/reviews.component';
 import { CarouselModule } from 'primeng/carousel';
 import { ChipModule } from 'primeng/chip';
+import { ImageModule } from 'primeng/image';
+import { ButtonModule } from 'primeng/button';
+import { TabViewModule } from 'primeng/tabview';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -19,6 +22,9 @@ import { ChipModule } from 'primeng/chip';
     ReviewsComponent,
     CarouselModule, // TODO: remove this,
     ChipModule, // TODO: remove this,
+    ImageModule, // TODO: remove this,
+    ButtonModule, // TODO: remove this,
+    TabViewModule, // TODO: remove this,
   ],
   providers: [HomeService],
 })

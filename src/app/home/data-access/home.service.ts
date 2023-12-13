@@ -8,8 +8,6 @@ const MANGA = 'manga';
 const REVIEWS = 'reviews';
 const TOP_CATEGORY = 'top';
 const WATCH_CATEGORY = 'watch';
-const SEASON_CATEGORY = 'seasons';
-const SEASON_NOW_SUBCATEGORY = 'now';
 
 const TOP_MANGA_PARAMS = {
   type: 'manga',
@@ -18,17 +16,9 @@ const TOP_MANGA_PARAMS = {
   page: 0,
 };
 const TOP_ANIME_PARAMS = {
-  type: 'tv',
   filter: 'airing',
   sfw: true,
-  limit: 12,
-  page: 0,
-};
-
-const SEASON_PARAMS = {
-  filter: 'tv',
-  sfw: true,
-  limit: 12,
+  limit: 10,
   page: 1,
 };
 
@@ -52,6 +42,7 @@ export class HomeService {
         response.data.map((item: any) => ({
           ...item,
           image: item.images.jpg.image_url,
+          image_large: item.images.jpg.large_image_url,
         }))
       )
     );
@@ -59,19 +50,6 @@ export class HomeService {
   topAnimes$ = this.http
     .get(`${this.apiUrl}/${TOP_CATEGORY}/${ANIME}`, {
       params: this.buildParams(TOP_ANIME_PARAMS),
-    })
-    .pipe(
-      map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-          image: item.images.jpg.image_url,
-        }))
-      )
-    );
-
-  currentSeason$ = this.http
-    .get(`${this.apiUrl}/${SEASON_CATEGORY}/${SEASON_NOW_SUBCATEGORY}`, {
-      params: SEASON_PARAMS,
     })
     .pipe(
       map((response: any) =>
