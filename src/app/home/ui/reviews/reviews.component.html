@@ -1,16 +1,15 @@
 <app-items-container [title]="title">
-  <div class="card">
-    <p-dataView #dv [value]="data">
-      <ng-template let-anime pTemplate="listItem">
-        <app-review-row
-          [text]="anime.review"
-          [title]="anime.title"
-          [image]="anime.image"
-          [score]="anime.score"
-          [user]="anime.user"
-          [tags]="anime.tags"
-        />
-      </ng-template>
-    </p-dataView>
-  </div>
+  <p-dataView #dv [value]="data">
+    <ng-template let-anime pTemplate="listItem">
+      <app-review-row
+        [text]="anime.review"
+        [title]="anime.title"
+        [image]="anime.image"
+        [score]="anime.score"
+        [user]="anime.user"
+        [tags]="anime.tags"
+        [hoursDifference]="anime.hoursDifference"
+      />
+    </ng-template>
+  </p-dataView>
 </app-items-container>

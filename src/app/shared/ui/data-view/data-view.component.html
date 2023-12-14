@@ -5,8 +5,11 @@
     </div>
   </ng-template>
   <ng-template let-anime pTemplate="listItem">
-    <div class="col-12 sm:col-12 md:col-6 lg:col-4 xl:col-3 p-2">
-      <app-media-data-card [media]="anime" />
+    <div class="flex flex-wrap col-12 sm:col-12 md:col-6 lg:col-4 xl:col-3 p-2">
+      <app-media-data-card
+        [media]="anime"
+        class="flex-1 border-1 surface-border surface-card border-round"
+      />
     </div>
   </ng-template>
 </p-dataView>

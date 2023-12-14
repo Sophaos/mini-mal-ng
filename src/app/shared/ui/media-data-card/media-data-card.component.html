@@ -1,12 +1,8 @@
-<div
-  class="p-4 border-1 surface-border surface-card border-round flex flex-column justify-content-center"
->
+<div class="p-4 flex flex-column h-full">
   <div
-    class="font-semibold flex align-items-center justify-content-center text-primary"
+    class="font-semibold flex justify-content-center text-primary text-overflow-ellipsis"
   >
-    <div class="white-space-nowrap text-overflow-ellipsis overflow-hidden">
-      {{ media.title_english ?? media.title }}
-    </div>
+    {{ media.title_english ?? media.title }}
   </div>
   <div
     class="flex align-items-center align-items-center justify-content-center"
@@ -19,28 +15,24 @@
     </div>
   </div>
   <div
-    class="flex align-items-center align-items-center justify-content-center"
+    class="flex flex-wrap align-items-center align-items-center justify-content-center"
   >
-    <div class="flex-wrap my-1">
-      <p-chip class="mx-1" *ngFor="let g of media.genres" [label]="g.name" />
-    </div>
+    <p-chip class="mx-1 my-1" *ngFor="let g of media.genres" [label]="g.name" />
   </div>
   <div class="flex justify-content-center">
     <div>
-      <img class="shadow-2 border-round" [src]="media.images" />
+      <p-image class="shadow-2 border-round" [src]="media.images" />
     </div>
-    <p
-      class="synopsis px-3 text-sm max-h-15rem text-overflow-ellipsis overflow-hidden"
-    >
+    <p class="synopsis px-3 text-sm max-h-15rem">
       {{ media.synopsis }}
     </p>
   </div>
   <div
-    class="flex align-items-center align-items-center justify-content-center gap-4"
+    class="flex align-items-center align-items-center justify-content-center gap-4 align-items-end h-full"
   >
     <div>
       {{ media.score }}
-      <i class="pi pi-star"></i>
+      <i class="pi pi-star-fill text-yellow-300"></i>
     </div>
     <div>
       {{ media.members }}

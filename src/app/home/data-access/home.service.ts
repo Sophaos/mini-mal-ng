@@ -68,18 +68,29 @@ export class HomeService {
           params: this.buildParams(REVIEWS_PARAMS),
         })
         .pipe(
-          map((response: any) =>
-            response.data
-              .map((item: any) => ({
-                ...item.entry,
-                review: item.review,
-                score: item.score,
-                image: item.entry.images.jpg.image_url,
-                user: item.user.username,
-                tags: [...item.tags],
-              }))
-              .slice(0, 5)
-          )
+          map((response: any) => {
+            const currentDate = new Date();
+            const data = response.data
+              .map((item: any) => {
+                const targetDate = new Date(item.date);
+
+                const timeDifferenceMillis =
+                  currentDate.getTime() - targetDate.getTime();
+                const hoursDifference = timeDifferenceMillis / (1000 * 60 * 60);
+                return {
+                  ...item.entry,
+                  review: item.review,
+                  score: item.score,
+                  image: item.entry.images.jpg.image_url,
+                  user: item.user.username,
+                  tags: [...item.tags],
+                  hoursDifference: Math.round(hoursDifference),
+                };
+              })
+              .slice(0, 5);
+            console.log(data);
+            return data;
+          })
         )
     )
   );
@@ -93,6 +104,21 @@ export class HomeService {
           image: item.entry.images.jpg.image_url,
         }))
       )
+    );
+
+  recentAnimeRecommendations$ = this.http
+    .get(`${this.apiUrl}/recommendations/anime`)
+    .pipe(
+      map((response: any) => {
+        const data = response.data
+          .map((item: any) => ({
+            ...item,
+            // image: item.entry.images.jpg.image_url,
+          }))
+          .slice(0, 5);
+        console.log(data);
+        return data;
+      })
     );
 
   private buildParams(params?: any): HttpParams {

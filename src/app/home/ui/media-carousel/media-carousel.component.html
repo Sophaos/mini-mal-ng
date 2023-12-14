@@ -1,14 +1,21 @@
-<app-items-container [title]="title" [link]="link">
-  <p-carousel
-    [value]="data"
-    [numVisible]="8"
-    [numScroll]="1"
-    [circular]="false"
-    [autoplayInterval]="3000"
-    [showIndicators]="false"
-  >
-    <ng-template let-anime pTemplate="item">
-      <app-media-card [anime]="anime" />
-    </ng-template>
-  </p-carousel>
-</app-items-container>
+<div class="mx-1">
+  <app-items-container [title]="title" [link]="link">
+    <p-carousel
+      [value]="data"
+      [numVisible]="12"
+      [numScroll]="1"
+      [circular]="false"
+      [autoplayInterval]="3000"
+      [showIndicators]="false"
+    >
+      <ng-template let-anime pTemplate="item">
+        <div class="flex flex-wrap mx-1 h-full">
+          <app-media-card
+            [anime]="anime"
+            class="flex-1 border-1 surface-border surface-card border-round px-1"
+          />
+        </div>
+      </ng-template>
+    </p-carousel>
+  </app-items-container>
+</div>

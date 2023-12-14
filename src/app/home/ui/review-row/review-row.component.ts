@@ -15,4 +15,5 @@ export class ReviewRowComponent {
   @Input() title!: string;
   @Input() user!: string;
   @Input() tags!: string[];
+  @Input() hoursDifference!: number;
 }

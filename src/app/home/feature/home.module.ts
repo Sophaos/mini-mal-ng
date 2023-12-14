@@ -11,6 +11,7 @@ import { ChipModule } from 'primeng/chip';
 import { ImageModule } from 'primeng/image';
 import { ButtonModule } from 'primeng/button';
 import { TabViewModule } from 'primeng/tabview';
+import { CardModule } from 'primeng/card';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -25,6 +26,7 @@ import { TabViewModule } from 'primeng/tabview';
     ImageModule, // TODO: remove this,
     ButtonModule, // TODO: remove this,
     TabViewModule, // TODO: remove this,
+    CardModule,
   ],
   providers: [HomeService],
 })

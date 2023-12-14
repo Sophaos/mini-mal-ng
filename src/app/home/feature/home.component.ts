@@ -15,6 +15,7 @@ export class HomeComponent implements OnInit {
   currentSeason$ = this.homeService.topAnimes$;
   recentEpisodes$ = this.homeService.recentEpisodes$;
   mangas$ = this.homeService.topMangas$;
+  animeRecommendations = this.homeService.recentAnimeRecommendations$;
 
   // responsiveOptions: any[] | undefined;
 
@@ -31,9 +32,10 @@ export class HomeComponent implements OnInit {
     }))
   );
 
-  vm$ = combineLatest([this.animeReviews$]).pipe(
-    map(([animeReviews]) => ({
+  vm$ = combineLatest([this.animeReviews$, this.animeRecommendations]).pipe(
+    map(([animeReviews, animeRecommendations]) => ({
       animeReviews,
+      animeRecommendations,
     }))
   );
 
