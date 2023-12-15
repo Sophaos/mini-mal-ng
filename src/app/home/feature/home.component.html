@@ -1,5 +1,5 @@
 <ng-container *ngIf="vmCarousels$ | async as vm">
-  <div class="m-1">
+  <div class="my-1">
     <p-card>
       <p-tabView>
         <p-tabPanel header="Top Airing Animes">
@@ -9,16 +9,18 @@
             [numScroll]="1"
             [circular]="false"
             [autoplayInterval]="8000"
-            class="py-1"
           >
             <ng-template let-anime pTemplate="item">
               <div
                 class="split-container flex justify-content-center align-items-center"
               >
                 <div class="flex-1 px-4">
-                  <div class="text-3xl font-bold text-primary">
+                  <a
+                    class="text-3xl font-bold text-primary no-underline"
+                    [routerLink]="['/animes', anime.mal_id]"
+                  >
                     {{ anime.title }}
-                  </div>
+                  </a>
                   <div class="text-lg font-light text-color-secondary">
                     {{ anime.title_english }}
                   </div>
@@ -34,11 +36,9 @@
                 <div class="flex-1 flex justify-content-end px-4">
                   <!-- <div class="fade-effect"></div> -->
                   <p-image
-                    [routerLink]="['/animes', anime.mal_id]"
                     class="sm:w-12 md:w-12 lg:w-12 xl:w-7 min-h-full"
                     [src]="anime.image_large"
                     alt="Anime Image"
-                    [preview]="true"
                   />
                 </div>
               </div>
@@ -79,7 +79,6 @@
                     class="sm:w-12 md:w-12 lg:w-12 xl:w-7 min-h-full"
                     [src]="anime.image_large"
                     alt="Anime Image"
-                    [preview]="true"
                   />
                 </div>
               </div>
@@ -106,8 +105,16 @@
   />
 </ng-container>
 <ng-container *ngIf="vm$ | async as vm">
-  <div class="flex flex-row gap-1 m-1">
-    <app-reviews title="Latest Anime Review" [data]="vm.animeReviews" />
-    <app-reviews title="Latest Anime Review" [data]="vm.animeReviews" />
+  <div class="flex flex-row gap-1 mt-1">
+    <app-reviews
+      class="w-6"
+      title="Latest Anime Review"
+      [data]="vm.animeReviews"
+    />
+    <app-recommendations
+      class="w-6"
+      title="Latest Anime Recommendations"
+      [data]="vm.animeRecommendations"
+    />
   </div>
 </ng-container>

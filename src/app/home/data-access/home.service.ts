@@ -85,6 +85,7 @@ export class HomeService {
                   user: item.user.username,
                   tags: [...item.tags],
                   hoursDifference: Math.round(hoursDifference),
+                  id: item.entry.mal_id,
                 };
               })
               .slice(0, 5);
@@ -99,10 +100,12 @@ export class HomeService {
     .get(`${this.apiUrl}/${WATCH_CATEGORY}/episodes`)
     .pipe(
       map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item.entry,
-          image: item.entry.images.jpg.image_url,
-        }))
+        response.data.map((item: any) => {
+          return {
+            ...item.entry,
+            image: item.entry.images.jpg.image_url,
+          };
+        })
       )
     );
 
@@ -110,11 +113,33 @@ export class HomeService {
     .get(`${this.apiUrl}/recommendations/anime`)
     .pipe(
       map((response: any) => {
+        const currentDate = new Date();
+
         const data = response.data
-          .map((item: any) => ({
-            ...item,
-            // image: item.entry.images.jpg.image_url,
-          }))
+          .map((item: any) => {
+            const targetDate = new Date(item.date);
+
+            const timeDifferenceMillis =
+              currentDate.getTime() - targetDate.getTime();
+            const hoursDifference = timeDifferenceMillis / (1000 * 60 * 60);
+            return {
+              likedMedia: {
+                ...item.entry[0],
+                id: item.entry[0].mal_id,
+                image: item.entry[0].images.jpg.image_url,
+              },
+              mightLikeMedia: {
+                ...item.entry[1],
+                id: item.entry[1].mal_id,
+                image: item.entry[1].images.jpg.image_url,
+              },
+              content: item.content,
+              user: item.user.username,
+              hoursDifference: Math.round(hoursDifference),
+
+              // image: item.entry.images.jpg.image_url,
+            };
+          })
           .slice(0, 5);
         console.log(data);
         return data;

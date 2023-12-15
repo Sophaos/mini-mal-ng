@@ -1,10 +1,11 @@
 import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink, RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-review-row',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterOutlet],
   templateUrl: './review-row.component.html',
   styleUrls: ['./review-row.component.scss'],
 })
@@ -16,4 +17,5 @@ export class ReviewRowComponent {
   @Input() user!: string;
   @Input() tags!: string[];
   @Input() hoursDifference!: number;
+  @Input() id!: any;
 }

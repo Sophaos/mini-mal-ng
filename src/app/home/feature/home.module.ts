@@ -12,6 +12,7 @@ import { ImageModule } from 'primeng/image';
 import { ButtonModule } from 'primeng/button';
 import { TabViewModule } from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
+import { RecommendationsComponent } from '../ui/recommendations/recommendations.component';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -21,6 +22,7 @@ import { CardModule } from 'primeng/card';
     ItemsContainerComponent,
     MediaCarouselComponent,
     ReviewsComponent,
+    RecommendationsComponent,
     CarouselModule, // TODO: remove this,
     ChipModule, // TODO: remove this,
     ImageModule, // TODO: remove this,

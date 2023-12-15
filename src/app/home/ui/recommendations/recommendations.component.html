@@ -2,16 +2,14 @@
   <div class="max-h-30rem overflow-auto">
     <p-dataView #dv [value]="data">
       <ng-template let-anime pTemplate="listItem">
-        <app-review-row
-          class="col-12"
-          [text]="anime.review"
+        <app-recommendation-row
+          class="w-12"
           [title]="anime.title"
-          [image]="anime.image"
-          [score]="anime.score"
-          [user]="anime.user"
-          [tags]="anime.tags"
-          [id]="anime.id"
+          [likedMedia]="anime.likedMedia"
+          [mightLikeMedia]="anime.mightLikeMedia"
+          [content]="anime.content"
           [hoursDifference]="anime.hoursDifference"
+          [user]="anime.user"
         />
       </ng-template>
     </p-dataView>

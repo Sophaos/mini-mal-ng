@@ -1,0 +1,63 @@
+<div class="flex flex-column xl:flex-row xl:align-items-start p-1 gap-2">
+  <img
+    class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+    [src]="likedMedia.image"
+  />
+  <img
+    class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+    [src]="mightLikeMedia.image"
+  />
+  <div
+    class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
+  >
+    <div
+      class="flex flex-column align-items-center sm:align-items-start gap-3 col-12"
+    >
+      <div class="flex justify-content-between flex-wrap w-full">
+        <div class="min-w-full">
+          <div class="flex flex-row justify-content-between flex-wrap">
+            <div>If you liked:</div>
+            <a
+              class="font-bold text-primary no-underline"
+              [routerLink]="['/animes', likedMedia.id]"
+            >
+              {{ likedMedia.title }}
+            </a>
+          </div>
+          <div class="flex flex-row justify-content-between flex-wrap">
+            <div>You might like:</div>
+            <a
+              class="font-bold text-primary no-underline"
+              [routerLink]="['/animes', mightLikeMedia.id]"
+            >
+              {{ mightLikeMedia.title }}
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="fade text-sm">{{ content }}</div>
+      <div class="flex justify-content-between flex-wrap w-full">
+        <div class="flex align-items-center justify-content-center gap-1">
+          <div class="font-light text-color-secondary">
+            {{ hoursDifference }} hours ago by
+          </div>
+          <div>{{ user }}</div>
+        </div>
+      </div>
+    </div>
+    <!-- <div
+        class="flex sm:flex-column align-items-center sm:align-items-end gap-3 sm:gap-2"
+      >
+        <div
+          class="flex text-lg font-semibold gap-1 justify-content-center align-items-center"
+        >
+          {{ score }}
+          <i class="pi pi-star-fill text-yellow-300"></i>
+        </div>
+      </div> -->
+  </div>
+  <!-- <img
+    class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+    [src]="mightLikeMedia.image"
+  /> -->
+</div>
