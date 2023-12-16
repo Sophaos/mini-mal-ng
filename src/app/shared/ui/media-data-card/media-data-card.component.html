@@ -1,14 +1,15 @@
 <div class="p-4 flex flex-column h-full">
-  <div
-    class="font-semibold flex justify-content-center text-primary text-overflow-ellipsis"
+  <a
+    class="font-semibold flex justify-content-center text-primary text-overflow-ellipsis no-underline"
+    [routerLink]="['/animes', media.mal_id]"
   >
     {{ media.title_english ?? media.title }}
-  </div>
+  </a>
   <div
     class="flex align-items-center align-items-center justify-content-center"
   >
     <div *ngIf="media.aired?.from" class="mx-3 text-color-secondary">
-      {{ media.aired.from | date : "yyyy-MM-dd HH:mm:ss" }}
+      {{ media.aired.from | date : "yyyy-MM-dd" }}
     </div>
     <div class="text-color-secondary" *ngIf="media.episodes">
       ({{ media.episodes }} eps)

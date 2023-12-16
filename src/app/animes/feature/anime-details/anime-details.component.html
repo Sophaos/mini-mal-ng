@@ -1,17 +1,10 @@
 <div *ngIf="anime$ | async as anime" class="animes-container">
-  <div class="header">{{ anime.title }}</div>
+  <div class="py-1">
+    <p-card>
+      <app-main-preview-content [media]="anime" [isDetailed]="true" />
+    </p-card>
+  </div>
   <div class="main">
-    <div class="anime-stats">
-      <div>{{ anime.score }}</div>
-      <div>{{ anime.scored_by }}</div>
-      <div>{{ anime.rank }}</div>
-      <div>{{ anime.season }}</div>
-      <div>{{ anime.tv }}</div>
-      <div>{{ anime.popularity }}</div>
-    </div>
-    <app-items-container title="Synopsis">
-      <div>{{ anime.synopsis }}</div>
-    </app-items-container>
     <app-items-container title="Background">
       <div>{{ anime.background }}</div>
     </app-items-container>

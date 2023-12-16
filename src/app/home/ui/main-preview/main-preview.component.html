@@ -1,0 +1,33 @@
+<div class="my-1">
+  <p-card>
+    <p-tabView>
+      <p-tabPanel [header]="seasonTitle">
+        <p-carousel
+          [value]="currentSeason"
+          [numVisible]="1"
+          [numScroll]="1"
+          [circular]="false"
+          [autoplayInterval]="8000"
+        >
+          <ng-template let-anime pTemplate="item">
+            <app-main-preview-content [media]="anime" />
+          </ng-template>
+        </p-carousel>
+      </p-tabPanel>
+      <p-tabPanel [header]="mangaTitle">
+        <p-carousel
+          [value]="mangas"
+          [numVisible]="1"
+          [numScroll]="1"
+          [circular]="false"
+          [autoplayInterval]="8000"
+          class="py-1"
+        >
+          <ng-template let-anime pTemplate="item">
+            <app-main-preview-content [media]="anime" />
+          </ng-template>
+        </p-carousel>
+      </p-tabPanel>
+    </p-tabView>
+  </p-card>
+</div>

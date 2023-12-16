@@ -1,93 +1,10 @@
 <ng-container *ngIf="vmCarousels$ | async as vm">
-  <div class="my-1">
-    <p-card>
-      <p-tabView>
-        <p-tabPanel header="Top Airing Animes">
-          <p-carousel
-            [value]="vm.currentSeason"
-            [numVisible]="1"
-            [numScroll]="1"
-            [circular]="false"
-            [autoplayInterval]="8000"
-          >
-            <ng-template let-anime pTemplate="item">
-              <div
-                class="split-container flex justify-content-center align-items-center"
-              >
-                <div class="flex-1 px-4">
-                  <a
-                    class="text-3xl font-bold text-primary no-underline"
-                    [routerLink]="['/animes', anime.mal_id]"
-                  >
-                    {{ anime.title }}
-                  </a>
-                  <div class="text-lg font-light text-color-secondary">
-                    {{ anime.title_english }}
-                  </div>
-                  <div class="flex-row flex-wrap flex-row my-2">
-                    <p-chip
-                      class="mx-1"
-                      *ngFor="let g of anime.genres"
-                      [label]="g.name"
-                    />
-                  </div>
-                  <div>{{ anime.synopsis }}</div>
-                </div>
-                <div class="flex-1 flex justify-content-end px-4">
-                  <!-- <div class="fade-effect"></div> -->
-                  <p-image
-                    class="sm:w-12 md:w-12 lg:w-12 xl:w-7 min-h-full"
-                    [src]="anime.image_large"
-                    alt="Anime Image"
-                  />
-                </div>
-              </div>
-            </ng-template>
-          </p-carousel>
-        </p-tabPanel>
-        <p-tabPanel header="Top Mangas">
-          <p-carousel
-            [value]="vm.mangas"
-            [numVisible]="1"
-            [numScroll]="1"
-            [circular]="false"
-            [autoplayInterval]="8000"
-            class="py-1"
-          >
-            <ng-template let-anime pTemplate="item">
-              <div
-                class="split-container flex justify-content-center align-items-center"
-              >
-                <div class="flex-1 px-4">
-                  <div class="text-3xl font-bold">{{ anime.title }}</div>
-                  <div class="text-lg font-light">
-                    {{ anime.title_english }}
-                  </div>
-                  <div class="flex-row flex-wrap flex-row my-2">
-                    <p-chip
-                      class="mx-1"
-                      *ngFor="let g of anime.genres"
-                      [label]="g.name"
-                    />
-                  </div>
-                  <div>{{ anime.synopsis }}</div>
-                </div>
-                <div class="flex-1 flex justify-content-end px-4">
-                  <!-- <div class="fade-effect"></div> -->
-                  <p-image
-                    [routerLink]="['/animes', anime.mal_id]"
-                    class="sm:w-12 md:w-12 lg:w-12 xl:w-7 min-h-full"
-                    [src]="anime.image_large"
-                    alt="Anime Image"
-                  />
-                </div>
-              </div>
-            </ng-template>
-          </p-carousel>
-        </p-tabPanel>
-      </p-tabView>
-    </p-card>
-  </div>
+  <app-main-preview
+    mangaTitle="Top Mangas"
+    seasonTitle="Top Airing Animes"
+    [currentSeason]="vm.currentSeason"
+    [mangas]="vm.mangas"
+  />
 
   <!-- <app-media-carousel
     [data]="vm.currentSeason"

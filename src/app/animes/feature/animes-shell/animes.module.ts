@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DataViewFilterComponent } from 'src/app/shared/ui/data-view-filter/data-view-filter.component';
 import { ItemsContainerComponent } from 'src/app/home/ui/items-container/items-container.component';
 import { CardModule } from 'primeng/card';
+import { MainPreviewContentComponent } from 'src/app/home/ui/main-preview-content/main-preview-content.component';
 @NgModule({
   declarations: [AnimesListComponent, AnimeDetailsComponent],
   imports: [
@@ -23,6 +24,7 @@ import { CardModule } from 'primeng/card';
     ReactiveFormsModule,
     DataViewFilterComponent,
     ItemsContainerComponent,
+    MainPreviewContentComponent,
   ],
   providers: [AnimeService],
 })

@@ -58,6 +58,7 @@ export class AnimeService {
       map((response: any) => ({
         ...response.data,
         images: response.data.images.jpg.image_url,
+        image_large: response.data.images.jpg.large_image_url,
       }))
     );
   }

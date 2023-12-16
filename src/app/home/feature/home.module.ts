@@ -6,13 +6,9 @@ import { HomeService } from '../data-access/home.service';
 import { ItemsContainerComponent } from '../ui/items-container/items-container.component';
 import { MediaCarouselComponent } from '../ui/media-carousel/media-carousel.component';
 import { ReviewsComponent } from '../ui/reviews/reviews.component';
-import { CarouselModule } from 'primeng/carousel';
-import { ChipModule } from 'primeng/chip';
-import { ImageModule } from 'primeng/image';
-import { ButtonModule } from 'primeng/button';
-import { TabViewModule } from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
 import { RecommendationsComponent } from '../ui/recommendations/recommendations.component';
+import { MainPreviewComponent } from '../ui/main-preview/main-preview.component';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -23,11 +19,7 @@ import { RecommendationsComponent } from '../ui/recommendations/recommendations.
     MediaCarouselComponent,
     ReviewsComponent,
     RecommendationsComponent,
-    CarouselModule, // TODO: remove this,
-    ChipModule, // TODO: remove this,
-    ImageModule, // TODO: remove this,
-    ButtonModule, // TODO: remove this,
-    TabViewModule, // TODO: remove this,
+    MainPreviewComponent,
     CardModule,
   ],
   providers: [HomeService],

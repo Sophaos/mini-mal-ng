@@ -1,0 +1,87 @@
+<div class="split-container flex justify-content-center align-items-center">
+  <div class="flex-1 px-4">
+    <a
+      class="text-3xl font-bold text-primary no-underline"
+      [routerLink]="['/animes', media.mal_id]"
+    >
+      {{ media.title }}
+    </a>
+    <div class="text-lg font-light text-color-secondary">
+      {{ media.title_english }}
+    </div>
+    <ng-container *ngIf="isDetailed">
+      <div>
+        <div class="flex flex-row gap-3 text-sm">
+          <div>
+            {{ media.score }}
+            <i class="pi pi-star-fill text-yellow-300"></i>
+          </div>
+          <div>
+            <span> Rank: </span>
+            <span class="font-semibold">
+              {{ media.rank }}
+            </span>
+          </div>
+          <div>
+            <span> Popularity: </span>
+            <span class="font-semibold">
+              {{ media.popularity }}
+            </span>
+          </div>
+          <div>
+            <span> Members: </span>
+            <span class="font-semibold">
+              {{ media.members }}
+            </span>
+          </div>
+          <div>
+            <span> Favorites: </span>
+            <span class="font-semibold">
+              {{ media.favorites }}
+            </span>
+          </div>
+        </div>
+        <div>
+          <div class="flex flex-row gap-3">
+            <div>
+              <a
+                [routerLink]="['/season', media.year, media.season]"
+                class="no-underline text-primary"
+              >
+                {{ media.season | titlecase }} {{ media.year }}
+              </a>
+            </div>
+            <div>{{ media.aired.string }}</div>
+          </div>
+        </div>
+        <div class="flex flex-row gap-3">
+          <div>{{ media.type }}</div>
+          <div>{{ media.source }}</div>
+          <div>{{ media.rating }}</div>
+          <div class="flex flex-row gap-2">
+            <div *ngFor="let s of media.studios">
+              {{ s.name }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+    <div class="flex-row flex-wrap flex-row">
+      <div class="my-1">
+        <p-chip class="mx-1" *ngFor="let g of media.genres" [label]="g.name" />
+      </div>
+      <div class="my-1" *ngIf="isDetailed">
+        <p-chip class="mx-1" *ngFor="let t of media.themes" [label]="t.name" />
+      </div>
+    </div>
+    <div>{{ media.synopsis }}</div>
+  </div>
+  <div class="flex-1 flex justify-content-end px-4">
+    <!-- <div class="fade-effect"></div> -->
+    <p-image
+      class="sm:w-12 md:w-12 lg:w-12 xl:w-7 min-h-full"
+      [src]="media.image_large"
+      alt="Anime Image"
+    />
+  </div>
+</div>
