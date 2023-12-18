@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataViewModule } from 'primeng/dataview';
 import { MediaDataCardComponent } from '../media-data-card/media-data-card.component';
@@ -9,6 +9,7 @@ import { MediaDataCardComponent } from '../media-data-card/media-data-card.compo
   imports: [CommonModule, DataViewModule, MediaDataCardComponent],
   templateUrl: './data-view.component.html',
   styleUrls: ['./data-view.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataViewComponent {
   @Input({ required: true }) data!: any[];

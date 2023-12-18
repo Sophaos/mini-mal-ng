@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ItemsContainerComponent } from '../items-container/items-container.component';
 import { ReviewRowComponent } from '../review-row/review-row.component';
@@ -15,6 +15,7 @@ import { DataViewModule } from 'primeng/dataview';
   ],
   templateUrl: './reviews.component.html',
   styleUrls: ['./reviews.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReviewsComponent {
   @Input() title!: string;

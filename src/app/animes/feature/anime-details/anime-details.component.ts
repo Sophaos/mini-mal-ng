@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs';
 import { AnimeService } from '../../data-access/anime.service';
@@ -7,6 +7,7 @@ import { AnimeService } from '../../data-access/anime.service';
   selector: 'app-anime-details',
   templateUrl: './anime-details.component.html',
   styleUrls: ['./anime-details.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimeDetailsComponent implements OnInit {
   anime$ = this.route.paramMap.pipe(

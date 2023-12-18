@@ -1,4 +1,10 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { Pagination } from '../../data-access/models/Pagination';
@@ -9,6 +15,7 @@ import { Pagination } from '../../data-access/models/Pagination';
   imports: [CommonModule, PaginatorModule],
   templateUrl: './paginator.component.html',
   styleUrls: ['./paginator.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PaginatorComponent {
   @Input() rowsPerPageOptions = [8, 16, 24];

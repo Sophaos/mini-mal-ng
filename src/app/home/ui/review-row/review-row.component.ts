@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
   imports: [CommonModule, RouterLink, RouterOutlet],
   templateUrl: './review-row.component.html',
   styleUrls: ['./review-row.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReviewRowComponent {
   @Input() score!: number;

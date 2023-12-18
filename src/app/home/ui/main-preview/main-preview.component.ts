@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Params, RouterLink } from '@angular/router';
 import { ButtonModule } from 'primeng/button';
@@ -26,6 +26,7 @@ import { PanelModule } from 'primeng/panel';
   ],
   templateUrl: './main-preview.component.html',
   styleUrls: ['./main-preview.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainPreviewComponent {
   @Input() data!: any[];

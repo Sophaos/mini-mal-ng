@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
 import { DropdownModule } from 'primeng/dropdown';
@@ -21,6 +21,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
   ],
   templateUrl: './data-view-filter.component.html',
   styleUrls: ['./data-view-filter.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataViewFilterComponent {
   @Input() filterDropdowns: any[] = [];

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 import { combineLatest, distinctUntilChanged, map, switchMap } from 'rxjs';
@@ -9,6 +9,7 @@ import { getPagination } from 'src/app/shared/data-access/models/Pagination';
   selector: 'app-season-list',
   templateUrl: './season-list.component.html',
   styleUrls: ['./season-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeasonListComponent {
   seasons$ = this.seasonService.seasons$;

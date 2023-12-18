@@ -1,4 +1,10 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  OnInit,
+  Output,
+} from '@angular/core';
 import { SearchService } from '../../../shared/data-access/search.service';
 import { MenubarModule } from 'primeng/menubar';
 import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
@@ -12,6 +18,7 @@ import { MenuItem } from 'primeng/api';
   imports: [CommonModule, MenubarModule, ButtonModule],
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit {
   @Output() toggleSideNavEvent = new EventEmitter();
@@ -35,10 +42,10 @@ export class HeaderComponent implements OnInit {
         label: 'Season',
         routerLink: seasonUrl,
       },
-      {
-        label: 'Mangas',
-        routerLink: '/mangas',
-      },
+      // {
+      //   label: 'Mangas',
+      //   routerLink: '/mangas',
+      // },
     ];
   }
 

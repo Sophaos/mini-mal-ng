@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Params, RouterLink, RouterOutlet } from '@angular/router';
 import { CardModule } from 'primeng/card';
@@ -10,6 +10,7 @@ import { PanelModule } from 'primeng/panel';
   imports: [CommonModule, RouterLink, RouterOutlet, CardModule, PanelModule],
   templateUrl: './items-container.component.html',
   styleUrls: ['./items-container.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemsContainerComponent {
   @Input() title: string = '';

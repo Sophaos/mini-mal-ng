@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { ChipModule } from 'primeng/chip';
@@ -19,6 +19,7 @@ import { CardModule } from 'primeng/card';
   ],
   templateUrl: './main-preview-content.component.html',
   styleUrls: ['./main-preview-content.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainPreviewContentComponent {
   @Input() media!: any;

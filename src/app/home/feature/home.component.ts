@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { HomeService } from '../data-access/home.service';
 import { combineLatest, map } from 'rxjs';
 import { SeasonsService } from 'src/app/season/data-access/seasons.service';
@@ -7,6 +7,7 @@ import { SeasonsService } from 'src/app/season/data-access/seasons.service';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent implements OnInit {
   currentSeason = '';

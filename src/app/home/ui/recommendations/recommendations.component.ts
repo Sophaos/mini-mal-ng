@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RecommendationRowComponent } from '../recommendation-row/recommendation-row.component';
 import { DataViewModule } from 'primeng/dataview';
@@ -15,6 +15,7 @@ import { ItemsContainerComponent } from '../items-container/items-container.comp
   ],
   templateUrl: './recommendations.component.html',
   styleUrls: ['./recommendations.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecommendationsComponent {
   @Input() title!: string;

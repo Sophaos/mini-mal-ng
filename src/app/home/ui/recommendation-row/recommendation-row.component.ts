@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
 
@@ -8,6 +8,7 @@ import { RouterLink } from '@angular/router';
   imports: [CommonModule, RouterLink],
   templateUrl: './recommendation-row.component.html',
   styleUrls: ['./recommendation-row.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecommendationRowComponent {
   @Input() user!: string;

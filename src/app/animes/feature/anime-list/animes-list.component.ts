@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 import { AnimeService } from '../../data-access/anime.service';
@@ -17,6 +17,7 @@ import { getPagination } from 'src/app/shared/data-access/models/Pagination';
   selector: 'app-animes-list',
   templateUrl: './animes-list.component.html',
   styleUrls: ['./animes-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimesListComponent {
   private inputsSubject = new BehaviorSubject<any>(null);

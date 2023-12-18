@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CarouselModule } from 'primeng/carousel';
 import { MediaCardComponent } from '../media-card/media-card.component';
@@ -17,6 +17,7 @@ import { ItemsContainerComponent } from '../items-container/items-container.comp
   ],
   templateUrl: './media-carousel.component.html',
   styleUrls: ['./media-carousel.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MediaCarouselComponent {
   @Input({ required: true }) data!: any[];

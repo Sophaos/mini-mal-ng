@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 import {
@@ -17,6 +17,7 @@ import { MangaService } from '../../data-access/manga.service';
   selector: 'app-manga-list',
   templateUrl: './manga-list.component.html',
   styleUrls: ['./manga-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MangaListComponent {
   private inputsSubject = new BehaviorSubject<any>(null);
