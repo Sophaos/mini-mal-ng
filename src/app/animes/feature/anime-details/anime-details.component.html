@@ -1,33 +1,60 @@
-<div *ngIf="anime$ | async as anime" class="flex flex-column gap-1 mt-1">
+<div *ngIf="anime$ | async as media" class="flex flex-column gap-1 mt-1">
   <!-- <div class="flex flex-row py-1"> -->
   <p-card>
-    <app-main-preview-content [media]="anime" [isDetailed]="true" />
+    <app-main-preview-content [media]="media" [isDetailed]="true" />
   </p-card>
   <!-- </div> -->
   <!-- <div class="flex flex-column gap-1"> -->
-  <app-items-container title="Background">
-    <div>{{ anime.background }}</div>
+  <app-items-container title="Background" [isCollapsed]="true">
+    <div>{{ media.background }}</div>
   </app-items-container>
-  <app-items-container title="Relations">
-    <div>{{ anime.background }}</div>
+  <app-items-container title="Relations" [isCollapsed]="true">
+    <div class="h-7rem overflow-auto">
+      <div *ngFor="let r of media.relations">
+        <div class="flex flex-row">
+          <div class="w-1">{{ r.relation }}:</div>
+          <div class="w-11">
+            <div *ngFor="let e of r.entry">
+              {{ e.name }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </app-items-container>
-  <app-items-container title="Reviews">
-    <div>{{ anime.background }}</div>
+  <div class="flex flex-row gap-1">
+    <app-items-container class="w-6" title="Opening Theme" [isCollapsed]="true">
+      <div class="h-5rem overflow-auto">
+        <div *ngFor="let o of media.theme.openings">
+          {{ o }}
+        </div>
+      </div>
+    </app-items-container>
+    <app-items-container class="w-6" title="Ending Theme" [isCollapsed]="true">
+      <div class="h-5rem overflow-auto">
+        <div *ngFor="let e of media.theme.endings">
+          {{ e }}
+        </div>
+      </div>
+    </app-items-container>
+  </div>
+  <app-items-container title="Reviews" [isCollapsed]="true">
+    <div>{{ media.background }}</div>
   </app-items-container>
-  <div class="characters">
-    <!-- api call -->
-  </div>
-  <div class="staff">
-    <!-- api call -->
-  </div>
-  <div class="reviews">
-    <!-- api call -->
-  </div>
-  <div class="recommandations">
-    <!-- api call -->
-  </div>
-  <div class="news">
-    <!-- api call -->
-  </div>
+  <app-items-container title="Staff" [isCollapsed]="true">
+    <div>{{ media.background }}</div>
+  </app-items-container>
+  <app-items-container title="Characters" [isCollapsed]="true">
+    <div>{{ media.background }}</div>
+  </app-items-container>
+  <app-items-container title="Pictures" [isCollapsed]="true">
+    <div>{{ media.background }}</div>
+  </app-items-container>
+  <app-items-container title="Recommendations" [isCollapsed]="true">
+    <div>{{ media.background }}</div>
+  </app-items-container>
+  <app-items-container title="Reviews" [isCollapsed]="true">
+    <div>{{ media.background }}</div>
+  </app-items-container>
 </div>
 <!-- </div> -->
