@@ -1,30 +1,33 @@
-<div *ngIf="anime$ | async as anime" class="animes-container">
-  <div class="py-1">
-    <p-card>
-      <app-main-preview-content [media]="anime" [isDetailed]="true" />
-    </p-card>
+<div *ngIf="anime$ | async as anime" class="flex flex-column gap-1 mt-1">
+  <!-- <div class="flex flex-row py-1"> -->
+  <p-card>
+    <app-main-preview-content [media]="anime" [isDetailed]="true" />
+  </p-card>
+  <!-- </div> -->
+  <!-- <div class="flex flex-column gap-1"> -->
+  <app-items-container title="Background">
+    <div>{{ anime.background }}</div>
+  </app-items-container>
+  <app-items-container title="Relations">
+    <div>{{ anime.background }}</div>
+  </app-items-container>
+  <app-items-container title="Reviews">
+    <div>{{ anime.background }}</div>
+  </app-items-container>
+  <div class="characters">
+    <!-- api call -->
   </div>
-  <div class="main">
-    <app-items-container title="Background">
-      <div>{{ anime.background }}</div>
-    </app-items-container>
-    <app-items-container title="Reviews">
-      <div>{{ anime.background }}</div>
-    </app-items-container>
-    <div class="characters">
-      <!-- api call -->
-    </div>
-    <div class="staff">
-      <!-- api call -->
-    </div>
-    <div class="reviews">
-      <!-- api call -->
-    </div>
-    <div class="recommandations">
-      <!-- api call -->
-    </div>
-    <div class="news">
-      <!-- api call -->
-    </div>
+  <div class="staff">
+    <!-- api call -->
+  </div>
+  <div class="reviews">
+    <!-- api call -->
+  </div>
+  <div class="recommandations">
+    <!-- api call -->
+  </div>
+  <div class="news">
+    <!-- api call -->
   </div>
 </div>
+<!-- </div> -->

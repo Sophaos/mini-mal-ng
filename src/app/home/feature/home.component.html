@@ -1,21 +1,9 @@
 <ng-container *ngIf="vmCarousels$ | async as vm">
   <app-main-preview
-    mangaTitle="Top Mangas"
-    seasonTitle="Top Airing Animes"
-    [currentSeason]="vm.currentSeason"
-    [mangas]="vm.mangas"
-  />
-
-  <!-- <app-media-carousel
+    header="Top Airing Animes"
     [data]="vm.currentSeason"
-    title="Current Season"
     [link]="['/season', currentYear, currentSeason]"
-  /> -->
-  <!-- <app-media-carousel
-    [data]="vm.mangas"
-    title="Mangas"
-    [link]="['/season', currentYear, currentSeason]"
-  /> -->
+  />
   <app-media-carousel
     [data]="vm.recentEpisodes"
     title="Latest Updated Episode Videos"

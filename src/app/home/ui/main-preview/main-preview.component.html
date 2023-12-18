@@ -1,33 +1,31 @@
 <div class="my-1">
-  <p-card>
-    <p-tabView>
-      <p-tabPanel [header]="seasonTitle">
-        <p-carousel
-          [value]="currentSeason"
-          [numVisible]="1"
-          [numScroll]="1"
-          [circular]="false"
-          [autoplayInterval]="8000"
+  <p-panel [toggleable]="true">
+    <ng-template pTemplate="header">
+      <div>
+        <div *ngIf="!link" class="font-bold">
+          {{ header }}
+        </div>
+
+        <div
+          *ngIf="link"
+          [routerLink]="link"
+          [queryParams]="queryParams"
+          class="no-underline font-bold text-primary cursor-pointer"
         >
-          <ng-template let-anime pTemplate="item">
-            <app-main-preview-content [media]="anime" />
-          </ng-template>
-        </p-carousel>
-      </p-tabPanel>
-      <p-tabPanel [header]="mangaTitle">
-        <p-carousel
-          [value]="mangas"
-          [numVisible]="1"
-          [numScroll]="1"
-          [circular]="false"
-          [autoplayInterval]="8000"
-          class="py-1"
-        >
-          <ng-template let-anime pTemplate="item">
-            <app-main-preview-content [media]="anime" />
-          </ng-template>
-        </p-carousel>
-      </p-tabPanel>
-    </p-tabView>
-  </p-card>
+          {{ header }}
+        </div>
+      </div>
+    </ng-template>
+    <p-carousel
+      [value]="data"
+      [numVisible]="1"
+      [numScroll]="1"
+      [circular]="false"
+      [autoplayInterval]="8000"
+    >
+      <ng-template let-anime pTemplate="item">
+        <app-main-preview-content [media]="anime" />
+      </ng-template>
+    </p-carousel>
+  </p-panel>
 </div>

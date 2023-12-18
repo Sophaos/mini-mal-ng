@@ -12,6 +12,7 @@ import { DataViewFilterComponent } from 'src/app/shared/ui/data-view-filter/data
 import { ItemsContainerComponent } from 'src/app/home/ui/items-container/items-container.component';
 import { CardModule } from 'primeng/card';
 import { MainPreviewContentComponent } from 'src/app/home/ui/main-preview-content/main-preview-content.component';
+import { DividerModule } from 'primeng/divider';
 @NgModule({
   declarations: [AnimesListComponent, AnimeDetailsComponent],
   imports: [
@@ -25,6 +26,7 @@ import { MainPreviewContentComponent } from 'src/app/home/ui/main-preview-conten
     DataViewFilterComponent,
     ItemsContainerComponent,
     MainPreviewContentComponent,
+    DividerModule,
   ],
   providers: [AnimeService],
 })

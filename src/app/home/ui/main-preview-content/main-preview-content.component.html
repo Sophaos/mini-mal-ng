@@ -1,5 +1,5 @@
 <div class="split-container flex justify-content-center align-items-center">
-  <div class="flex-1 px-4">
+  <div class="col-7 px-4">
     <a
       class="text-3xl font-bold text-primary no-underline"
       [routerLink]="['/animes', media.mal_id]"
@@ -9,79 +9,169 @@
     <div class="text-lg font-light text-color-secondary">
       {{ media.title_english }}
     </div>
+    <div class="flex-row flex-wrap flex-row">
+      <div class="my-1">
+        <p-chip class="mx-1" *ngFor="let g of media.genres" [label]="g.name" />
+        <ng-container *ngIf="isDetailed">
+          <p-chip
+            class="mx-1"
+            *ngFor="let t of media.themes"
+            [label]="t.name"
+          />
+          <p-chip
+            class="mx-1"
+            *ngFor="let t of media.demographics"
+            [label]="t.name"
+          />
+        </ng-container>
+      </div>
+    </div>
+    <div>{{ media.synopsis }}</div>
     <ng-container *ngIf="isDetailed">
-      <div>
-        <div class="flex flex-row gap-3 text-sm">
-          <div>
-            {{ media.score }}
-            <i class="pi pi-star-fill text-yellow-300"></i>
+      <div class="flex flex-row mt-3 mb-3 text-sm">
+        <div class="col-3">
+          <p-divider align="center">Statistics</p-divider>
+          <div class="flex flex-row justify-content-between">
+            <div>Score:</div>
+            <div class="font-semibold">
+              {{ media.score }}
+              <i class="pi pi-star-fill text-yellow-300"></i>
+            </div>
           </div>
-          <div>
-            <span> Rank: </span>
-            <span class="font-semibold">
+          <div class="flex flex-row justify-content-between">
+            <div>Rank:</div>
+            <div class="font-semibold">
               {{ media.rank }}
-            </span>
+            </div>
           </div>
-          <div>
-            <span> Popularity: </span>
-            <span class="font-semibold">
+          <div class="flex flex-row justify-content-between">
+            <div>Popularity:</div>
+            <div class="font-semibold">
               {{ media.popularity }}
-            </span>
+            </div>
           </div>
-          <div>
-            <span> Members: </span>
-            <span class="font-semibold">
+          <div class="flex flex-row justify-content-between">
+            <div>Members:</div>
+            <div class="font-semibold">
               {{ media.members }}
-            </span>
+            </div>
           </div>
-          <div>
-            <span> Favorites: </span>
-            <span class="font-semibold">
+          <div class="flex flex-row justify-content-between">
+            <div>Favorites:</div>
+            <div class="font-semibold">
               {{ media.favorites }}
-            </span>
+            </div>
           </div>
         </div>
-        <div>
-          <div class="flex flex-row gap-3">
+        <p-divider layout="vertical"></p-divider>
+        <div class="col-4">
+          <p-divider align="center">Airing Time</p-divider>
+
+          <div class="flex flex-row justify-content-between">
+            <div>Season:</div>
             <div>
               <a
                 [routerLink]="['/season', media.year, media.season]"
-                class="no-underline text-primary"
+                class="no-underline text-primary font-semibold"
               >
                 {{ media.season | titlecase }} {{ media.year }}
               </a>
             </div>
-            <div>{{ media.aired.string }}</div>
+          </div>
+          <div class="flex flex-row justify-content-between">
+            <div>Aired:</div>
+            <div class="font-semibold">
+              {{ media.aired.string }}
+            </div>
+          </div>
+          <div class="flex flex-row justify-content-between">
+            <div>Status:</div>
+            <div class="font-semibold">
+              {{ media.status }}
+            </div>
+          </div>
+          <div class="flex flex-row justify-content-between">
+            <div>Duration:</div>
+            <div class="font-semibold">
+              {{ media.duration }}
+            </div>
+          </div>
+          <div class="flex flex-row justify-content-between">
+            <div>Episodes:</div>
+            <div class="font-semibold">
+              {{ media.episodes }}
+            </div>
           </div>
         </div>
-        <div class="flex flex-row gap-3">
-          <div>{{ media.type }}</div>
-          <div>{{ media.source }}</div>
-          <div>{{ media.rating }}</div>
-          <div class="flex flex-row gap-2">
-            <div *ngFor="let s of media.studios">
-              {{ s.name }}
+        <p-divider layout="vertical"></p-divider>
+        <div class="col-4">
+          <p-divider align="center">Informations</p-divider>
+
+          <div class="flex flex-row justify-content-between">
+            <div>Media:</div>
+            <div class="font-semibold">
+              {{ media.type }}
+            </div>
+          </div>
+          <div class="flex flex-row justify-content-between">
+            <div>Source:</div>
+            <div class="font-semibold">
+              {{ media.source }}
+            </div>
+          </div>
+          <div class="flex flex-row justify-content-between">
+            <div>Rating:</div>
+            <div class="font-semibold">
+              {{ media.rating }}
             </div>
           </div>
         </div>
       </div>
+      <div class="flex flex-column my-2 text-sm ml-2">
+        <p-divider></p-divider>
+
+        <div class="flex flex-row">
+          <div class="w-7rem">Studios:</div>
+          <div
+            class="font-italic font-bold"
+            *ngFor="let s of media.studios; let i = index"
+          >
+            <span *ngIf="i > 0">, </span><span> {{ s.name }} </span>
+          </div>
+        </div>
+        <div class="flex flex-row">
+          <div class="w-7rem">Producers:</div>
+          <div
+            class="font-italic font-bold"
+            *ngFor="let p of media.producers; let i = index"
+          >
+            <span *ngIf="i > 0">, </span><span> {{ p.name }} </span>
+          </div>
+        </div>
+        <div class="flex flex-row">
+          <div class="w-7rem">Licensors:</div>
+          <div
+            class="font-italic font-bold"
+            *ngFor="let l of media.licensors; let i = index"
+          >
+            <span *ngIf="i > 0">, </span><span> {{ l.name }} </span>
+          </div>
+        </div>
+        <div class="flex flex-row">
+          <div class="w-7rem">Streaming:</div>
+          <div
+            class="font-italic font-bold"
+            *ngFor="let s of media.streaming; let i = index"
+          >
+            <span *ngIf="i > 0">, </span><span> {{ s.name }} </span>
+          </div>
+        </div>
+      </div>
     </ng-container>
-    <div class="flex-row flex-wrap flex-row">
-      <div class="my-1">
-        <p-chip class="mx-1" *ngFor="let g of media.genres" [label]="g.name" />
-      </div>
-      <div class="my-1" *ngIf="isDetailed">
-        <p-chip class="mx-1" *ngFor="let t of media.themes" [label]="t.name" />
-      </div>
-    </div>
-    <div>{{ media.synopsis }}</div>
   </div>
-  <div class="flex-1 flex justify-content-end px-4">
+  <div class="col-5 flex justify-content-end px-4">
     <!-- <div class="fade-effect"></div> -->
-    <p-image
-      class="sm:w-12 md:w-12 lg:w-12 xl:w-7 min-h-full"
-      [src]="media.image_large"
-      alt="Anime Image"
-    />
+    <!-- class="sm:w-12 md:w-12 lg:w-12 xl:w-7 min-h-full" -->
+    <p-image [src]="media.image_large" alt="Anime Image" />
   </div>
 </div>

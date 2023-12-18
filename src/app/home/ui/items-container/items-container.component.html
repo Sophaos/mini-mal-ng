@@ -1,11 +1,13 @@
-<p-card [header]="title">
-  <div class="flex">
-    <span class="link">
-      <a *ngIf="link" [routerLink]="link" [queryParams]="queryParams">
-        View more
-      </a>
-    </span>
-  </div>
-  <hr />
+<p-panel [header]="title" [toggleable]="true">
+  <ng-template pTemplate="header">
+    <div class="flex">
+      <span class="link">
+        <a *ngIf="link" [routerLink]="link" [queryParams]="queryParams">
+          View more
+        </a>
+      </span>
+    </div>
+  </ng-template>
+  <!-- <hr /> -->
   <ng-content></ng-content>
-</p-card>
+</p-panel>
