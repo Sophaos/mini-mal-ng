@@ -22,6 +22,7 @@ export interface AnimeQueryParams {
   producers?: string;
   start_date?: string;
   end_date?: string;
+  preliminary?: string;
 }
 
 export interface AnimeQueryParamsWithId extends AnimeQueryParams {
@@ -39,6 +40,15 @@ export class AnimeService {
   constructor(private http: HttpClient) {}
   readonly category = 'anime';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
+
+  animeGenres$ = this.http.get(`${JIKAN_API_BASE_URL}/genres/anime`).pipe(
+    map((response: any) =>
+      response.data.map((item: any) => ({
+        value: item.mal_id.toString(),
+        label: item.name,
+      }))
+    )
+  );
 
   getAnimeSearch$(params?: AnimeQueryParams): Observable<any> {
     const httpParams = this.buildParams(params);
@@ -63,15 +73,6 @@ export class AnimeService {
     );
   }
 
-  animeGenres$ = this.http.get(`${JIKAN_API_BASE_URL}/genres/anime`).pipe(
-    map((response: any) =>
-      response.data.map((item: any) => ({
-        value: item.mal_id.toString(),
-        label: item.name,
-      }))
-    )
-  );
-
   getAnimeCharacters$(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}/characters`).pipe(
       map((response: any) =>
@@ -84,6 +85,65 @@ export class AnimeService {
 
   getAnimeStaff$(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}/staff`).pipe(
+      map((response: any) =>
+        response.data.map((item: any) => ({
+          ...item,
+        }))
+      )
+    );
+  }
+
+  getAnimeRecommendations$(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}/recommendations`).pipe(
+      map((response: any) =>
+        response.data.map((item: any) => ({
+          ...item,
+          image: item.entry.images.jpg.image_url,
+        }))
+      )
+    );
+  }
+
+  getAnimeReviews$(id: number): Observable<any> {
+    const params: AnimeQueryParams = { preliminary: 'true' };
+    const httpParams = this.buildParams(params);
+    return this.http
+      .get(`${this.apiUrl}/${id}/reviews`, { params: httpParams })
+      .pipe(
+        map((response: any) => {
+          const currentDate = new Date();
+          const data = response.data.map((item: any) => {
+            const targetDate = new Date(item.date);
+
+            const timeDifferenceMillis =
+              currentDate.getTime() - targetDate.getTime();
+            const hoursDifference = timeDifferenceMillis / (1000 * 60 * 60);
+            return {
+              ...item.entry,
+              review: item.review,
+              score: item.score,
+              user: { ...item.user },
+              tags: [...item.tags],
+              hoursDifference: Math.round(hoursDifference),
+            };
+          });
+          return data;
+        })
+      );
+  }
+
+  getAnimePictures$(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}/pictures`).pipe(
+      map((response: any) =>
+        response.data.map((item: any) => ({
+          ...item,
+        }))
+      )
+    );
+  }
+
+  getAnimeStreaming$(id: number): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}/streaming`).pipe(
       map((response: any) =>
         response.data.map((item: any) => ({
           ...item,
@@ -107,39 +167,6 @@ export class AnimeService {
 
   getAnimeVideos$(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}/videos`).pipe(
-      map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-        }))
-      )
-    );
-  }
-
-  getAnimeRecommendations$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/recommendations`).pipe(
-      map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-        }))
-      )
-    );
-  }
-
-  getAnimeReviews$(id: number, params?: AnimeQueryParams): Observable<any> {
-    const httpParams = this.buildParams(params);
-    return this.http
-      .get(`${this.apiUrl}/${id}/reviews`, { params: httpParams })
-      .pipe(
-        map((response: any) =>
-          response.data.map((item: any) => ({
-            ...item,
-          }))
-        )
-      );
-  }
-
-  getAnimeStreaming$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/streaming`).pipe(
       map((response: any) =>
         response.data.map((item: any) => ({
           ...item,
@@ -203,6 +230,9 @@ export class AnimeService {
     }
     if (params?.end_date) {
       httpParams = httpParams.set('end_date', params.end_date);
+    }
+    if (params?.preliminary) {
+      httpParams = httpParams.set('preliminary', params.preliminary);
     }
 
     return httpParams;

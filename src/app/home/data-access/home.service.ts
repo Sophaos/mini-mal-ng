@@ -82,14 +82,13 @@ export class HomeService {
                   review: item.review,
                   score: item.score,
                   image: item.entry.images.jpg.image_url,
-                  user: item.user.username,
+                  user: { ...item.user },
                   tags: [...item.tags],
                   hoursDifference: Math.round(hoursDifference),
                   id: item.entry.mal_id,
                 };
               })
               .slice(0, 5);
-            console.log(data);
             return data;
           })
         )

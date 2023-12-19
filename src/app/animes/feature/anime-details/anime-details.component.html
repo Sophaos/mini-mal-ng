@@ -1,60 +1,144 @@
-<div *ngIf="anime$ | async as media" class="flex flex-column gap-1 mt-1">
-  <!-- <div class="flex flex-row py-1"> -->
-  <p-card>
-    <app-main-preview-content [media]="media" [isDetailed]="true" />
-  </p-card>
-  <!-- </div> -->
-  <!-- <div class="flex flex-column gap-1"> -->
-  <app-items-container title="Background" [isCollapsed]="true">
-    <div>{{ media.background }}</div>
-  </app-items-container>
-  <app-items-container title="Relations" [isCollapsed]="true">
-    <div class="h-7rem overflow-auto">
-      <div *ngFor="let r of media.relations">
-        <div class="flex flex-row">
-          <div class="w-1">{{ r.relation }}:</div>
-          <div class="w-11">
-            <div *ngFor="let e of r.entry">
-              {{ e.name }}
+<div class="flex flex-column gap-1 mt-1">
+  <ng-container *ngIf="vmAnime$ | async as vm">
+    <p-panel>
+      <app-main-preview-content
+        [media]="vm.anime"
+        [isDetailed]="true"
+        [pictures]="vm.pictures"
+      />
+    </p-panel>
+    <app-items-container
+      *ngIf="vm.anime.background"
+      title="Background"
+      [isCollapsed]="true"
+    >
+      <div>{{ vm.anime.background }}</div>
+    </app-items-container>
+    <app-items-container title="Relations" [isCollapsed]="true">
+      <div class="h-7rem overflow-auto">
+        <div *ngFor="let r of vm.anime.relations">
+          <div class="flex flex-row">
+            <div class="w-1">{{ r.relation }}:</div>
+            <div class="w-11">
+              <div *ngFor="let e of r.entry">
+                {{ e.name }}
+              </div>
             </div>
           </div>
         </div>
       </div>
+    </app-items-container>
+    <div class="flex flex-row gap-1">
+      <app-items-container
+        class="w-6"
+        title="Opening Theme"
+        [isCollapsed]="true"
+      >
+        <div class="h-5rem overflow-auto">
+          <div *ngFor="let o of vm.anime.theme.openings">
+            {{ o }}
+          </div>
+        </div>
+      </app-items-container>
+      <app-items-container
+        class="w-6"
+        title="Ending Theme"
+        [isCollapsed]="true"
+      >
+        <div class="h-5rem overflow-auto">
+          <div *ngFor="let e of vm.anime.theme.endings">
+            {{ e }}
+          </div>
+        </div>
+      </app-items-container>
     </div>
-  </app-items-container>
-  <div class="flex flex-row gap-1">
-    <app-items-container class="w-6" title="Opening Theme" [isCollapsed]="true">
-      <div class="h-5rem overflow-auto">
-        <div *ngFor="let o of media.theme.openings">
-          {{ o }}
+  </ng-container>
+  <ng-container *ngIf="vmExternal$ | async as vm">
+    <div class="flex flex-row gap-1">
+      <app-items-container title="Characters" [isCollapsed]="false" class="w-6">
+        <!-- <div>{{ vm.anime.background }}</div> -->
+        <div class="h-20rem overflow-auto">
+          <div
+            *ngFor="let c of vm.characters"
+            class="flex flex-column xl:flex-row xl:align-items-start p-1 gap-2"
+          >
+            <img
+              class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+              [src]="c.character.images.jpg.image_url"
+            />
+            <div
+              class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
+            >
+              <div
+                class="flex flex-column align-items-center sm:align-items-start gap-3 col-12"
+              >
+                <div class="flex justify-content-between flex-wrap w-full">
+                  <div class="min-w-full">
+                    <div
+                      class="flex flex-row justify-content-between flex-wrap mb-3"
+                    >
+                      <div class="text-bold text-color-secondary">
+                        {{ c.character.name }} ({{ c.role }})
+                      </div>
+                    </div>
+                    <div class="flex flex-column">
+                      <div *ngFor="let v of c.voice_actors">
+                        {{ v.person.name }} ({{ v.language }})
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </app-items-container>
-    <app-items-container class="w-6" title="Ending Theme" [isCollapsed]="true">
-      <div class="h-5rem overflow-auto">
-        <div *ngFor="let e of media.theme.endings">
-          {{ e }}
+      </app-items-container>
+      <app-items-container title="Staff" [isCollapsed]="false" class="w-6">
+        <div class="h-20rem overflow-auto">
+          <div
+            *ngFor="let s of vm.staff"
+            class="flex flex-column xl:flex-row xl:align-items-start p-1 gap-2"
+          >
+            <img
+              class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+              [src]="s.person.images.jpg.image_url"
+            />
+            <div
+              class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
+            >
+              <div
+                class="flex flex-column align-items-center sm:align-items-start gap-3 col-12"
+              >
+                <div class="flex justify-content-between flex-wrap w-full">
+                  <div class="min-w-full">
+                    <div
+                      class="flex flex-row justify-content-between flex-wrap mb-3"
+                    >
+                      <div class="text-bold text-color-secondary">
+                        {{ s.person.name }}
+                      </div>
+                    </div>
+                    <div class="flex flex-column">
+                      <div *ngFor="let v of s.positions">
+                        {{ v }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-    </app-items-container>
-  </div>
-  <app-items-container title="Reviews" [isCollapsed]="true">
-    <div>{{ media.background }}</div>
-  </app-items-container>
-  <app-items-container title="Staff" [isCollapsed]="true">
-    <div>{{ media.background }}</div>
-  </app-items-container>
-  <app-items-container title="Characters" [isCollapsed]="true">
-    <div>{{ media.background }}</div>
-  </app-items-container>
-  <app-items-container title="Pictures" [isCollapsed]="true">
-    <div>{{ media.background }}</div>
-  </app-items-container>
-  <app-items-container title="Recommendations" [isCollapsed]="true">
-    <div>{{ media.background }}</div>
-  </app-items-container>
-  <app-items-container title="Reviews" [isCollapsed]="true">
-    <div>{{ media.background }}</div>
-  </app-items-container>
+      </app-items-container>
+    </div>
+    <app-reviews title="Reviews" [data]="vm.reviews" [isDetailed]="true" />
+  </ng-container>
+  <ng-container *ngIf="vmOthers$ | async as vm">
+    <app-media-carousel
+      *ngIf="vm.recommendations && vm.recommendations.length > 0"
+      [data]="vm.recommendations"
+      title="Recommendations"
+    />
+  </ng-container>
 </div>
 <!-- </div> -->

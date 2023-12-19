@@ -13,6 +13,13 @@ import { ItemsContainerComponent } from 'src/app/home/ui/items-container/items-c
 import { CardModule } from 'primeng/card';
 import { MainPreviewContentComponent } from 'src/app/home/ui/main-preview-content/main-preview-content.component';
 import { DividerModule } from 'primeng/divider';
+import { ReviewsComponent } from 'src/app/home/ui/reviews/reviews.component';
+import { RecommendationsComponent } from 'src/app/home/ui/recommendations/recommendations.component';
+import { MediaCarouselComponent } from 'src/app/home/ui/media-carousel/media-carousel.component';
+import { GalleriaModule } from 'primeng/galleria';
+import { PanelModule } from 'primeng/panel';
+import { AccordionModule } from 'primeng/accordion';
+
 @NgModule({
   declarations: [AnimesListComponent, AnimeDetailsComponent],
   imports: [
@@ -27,6 +34,12 @@ import { DividerModule } from 'primeng/divider';
     ItemsContainerComponent,
     MainPreviewContentComponent,
     DividerModule,
+    ReviewsComponent,
+    RecommendationsComponent,
+    MediaCarouselComponent,
+    GalleriaModule,
+    PanelModule,
+    AccordionModule,
   ],
   providers: [AnimeService],
 })

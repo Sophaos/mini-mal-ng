@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs';
+import { combineLatest, map, switchMap, timer } from 'rxjs';
 import { AnimeService } from '../../data-access/anime.service';
 
 @Component({
@@ -14,6 +14,75 @@ export class AnimeDetailsComponent implements OnInit {
     switchMap((params) =>
       this.animeService.getAnimeFullById$(Number(params.get('id') || 0))
     )
+  );
+
+  pictures$ = this.route.paramMap.pipe(
+    switchMap((params) =>
+      this.animeService.getAnimePictures$(Number(params.get('id') || 0))
+    )
+  );
+
+  characters$ = this.route.paramMap.pipe(
+    switchMap((params) =>
+      this.animeService.getAnimeCharacters$(Number(params.get('id') || 0))
+    )
+  );
+
+  reviews$ = timer(1750).pipe(
+    switchMap(() =>
+      this.route.paramMap.pipe(
+        switchMap((params) =>
+          this.animeService.getAnimeReviews$(Number(params.get('id') || 0))
+        )
+      )
+    )
+  );
+
+  recommendations$ = timer(1750).pipe(
+    switchMap(() =>
+      this.route.paramMap.pipe(
+        switchMap((params) =>
+          this.animeService.getAnimeRecommendations$(
+            Number(params.get('id') || 0)
+          )
+        )
+      )
+    )
+  );
+
+  staff$ = timer(1750).pipe(
+    switchMap(() =>
+      this.route.paramMap.pipe(
+        switchMap((params) =>
+          this.animeService.getAnimeStaff$(Number(params.get('id') || 0))
+        )
+      )
+    )
+  );
+
+  vmAnime$ = combineLatest([this.anime$, this.pictures$]).pipe(
+    map(([anime, pictures]) => ({
+      anime,
+      pictures,
+    }))
+  );
+
+  vmExternal$ = combineLatest([
+    this.staff$,
+    this.reviews$,
+    this.characters$,
+  ]).pipe(
+    map(([staff, reviews, characters]) => ({
+      staff,
+      reviews,
+      characters,
+    }))
+  );
+
+  vmOthers$ = combineLatest([this.recommendations$]).pipe(
+    map(([recommendations]) => ({
+      recommendations,
+    }))
   );
 
   constructor(

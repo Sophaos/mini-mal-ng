@@ -1,5 +1,9 @@
-<div class="flex flex-column xl:flex-row xl:align-items-start p-1 gap-2">
+<div
+  *ngIf="!isDetailed"
+  class="flex flex-column xl:flex-row xl:align-items-start p-1 gap-2"
+>
   <img
+    *ngIf="image"
     class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
     [src]="image"
   />
@@ -28,13 +32,14 @@
           </div>
         </div>
       </div>
-      <div class="fade text-sm">{{ text }}</div>
-      <div class="flex justify-content-between flex-wrap w-full">
+      <pre class="fade text-sm">{{ text }}</pre>
+
+      <div class="flex flex-wrap w-full">
         <div class="flex align-items-center justify-content-center gap-1">
           <div class="font-light text-color-secondary">
             {{ hoursDifference }} hours ago by
           </div>
-          <div>{{ user }}</div>
+          <div>{{ user.username }}</div>
         </div>
       </div>
     </div>
@@ -49,4 +54,55 @@
       </div>
     </div>
   </div>
+</div>
+<div
+  *ngIf="isDetailed"
+  class="flex flex-column xl:flex-row xl:align-items-start"
+>
+  <p-accordion class="w-full">
+    <p-accordionTab>
+      <ng-template pTemplate="header">
+        <div class="flex justify-content-between gap-2 w-full">
+          <div class="flex flex-row gap-2">
+            <div class="flex align-items-center gap-2">
+              <p-avatar [image]="user.images.jpg.image_url" shape="circle" />
+              <span class="font-bold white-space-nowrap">{{
+                user.username
+              }}</span>
+            </div>
+            <div class="flex align-items-center justify-content-center gap-1">
+              <div class="font-light text-color-secondary">
+                {{ hoursDifference }} hours ago
+              </div>
+            </div>
+          </div>
+
+          <div class="flex gap-3 justify-content-center align-items-center">
+            <div class="flex align-items-center justify-content-center">
+              <div *ngFor="let tag of tags">
+                <span *ngIf="tag === 'Recommended'" class="text-green-500">{{
+                  tag
+                }}</span>
+                <span
+                  *ngIf="tag === 'Mixed Feelings'"
+                  class="text-yellow-500"
+                  >{{ tag }}</span
+                >
+                <span *ngIf="tag === 'Not Recommended'" class="text-red-600">{{
+                  tag
+                }}</span>
+              </div>
+            </div>
+            <div class="text-lg font-semibold">
+              {{ score }}
+              <i class="pi pi-star-fill text-yellow-300"></i>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+      <pre class="m-0 text-sm">
+        {{ text }}
+      </pre>
+    </p-accordionTab>
+  </p-accordion>
 </div>

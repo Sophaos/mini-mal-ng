@@ -5,6 +5,8 @@ import { ChipModule } from 'primeng/chip';
 import { ImageModule } from 'primeng/image';
 import { DividerModule } from 'primeng/divider';
 import { CardModule } from 'primeng/card';
+import { GalleriaModule } from 'primeng/galleria';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-main-preview-content',
@@ -16,6 +18,8 @@ import { CardModule } from 'primeng/card';
     ImageModule,
     DividerModule,
     CardModule,
+    GalleriaModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './main-preview-content.component.html',
   styleUrls: ['./main-preview-content.component.scss'],
@@ -24,4 +28,5 @@ import { CardModule } from 'primeng/card';
 export class MainPreviewContentComponent {
   @Input() media!: any;
   @Input() isDetailed: boolean = false;
+  @Input() pictures: any[] = [];
 }

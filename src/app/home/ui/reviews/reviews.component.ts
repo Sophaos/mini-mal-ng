@@ -20,4 +20,5 @@ import { DataViewModule } from 'primeng/dataview';
 export class ReviewsComponent {
   @Input() title!: string;
   @Input() data!: any[];
+  @Input() isDetailed: boolean = false;
 }

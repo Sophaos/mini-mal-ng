@@ -172,6 +172,20 @@
   <div class="col-5 flex justify-content-end px-4">
     <!-- <div class="fade-effect"></div> -->
     <!-- class="sm:w-12 md:w-12 lg:w-12 xl:w-7 min-h-full" -->
-    <p-image [src]="media.image_large" alt="Anime Image" />
+    <p-image
+      *ngIf="pictures.length === 0"
+      [src]="media.image_large"
+      alt="Anime Image"
+    />
+    <p-galleria *ngIf="pictures.length > 0" [value]="pictures" [numVisible]="5">
+      <ng-template pTemplate="item" let-item>
+        <img [src]="item.jpg.large_image_url" style="width: 100%" />
+      </ng-template>
+      <ng-template pTemplate="thumbnail" let-item>
+        <div class="grid grid-nogutter justify-content-center">
+          <img [src]="item.jpg.small_image_url" />
+        </div>
+      </ng-template>
+    </p-galleria>
   </div>
 </div>
