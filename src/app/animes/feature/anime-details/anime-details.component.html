@@ -19,15 +19,15 @@
         <app-relations [relations]="vm.anime.relations" />
       </div>
     </app-items-container>
-    <div class="flex flex-row gap-1">
+    <div class="flex flex-column xl:flex-row lg:flex-row md:flex-row gap-1">
       <app-theme
-        class="w-6"
+        class="flex-1"
         [data]="vm.anime.theme.openings"
         title="Opening Theme"
         [isCollapsed]="true"
       />
       <app-theme
-        class="w-6"
+        class="flex-1"
         [data]="vm.anime.theme.endings"
         title="Ending Theme"
         [isCollapsed]="true"
@@ -35,36 +35,37 @@
     </div>
   </ng-container>
   <ng-container *ngIf="vmExternal$ | async as vm">
-    <div class="flex flex-row gap-1">
-      <app-items-container title="Characters" [isCollapsed]="false" class="w-6">
+    <div class="flex flex-column xl:flex-row lg:flex-row md:flex-row gap-1">
+      <app-items-container
+        title="Characters"
+        [isCollapsed]="false"
+        class="flex-1"
+      >
         <div class="h-20rem overflow-auto">
           <app-characters [characters]="vm.characters" />
         </div>
       </app-items-container>
-      <app-items-container title="Staff" [isCollapsed]="false" class="w-6">
+      <app-items-container title="Staff" [isCollapsed]="false" class="flex-1">
         <div class="h-20rem overflow-auto">
           <app-staff [staff]="vm.staff" />
         </div>
       </app-items-container>
     </div>
-
     <app-items-container title="Latest Anime Review">
       <div class="max-h-30rem overflow-auto">
-        <p-dataView #dv [value]="vm.reviews">
-          <ng-template let-media pTemplate="listItem">
-            <app-detailed-review
-              class="w-12"
-              [text]="media.review"
-              [title]="media.title"
-              [image]="media.image"
-              [score]="media.score"
-              [user]="media.user"
-              [tags]="media.tags"
-              [id]="media.id"
-              [hoursDifference]="media.hoursDifference"
-            />
-          </ng-template>
-        </p-dataView>
+        <ng-container *ngFor="let media of vm.reviews">
+          <app-detailed-review
+            class="w-12"
+            [text]="media.review"
+            [title]="media.title"
+            [image]="media.image"
+            [score]="media.score"
+            [user]="media.user"
+            [tags]="media.tags"
+            [id]="media.id"
+            [hoursDifference]="media.hoursDifference"
+          />
+        </ng-container>
       </div>
     </app-items-container>
   </ng-container>

@@ -7,6 +7,7 @@ import { DividerModule } from 'primeng/divider';
 import { CardModule } from 'primeng/card';
 import { GalleriaModule } from 'primeng/galleria';
 import { ReactiveFormsModule } from '@angular/forms';
+import { DetailedMediaComponent } from 'src/app/shared/ui/detailed-media/detailed-media.component';
 
 @Component({
   selector: 'app-main-preview-content',
@@ -20,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     CardModule,
     GalleriaModule,
     ReactiveFormsModule,
+    DetailedMediaComponent,
   ],
   templateUrl: './main-preview-content.component.html',
   styleUrls: ['./main-preview-content.component.scss'],

@@ -1,0 +1,56 @@
+<ng-container>
+  <div
+    class="flex flex-column xl:flex-row lg:flex-row md:flex-row flex-wrap mt-3 mb-3 text-sm"
+  >
+    <div class="flex-1">
+      <p-divider align="center">Statistics</p-divider>
+      <app-label-info label="Score" [value]="media.score">
+        <i class="pi pi-star-fill text-yellow-300"></i>
+      </app-label-info>
+      <app-label-info label="Rank" [value]="media.rank" />
+      <app-label-info label="Popularity" [value]="media.popularity" />
+      <app-label-info label="Members" [value]="media.members" />
+      <app-label-info label="Favorites" [value]="media.favorites" />
+    </div>
+    <p-divider
+      layout="vertical"
+      class="hidden xl:block lg:block md:block"
+    ></p-divider>
+    <div class="flex-1">
+      <p-divider align="center">Airing Time</p-divider>
+      <app-label-info label="Season">
+        <a
+          [routerLink]="['/season', media.year, media.season]"
+          class="no-underline text-primary font-semibold"
+        >
+          {{ media.season | titlecase }} {{ media.year }}
+        </a>
+      </app-label-info>
+      <app-label-info label="Aired" [value]="media.aired.string" />
+      <app-label-info label="Status" [value]="media.status" />
+      <app-label-info label="Duration" [value]="media.duration" />
+      <app-label-info label="Episodes" [value]="media.episodes" />
+    </div>
+    <p-divider
+      layout="vertical"
+      class="hidden xl:block lg:block md:block"
+    ></p-divider>
+    <div class="flex-1">
+      <p-divider align="center">Informations</p-divider>
+      <app-label-info label="Media" [value]="media.type" />
+      <app-label-info label="Source" [value]="media.source" />
+      <app-label-info label="Rating" [value]="media.rating" />
+    </div>
+  </div>
+  <p-divider></p-divider>
+  <div class="flex flex-column my-2 text-sm ml-2">
+    <app-label-list label="Studios" [data]="media.studios" />
+    <app-label-list label="Producers" [data]="media.producers" />
+    <app-label-list label="Streaming" [data]="media.streaming" />
+    <app-label-list
+      *ngIf="media.licensors?.length > 0"
+      label="Licensors"
+      [data]="media.licensors"
+    />
+  </div>
+</ng-container>

@@ -22,13 +22,17 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  characters$ = this.route.paramMap.pipe(
-    switchMap((params) =>
-      this.animeService.getAnimeCharacters$(Number(params.get('id') || 0))
+  characters$ = timer(1250).pipe(
+    switchMap(() =>
+      this.route.paramMap.pipe(
+        switchMap((params) =>
+          this.animeService.getAnimeCharacters$(Number(params.get('id') || 0))
+        )
+      )
     )
   );
 
-  reviews$ = timer(1750).pipe(
+  reviews$ = timer(1250).pipe(
     switchMap(() =>
       this.route.paramMap.pipe(
         switchMap((params) =>
@@ -38,23 +42,23 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  recommendations$ = timer(1750).pipe(
+  staff$ = timer(1250).pipe(
+    switchMap(() =>
+      this.route.paramMap.pipe(
+        switchMap((params) =>
+          this.animeService.getAnimeStaff$(Number(params.get('id') || 0))
+        )
+      )
+    )
+  );
+
+  recommendations$ = timer(2250).pipe(
     switchMap(() =>
       this.route.paramMap.pipe(
         switchMap((params) =>
           this.animeService.getAnimeRecommendations$(
             Number(params.get('id') || 0)
           )
-        )
-      )
-    )
-  );
-
-  staff$ = timer(1750).pipe(
-    switchMap(() =>
-      this.route.paramMap.pipe(
-        switchMap((params) =>
-          this.animeService.getAnimeStaff$(Number(params.get('id') || 0))
         )
       )
     )

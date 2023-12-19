@@ -1,0 +1,7 @@
+<div class="flex flex-row justify-content-between">
+  <div>{{ label }}:</div>
+  <div class="font-semibold">
+    <span *ngIf="value">{{ value }}</span>
+    <ng-content></ng-content>
+  </div>
+</div>
