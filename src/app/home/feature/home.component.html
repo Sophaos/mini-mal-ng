@@ -1,25 +1,51 @@
-<ng-container *ngIf="vmCarousels$ | async as vm">
+<ng-container *ngIf="vmMain$ | async as vm">
   <app-main-preview
     header="Top Airing Animes"
     [data]="vm.currentSeason"
     [link]="['/season', currentYear, currentSeason]"
   />
   <app-media-carousel
-    [data]="vm.recentEpisodes"
+    [data]="vm.episodes"
     title="Latest Updated Episode Videos"
   />
 </ng-container>
-<ng-container *ngIf="vm$ | async as vm">
+<ng-container *ngIf="vmOthers$ | async as vm">
   <div class="flex flex-row gap-1 mt-1">
-    <app-reviews
-      class="w-6"
-      title="Latest Anime Review"
-      [data]="vm.animeReviews"
-    />
-    <app-recommendations
-      class="w-6"
-      title="Latest Anime Recommendations"
-      [data]="vm.animeRecommendations"
-    />
+    <app-items-container class="w-6" title="Latest Anime Review">
+      <div class="max-h-30rem overflow-auto">
+        <p-dataView #dv [value]="vm.reviews">
+          <ng-template let-media pTemplate="listItem">
+            <app-review-row
+              class="w-12"
+              [text]="media.review"
+              [title]="media.title"
+              [image]="media.image"
+              [score]="media.score"
+              [user]="media.user"
+              [tags]="media.tags"
+              [id]="media.id"
+              [hoursDifference]="media.hoursDifference"
+            />
+          </ng-template>
+        </p-dataView>
+      </div>
+    </app-items-container>
+    <app-items-container class="w-6" title="Latest Anime Recommendations">
+      <div class="max-h-30rem overflow-auto">
+        <p-dataView #dv [value]="vm.recommendations">
+          <ng-template let-media pTemplate="listItem">
+            <app-recommendation-row
+              class="w-12"
+              [title]="media.title"
+              [likedMedia]="media.likedMedia"
+              [mightLikeMedia]="media.mightLikeMedia"
+              [content]="media.content"
+              [hoursDifference]="media.hoursDifference"
+              [user]="media.user"
+            />
+          </ng-template>
+        </p-dataView>
+      </div>
+    </app-items-container>
   </div>
 </ng-container>

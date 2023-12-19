@@ -13,12 +13,18 @@ import { ItemsContainerComponent } from 'src/app/home/ui/items-container/items-c
 import { CardModule } from 'primeng/card';
 import { MainPreviewContentComponent } from 'src/app/home/ui/main-preview-content/main-preview-content.component';
 import { DividerModule } from 'primeng/divider';
-import { ReviewsComponent } from 'src/app/home/ui/reviews/reviews.component';
-import { RecommendationsComponent } from 'src/app/home/ui/recommendations/recommendations.component';
 import { MediaCarouselComponent } from 'src/app/home/ui/media-carousel/media-carousel.component';
 import { GalleriaModule } from 'primeng/galleria';
 import { PanelModule } from 'primeng/panel';
 import { AccordionModule } from 'primeng/accordion';
+import { DataViewModule } from 'primeng/dataview';
+import { ReviewRowComponent } from 'src/app/home/ui/review-row/review-row.component';
+import { RecommendationRowComponent } from 'src/app/home/ui/recommendation-row/recommendation-row.component';
+import { DetailedReviewComponent } from 'src/app/shared/ui/detailed-review/detailed-review.component';
+import { ThemeComponent } from '../../ui/theme/theme.component';
+import { StaffComponent } from '../../ui/staff/staff.component';
+import { CharactersComponent } from 'src/app/shared/ui/characters/characters.component';
+import { RelationsComponent } from 'src/app/shared/ui/relations/relations.component';
 
 @NgModule({
   declarations: [AnimesListComponent, AnimeDetailsComponent],
@@ -34,12 +40,18 @@ import { AccordionModule } from 'primeng/accordion';
     ItemsContainerComponent,
     MainPreviewContentComponent,
     DividerModule,
-    ReviewsComponent,
-    RecommendationsComponent,
     MediaCarouselComponent,
     GalleriaModule,
     PanelModule,
     AccordionModule,
+    DataViewModule,
+    ReviewRowComponent,
+    RecommendationRowComponent,
+    DetailedReviewComponent,
+    ThemeComponent,
+    StaffComponent,
+    CharactersComponent,
+    RelationsComponent,
   ],
   providers: [AnimeService],
 })

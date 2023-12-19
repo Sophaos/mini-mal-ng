@@ -1,25 +1,17 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterLink, RouterOutlet } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { AvatarModule } from 'primeng/avatar';
-import { AvatarGroupModule } from 'primeng/avatargroup';
 
 @Component({
-  selector: 'app-review-row',
+  selector: 'app-detailed-review',
   standalone: true,
-  imports: [
-    CommonModule,
-    RouterLink,
-    RouterOutlet,
-    AccordionModule,
-    AvatarModule,
-  ],
-  templateUrl: './review-row.component.html',
-  styleUrls: ['./review-row.component.scss'],
+  imports: [CommonModule, AccordionModule, AvatarModule],
+  templateUrl: './detailed-review.component.html',
+  styleUrls: ['./detailed-review.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class ReviewRowComponent {
+export class DetailedReviewComponent {
   @Input() score!: number;
   @Input() text!: string;
   @Input() image!: string;

@@ -88,7 +88,7 @@ export class HomeService {
                   id: item.entry.mal_id,
                 };
               })
-              .slice(0, 5);
+              .slice(0, 10);
             return data;
           })
         )
@@ -135,12 +135,9 @@ export class HomeService {
               content: item.content,
               user: item.user.username,
               hoursDifference: Math.round(hoursDifference),
-
-              // image: item.entry.images.jpg.image_url,
             };
           })
-          .slice(0, 5);
-        console.log(data);
+          .slice(0, 10);
         return data;
       })
     );

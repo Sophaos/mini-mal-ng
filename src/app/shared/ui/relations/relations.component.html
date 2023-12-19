@@ -1,0 +1,10 @@
+<div *ngFor="let r of relations">
+  <div class="flex flex-row">
+    <div class="w-1">{{ r.relation }}:</div>
+    <div class="w-11">
+      <div *ngFor="let e of r.entry">
+        {{ e.name }}
+      </div>
+    </div>
+  </div>
+</div>

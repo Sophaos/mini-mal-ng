@@ -16,122 +16,57 @@
     </app-items-container>
     <app-items-container title="Relations" [isCollapsed]="true">
       <div class="h-7rem overflow-auto">
-        <div *ngFor="let r of vm.anime.relations">
-          <div class="flex flex-row">
-            <div class="w-1">{{ r.relation }}:</div>
-            <div class="w-11">
-              <div *ngFor="let e of r.entry">
-                {{ e.name }}
-              </div>
-            </div>
-          </div>
-        </div>
+        <app-relations [relations]="vm.anime.relations" />
       </div>
     </app-items-container>
     <div class="flex flex-row gap-1">
-      <app-items-container
+      <app-theme
         class="w-6"
+        [data]="vm.anime.theme.openings"
         title="Opening Theme"
         [isCollapsed]="true"
-      >
-        <div class="h-5rem overflow-auto">
-          <div *ngFor="let o of vm.anime.theme.openings">
-            {{ o }}
-          </div>
-        </div>
-      </app-items-container>
-      <app-items-container
+      />
+      <app-theme
         class="w-6"
+        [data]="vm.anime.theme.endings"
         title="Ending Theme"
         [isCollapsed]="true"
-      >
-        <div class="h-5rem overflow-auto">
-          <div *ngFor="let e of vm.anime.theme.endings">
-            {{ e }}
-          </div>
-        </div>
-      </app-items-container>
+      />
     </div>
   </ng-container>
   <ng-container *ngIf="vmExternal$ | async as vm">
     <div class="flex flex-row gap-1">
       <app-items-container title="Characters" [isCollapsed]="false" class="w-6">
-        <!-- <div>{{ vm.anime.background }}</div> -->
         <div class="h-20rem overflow-auto">
-          <div
-            *ngFor="let c of vm.characters"
-            class="flex flex-column xl:flex-row xl:align-items-start p-1 gap-2"
-          >
-            <img
-              class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-              [src]="c.character.images.jpg.image_url"
-            />
-            <div
-              class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
-            >
-              <div
-                class="flex flex-column align-items-center sm:align-items-start gap-3 col-12"
-              >
-                <div class="flex justify-content-between flex-wrap w-full">
-                  <div class="min-w-full">
-                    <div
-                      class="flex flex-row justify-content-between flex-wrap mb-3"
-                    >
-                      <div class="text-bold text-color-secondary">
-                        {{ c.character.name }} ({{ c.role }})
-                      </div>
-                    </div>
-                    <div class="flex flex-column">
-                      <div *ngFor="let v of c.voice_actors">
-                        {{ v.person.name }} ({{ v.language }})
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <app-characters [characters]="vm.characters" />
         </div>
       </app-items-container>
       <app-items-container title="Staff" [isCollapsed]="false" class="w-6">
         <div class="h-20rem overflow-auto">
-          <div
-            *ngFor="let s of vm.staff"
-            class="flex flex-column xl:flex-row xl:align-items-start p-1 gap-2"
-          >
-            <img
-              class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-              [src]="s.person.images.jpg.image_url"
-            />
-            <div
-              class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
-            >
-              <div
-                class="flex flex-column align-items-center sm:align-items-start gap-3 col-12"
-              >
-                <div class="flex justify-content-between flex-wrap w-full">
-                  <div class="min-w-full">
-                    <div
-                      class="flex flex-row justify-content-between flex-wrap mb-3"
-                    >
-                      <div class="text-bold text-color-secondary">
-                        {{ s.person.name }}
-                      </div>
-                    </div>
-                    <div class="flex flex-column">
-                      <div *ngFor="let v of s.positions">
-                        {{ v }}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <app-staff [staff]="vm.staff" />
         </div>
       </app-items-container>
     </div>
-    <app-reviews title="Reviews" [data]="vm.reviews" [isDetailed]="true" />
+
+    <app-items-container title="Latest Anime Review">
+      <div class="max-h-30rem overflow-auto">
+        <p-dataView #dv [value]="vm.reviews">
+          <ng-template let-media pTemplate="listItem">
+            <app-detailed-review
+              class="w-12"
+              [text]="media.review"
+              [title]="media.title"
+              [image]="media.image"
+              [score]="media.score"
+              [user]="media.user"
+              [tags]="media.tags"
+              [id]="media.id"
+              [hoursDifference]="media.hoursDifference"
+            />
+          </ng-template>
+        </p-dataView>
+      </div>
+    </app-items-container>
   </ng-container>
   <ng-container *ngIf="vmOthers$ | async as vm">
     <app-media-carousel
@@ -141,4 +76,3 @@
     />
   </ng-container>
 </div>
-<!-- </div> -->

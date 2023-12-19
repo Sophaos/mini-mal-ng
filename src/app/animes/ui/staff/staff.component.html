@@ -1,0 +1,31 @@
+<div
+  *ngFor="let s of staff"
+  class="flex flex-column xl:flex-row xl:align-items-start p-1 gap-2"
+>
+  <img
+    class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
+    [src]="s.person.images.jpg.image_url"
+  />
+  <div
+    class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
+  >
+    <div
+      class="flex flex-column align-items-center sm:align-items-start gap-3 col-12"
+    >
+      <div class="flex justify-content-between flex-wrap w-full">
+        <div class="min-w-full">
+          <div class="flex flex-row justify-content-between flex-wrap mb-3">
+            <div class="text-bold text-color-secondary">
+              {{ s.person.name }}
+            </div>
+          </div>
+          <div class="flex flex-column">
+            <div *ngFor="let v of s.positions">
+              {{ v }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
