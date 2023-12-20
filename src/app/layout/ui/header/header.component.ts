@@ -49,14 +49,6 @@ export class HeaderComponent implements OnInit {
     ];
   }
 
-  toggleSideNav() {
-    this.toggleSideNavEvent.emit();
-  }
-
-  searchTerm(event: AutoCompleteCompleteEvent) {
-    console.log(event);
-  }
-
   getCurrentSeason(): string {
     const currentDate = new Date();
     const currentMonth = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1

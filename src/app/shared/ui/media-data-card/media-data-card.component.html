@@ -1,10 +1,14 @@
-<div class="p-4 flex flex-column h-full">
-  <a
-    class="font-semibold flex justify-content-center text-primary text-overflow-ellipsis no-underline"
-    [routerLink]="['/animes', media.mal_id]"
-  >
-    {{ media.title_english ?? media.title }}
-  </a>
+<div
+  class="p-4 flex flex-column h-full border-1 surface-border surface-card border-round"
+>
+  <div>
+    <a
+      class="font-semibold flex justify-content-center text-primary text-overflow-ellipsis no-underline"
+      [routerLink]="['/animes', media.mal_id]"
+    >
+      {{ media.title_english ?? media.title }}
+    </a>
+  </div>
   <div
     class="flex align-items-center align-items-center justify-content-center"
   >
@@ -15,18 +19,19 @@
       ({{ media.episodes }} eps)
     </div>
   </div>
+
+  <div
+    class="flex flex-column xl:flex-row lg:flex-row md:flex-row align-items-center"
+  >
+    <img class="w-6 border-round" [src]="media.images" />
+    <div class="synopsis px-3 text-sm max-h-15rem w-auto overflow-auto">
+      {{ media.synopsis }}
+    </div>
+  </div>
   <div
     class="flex flex-wrap align-items-center align-items-center justify-content-center"
   >
     <p-chip class="mx-1 my-1" *ngFor="let g of media.genres" [label]="g.name" />
-  </div>
-  <div class="flex justify-content-center">
-    <div>
-      <p-image class="shadow-2 border-round" [src]="media.images" />
-    </div>
-    <p class="synopsis px-3 text-sm max-h-15rem">
-      {{ media.synopsis }}
-    </p>
   </div>
   <div
     class="flex align-items-center align-items-center justify-content-center gap-4 align-items-end h-full"

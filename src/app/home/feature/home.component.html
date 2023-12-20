@@ -15,7 +15,7 @@
   >
     <app-items-container title="Latest Anime Review" class="flex-1">
       <div class="max-h-30rem overflow-auto">
-        <ng-container *ngFor="let media of vm.reviews">
+        <div *ngFor="let media of vm.reviews">
           <app-review-row
             [text]="media.review"
             [title]="media.title"
@@ -26,7 +26,7 @@
             [id]="media.id"
             [hoursDifference]="media.hoursDifference"
           />
-        </ng-container>
+        </div>
       </div>
     </app-items-container>
     <app-items-container title="Latest Anime Recommendations" class="flex-1">
