@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { AvatarModule } from 'primeng/avatar';
-import { AvatarGroupModule } from 'primeng/avatargroup';
+import { ScrollPanelModule } from 'primeng/scrollpanel';
 
 @Component({
   selector: 'app-review-row',
@@ -14,6 +14,7 @@ import { AvatarGroupModule } from 'primeng/avatargroup';
     RouterOutlet,
     AccordionModule,
     AvatarModule,
+    ScrollPanelModule,
   ],
   templateUrl: './review-row.component.html',
   styleUrls: ['./review-row.component.scss'],

@@ -22,7 +22,7 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  characters$ = timer(1250).pipe(
+  characters$ = timer(2250).pipe(
     switchMap(() =>
       this.route.paramMap.pipe(
         switchMap((params) =>
@@ -32,7 +32,7 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  reviews$ = timer(1250).pipe(
+  reviews$ = timer(2250).pipe(
     switchMap(() =>
       this.route.paramMap.pipe(
         switchMap((params) =>
@@ -42,7 +42,7 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  staff$ = timer(1250).pipe(
+  staff$ = timer(2250).pipe(
     switchMap(() =>
       this.route.paramMap.pipe(
         switchMap((params) =>
@@ -52,7 +52,7 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  recommendations$ = timer(2250).pipe(
+  recommendations$ = timer(1250).pipe(
     switchMap(() =>
       this.route.paramMap.pipe(
         switchMap((params) =>

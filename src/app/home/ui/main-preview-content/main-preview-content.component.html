@@ -11,35 +11,38 @@
     <div class="text-lg font-light text-color-secondary">
       {{ media.title_english }}
     </div>
-    <div class="flex-row flex-wrap flex-row">
-      <div class="my-1">
-        <p-chip class="mx-1" *ngFor="let g of media.genres" [label]="g.name" />
-        <ng-container *ngIf="isDetailed">
-          <p-chip
-            class="mx-1"
-            *ngFor="let t of media.themes"
-            [label]="t.name"
-          />
-          <p-chip
-            class="mx-1"
-            *ngFor="let t of media.demographics"
-            [label]="t.name"
-          />
-        </ng-container>
+    <div class="my-1 flex flex-row flex-wrap">
+      <div class="m-1 flex flex-row flex-wrap" *ngFor="let g of media.genres">
+        <p-chip [label]="g.name" />
       </div>
+      <ng-container *ngIf="isDetailed">
+        <div class="m-1 flex flex-row flex-wrap" *ngFor="let t of media.themes">
+          <p-chip [label]="t.name" />
+        </div>
+        <div
+          class="m-1 flex flex-row flex-wrap"
+          *ngFor="let t of media.demographics"
+        >
+          <p-chip [label]="t.name" />
+        </div>
+      </ng-container>
     </div>
     <p class="font-italic">{{ media.synopsis }}</p>
     <app-detailed-media *ngIf="isDetailed" [media]="media" />
   </div>
   <div class="w-12 xl:w-5 flex justify-content-center px-4">
-    <!-- <div class="fade-effect"></div> -->
-    <!-- class="sm:w-12 md:w-12 lg:w-12 xl:w-7 min-h-full" -->
-    <p-image
+    <img
+      class="w-12 md:w-7 lg:w-7 xl:w7 border-round"
       *ngIf="pictures.length === 0"
       [src]="media.image_large"
       alt="Anime Image"
     />
-    <p-galleria *ngIf="pictures.length > 0" [value]="pictures" [numVisible]="5">
+    <p-galleria
+      *ngIf="pictures.length > 0"
+      [value]="pictures"
+      [numVisible]="5"
+      class="max-w-25rem"
+    >
       <ng-template pTemplate="item" let-item>
         <img [src]="item.jpg.large_image_url" style="width: 100%" />
       </ng-template>
