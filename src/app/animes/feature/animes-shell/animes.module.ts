@@ -13,7 +13,6 @@ import { ItemsContainerComponent } from 'src/app/home/ui/items-container/items-c
 import { CardModule } from 'primeng/card';
 import { MainPreviewContentComponent } from 'src/app/home/ui/main-preview-content/main-preview-content.component';
 import { DividerModule } from 'primeng/divider';
-import { MediaCarouselComponent } from 'src/app/home/ui/media-carousel/media-carousel.component';
 import { GalleriaModule } from 'primeng/galleria';
 import { PanelModule } from 'primeng/panel';
 import { AccordionModule } from 'primeng/accordion';
@@ -25,6 +24,7 @@ import { ThemeComponent } from '../../ui/theme/theme.component';
 import { StaffComponent } from '../../ui/staff/staff.component';
 import { CharactersComponent } from 'src/app/shared/ui/characters/characters.component';
 import { RelationsComponent } from 'src/app/shared/ui/relations/relations.component';
+import { MediaRecommendationsComponent } from 'src/app/home/ui/media-recommendations/media-recommendations.component';
 
 @NgModule({
   declarations: [AnimesListComponent, AnimeDetailsComponent],
@@ -40,7 +40,6 @@ import { RelationsComponent } from 'src/app/shared/ui/relations/relations.compon
     ItemsContainerComponent,
     MainPreviewContentComponent,
     DividerModule,
-    MediaCarouselComponent,
     GalleriaModule,
     PanelModule,
     AccordionModule,
@@ -52,6 +51,7 @@ import { RelationsComponent } from 'src/app/shared/ui/relations/relations.compon
     StaffComponent,
     CharactersComponent,
     RelationsComponent,
+    MediaRecommendationsComponent,
   ],
   providers: [AnimeService],
 })

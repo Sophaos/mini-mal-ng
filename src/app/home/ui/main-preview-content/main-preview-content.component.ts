@@ -8,6 +8,7 @@ import { CardModule } from 'primeng/card';
 import { GalleriaModule } from 'primeng/galleria';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DetailedMediaComponent } from 'src/app/shared/ui/detailed-media/detailed-media.component';
+import { ChipListComponent } from 'src/app/shared/ui/chip-list/chip-list.component';
 
 @Component({
   selector: 'app-main-preview-content',
@@ -15,13 +16,13 @@ import { DetailedMediaComponent } from 'src/app/shared/ui/detailed-media/detaile
   imports: [
     CommonModule,
     RouterLink,
-    ChipModule,
     ImageModule,
     DividerModule,
     CardModule,
     GalleriaModule,
     ReactiveFormsModule,
     DetailedMediaComponent,
+    ChipListComponent,
   ],
   templateUrl: './main-preview-content.component.html',
   styleUrls: ['./main-preview-content.component.scss'],

@@ -9,9 +9,7 @@
       {{ media.title_english ?? media.title }}
     </a>
   </div>
-  <div
-    class="flex align-items-center align-items-center justify-content-center"
-  >
+  <div class="flex align-items-center justify-content-center">
     <div *ngIf="media.aired?.from" class="mx-3 text-color-secondary">
       {{ media.aired.from | date : "yyyy-MM-dd" }}
     </div>
@@ -19,10 +17,8 @@
       ({{ media.episodes }} eps)
     </div>
   </div>
-  <div
-    class="flex flex-wrap align-items-center align-items-center justify-content-center"
-  >
-    <p-chip class="mx-1 my-1" *ngFor="let g of media.genres" [label]="g.name" />
+  <div class="my-1 flex flex-row flex-wrap justify-content-center">
+    <app-chip-list [data]="media.genres" />
   </div>
   <div
     class="flex flex-column xl:flex-row lg:flex-row md:flex-row align-items-center"
@@ -34,7 +30,7 @@
   </div>
 
   <div
-    class="flex align-items-center align-items-center justify-content-center gap-4 align-items-end h-full"
+    class="flex align-items-center justify-content-center gap-4 align-items-end h-full my-1"
   >
     <div>
       {{ media.score }}

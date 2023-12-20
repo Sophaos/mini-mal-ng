@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { SidebarModule } from 'primeng/sidebar';
-import { MediaCardComponent } from 'src/app/home/ui/media-card/media-card.component';
+import { CarouselItemComponent } from 'src/app/home/ui/carousel-item/carousel-item.component';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormsModule } from '@angular/forms';
@@ -12,7 +12,7 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     SidebarModule,
-    MediaCardComponent,
+    CarouselItemComponent,
     ButtonModule,
     InputTextModule,
     FormsModule,

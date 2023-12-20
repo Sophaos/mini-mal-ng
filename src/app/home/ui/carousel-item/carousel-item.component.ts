@@ -4,13 +4,13 @@ import { RouterModule } from '@angular/router';
 import { ImageModule } from 'primeng/image';
 
 @Component({
-  selector: 'app-media-card',
+  selector: 'app-carousel-item',
   standalone: true,
   imports: [CommonModule, RouterModule, ImageModule],
-  templateUrl: './media-card.component.html',
-  styleUrls: ['./media-card.component.scss'],
+  templateUrl: './carousel-item.component.html',
+  styleUrls: ['./carousel-item.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MediaCardComponent {
-  @Input() anime!: any;
+export class CarouselItemComponent {
+  @Input() media!: any;
 }

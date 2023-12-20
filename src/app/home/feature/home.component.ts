@@ -9,26 +9,20 @@ import { SeasonsService } from 'src/app/season/data-access/seasons.service';
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent {
   currentSeason = '';
   currentYear = new Date().getFullYear();
   animeReviews$ = this.homeService.animeReviews$;
   currentSeason$ = this.homeService.topAnimes$;
-  recentEpisodes$ = this.homeService.recentEpisodes$;
   animeRecommendations = this.homeService.recentAnimeRecommendations$;
 
-  vmMain$ = combineLatest([this.currentSeason$, this.recentEpisodes$]).pipe(
-    map(([currentSeason, episodes]) => ({
-      currentSeason,
-      episodes,
-    }))
-  );
-
-  vmOthers$ = combineLatest([
+  vmMain$ = combineLatest([
+    this.currentSeason$,
     this.animeReviews$,
     this.animeRecommendations,
   ]).pipe(
-    map(([reviews, recommendations]) => ({
+    map(([currentSeason, reviews, recommendations]) => ({
+      currentSeason,
       reviews,
       recommendations,
     }))
@@ -39,24 +33,5 @@ export class HomeComponent implements OnInit {
     private seasonService: SeasonsService
   ) {
     this.currentSeason = this.seasonService.getCurrentSeason();
-  }
-  ngOnInit(): void {
-    //   this.responsiveOptions = [
-    //     {
-    //       breakpoint: '1400px',
-    //       numVisible: 7,
-    //       numScroll: 3,
-    //     },
-    //     {
-    //       breakpoint: '1220px',
-    //       numVisible: 5,
-    //       numScroll: 2,
-    //     },
-    //     {
-    //       breakpoint: '1100px',
-    //       numVisible: 4,
-    //       numScroll: 1,
-    //     },
-    //   ];
   }
 }

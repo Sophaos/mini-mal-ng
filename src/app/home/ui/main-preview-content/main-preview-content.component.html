@@ -12,19 +12,10 @@
       {{ media.title_english }}
     </div>
     <div class="my-1 flex flex-row flex-wrap">
-      <div class="m-1 flex flex-row flex-wrap" *ngFor="let g of media.genres">
-        <p-chip [label]="g.name" />
-      </div>
+      <app-chip-list [data]="media.genres" />
       <ng-container *ngIf="isDetailed">
-        <div class="m-1 flex flex-row flex-wrap" *ngFor="let t of media.themes">
-          <p-chip [label]="t.name" />
-        </div>
-        <div
-          class="m-1 flex flex-row flex-wrap"
-          *ngFor="let t of media.demographics"
-        >
-          <p-chip [label]="t.name" />
-        </div>
+        <app-chip-list [data]="media.themes" />
+        <app-chip-list [data]="media.demographics" />
       </ng-container>
     </div>
     <p class="font-italic">{{ media.synopsis }}</p>

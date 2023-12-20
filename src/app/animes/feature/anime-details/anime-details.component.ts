@@ -22,17 +22,13 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  characters$ = timer(2250).pipe(
-    switchMap(() =>
-      this.route.paramMap.pipe(
-        switchMap((params) =>
-          this.animeService.getAnimeCharacters$(Number(params.get('id') || 0))
-        )
-      )
+  characters$ = this.route.paramMap.pipe(
+    switchMap((params) =>
+      this.animeService.getAnimeCharacters$(Number(params.get('id') || 0))
     )
   );
 
-  reviews$ = timer(2250).pipe(
+  reviews$ = timer(2000).pipe(
     switchMap(() =>
       this.route.paramMap.pipe(
         switchMap((params) =>
@@ -42,7 +38,7 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  staff$ = timer(2250).pipe(
+  staff$ = timer(2000).pipe(
     switchMap(() =>
       this.route.paramMap.pipe(
         switchMap((params) =>
@@ -52,7 +48,7 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  recommendations$ = timer(1250).pipe(
+  recommendations$ = timer(2000).pipe(
     switchMap(() =>
       this.route.paramMap.pipe(
         switchMap((params) =>
@@ -64,27 +60,26 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  vmAnime$ = combineLatest([this.anime$, this.pictures$]).pipe(
-    map(([anime, pictures]) => ({
+  vmAnime$ = combineLatest([
+    this.anime$,
+    this.pictures$,
+    this.characters$,
+  ]).pipe(
+    map(([anime, pictures, characters]) => ({
       anime,
       pictures,
+      characters,
     }))
   );
 
   vmExternal$ = combineLatest([
     this.staff$,
     this.reviews$,
-    this.characters$,
+    this.recommendations$,
   ]).pipe(
-    map(([staff, reviews, characters]) => ({
+    map(([staff, reviews, recommendations]) => ({
       staff,
       reviews,
-      characters,
-    }))
-  );
-
-  vmOthers$ = combineLatest([this.recommendations$]).pipe(
-    map(([recommendations]) => ({
       recommendations,
     }))
   );

@@ -1,0 +1,10 @@
+<!-- [routerLink]="['/animes', anime.mal_id]" -->
+<div class="flex flex-column h-full align-items-center">
+  <div
+    class="no-underline font-bold text-primary cursor-pointer"
+    [routerLink]="['/animes', media.mal_id]"
+  >
+    {{ media.title ?? "hello" }}
+  </div>
+  <img [src]="media.image" class="w-8" />
+</div>

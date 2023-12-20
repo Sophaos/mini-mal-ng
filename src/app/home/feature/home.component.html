@@ -4,12 +4,6 @@
     [data]="vm.currentSeason"
     [link]="['/season', currentYear, currentSeason]"
   />
-  <app-media-carousel
-    [data]="vm.episodes"
-    title="Latest Updated Episode Videos"
-  />
-</ng-container>
-<ng-container *ngIf="vmOthers$ | async as vm">
   <div
     class="flex flex-column xl:flex-row lg:flex-row md:flex-row flex-wrap gap-1 mt-1 w-full"
   >

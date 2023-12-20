@@ -10,7 +10,7 @@
     <app-items-container
       *ngIf="vm.anime.background"
       title="Background"
-      [isCollapsed]="true"
+      [isCollapsed]="false"
     >
       <div>{{ vm.anime.background }}</div>
     </app-items-container>
@@ -33,24 +33,25 @@
         [isCollapsed]="true"
       />
     </div>
+    <app-items-container
+      title="Characters"
+      [isCollapsed]="false"
+      class="flex-1"
+    >
+      <div class="h-20rem overflow-auto">
+        <app-characters [characters]="vm.characters" />
+      </div>
+    </app-items-container>
   </ng-container>
   <ng-container *ngIf="vmExternal$ | async as vm">
-    <div class="flex flex-column xl:flex-row lg:flex-row md:flex-row gap-1">
-      <app-items-container
-        title="Characters"
-        [isCollapsed]="false"
-        class="flex-1"
-      >
-        <div class="h-20rem overflow-auto">
-          <app-characters [characters]="vm.characters" />
-        </div>
-      </app-items-container>
-      <app-items-container title="Staff" [isCollapsed]="false" class="flex-1">
-        <div class="h-20rem overflow-auto">
-          <app-staff [staff]="vm.staff" />
-        </div>
-      </app-items-container>
-    </div>
+    <!-- <div class="flex flex-column xl:flex-row lg:flex-row md:flex-row gap-1"> -->
+
+    <app-items-container title="Staff" [isCollapsed]="true" class="flex-1">
+      <div class="h-20rem overflow-auto">
+        <app-staff [staff]="vm.staff" />
+      </div>
+    </app-items-container>
+    <!-- </div> -->
     <app-items-container title="Latest Anime Review">
       <div class="max-h-30rem overflow-auto">
         <ng-container *ngFor="let media of vm.reviews">
@@ -68,12 +69,13 @@
         </ng-container>
       </div>
     </app-items-container>
-  </ng-container>
-  <ng-container *ngIf="vmOthers$ | async as vm">
-    <app-media-carousel
-      *ngIf="vm.recommendations && vm.recommendations.length > 0"
-      [data]="vm.recommendations"
-      title="Recommendations"
-    />
+    <app-items-container title="Recommendations">
+      <div class="max-h-30rem overflow-auto">
+        <app-media-recommendations
+          *ngIf="vm.recommendations && vm.recommendations.length > 0"
+          [recommendations]="vm.recommendations"
+        />
+      </div>
+    </app-items-container>
   </ng-container>
 </div>

@@ -61,39 +61,35 @@ export class HomeService {
       )
     );
 
-  animeReviews$ = timer(1750).pipe(
-    switchMap(() =>
-      this.http
-        .get(`${this.apiUrl}/${REVIEWS}/${ANIME}`, {
-          params: this.buildParams(REVIEWS_PARAMS),
-        })
-        .pipe(
-          map((response: any) => {
-            const currentDate = new Date();
-            const data = response.data
-              .map((item: any) => {
-                const targetDate = new Date(item.date);
+  animeReviews$ = this.http
+    .get(`${this.apiUrl}/${REVIEWS}/${ANIME}`, {
+      params: this.buildParams(REVIEWS_PARAMS),
+    })
+    .pipe(
+      map((response: any) => {
+        const currentDate = new Date();
+        const data = response.data
+          .map((item: any) => {
+            const targetDate = new Date(item.date);
 
-                const timeDifferenceMillis =
-                  currentDate.getTime() - targetDate.getTime();
-                const hoursDifference = timeDifferenceMillis / (1000 * 60 * 60);
-                return {
-                  ...item.entry,
-                  review: item.review,
-                  score: item.score,
-                  image: item.entry.images.jpg.image_url,
-                  user: { ...item.user },
-                  tags: [...item.tags],
-                  hoursDifference: Math.round(hoursDifference),
-                  id: item.entry.mal_id,
-                };
-              })
-              .slice(0, 10);
-            return data;
+            const timeDifferenceMillis =
+              currentDate.getTime() - targetDate.getTime();
+            const hoursDifference = timeDifferenceMillis / (1000 * 60 * 60);
+            return {
+              ...item.entry,
+              review: item.review,
+              score: item.score,
+              image: item.entry.images.jpg.image_url,
+              user: { ...item.user },
+              tags: [...item.tags],
+              hoursDifference: Math.round(hoursDifference),
+              id: item.entry.mal_id,
+            };
           })
-        )
-    )
-  );
+          .slice(0, 10);
+        return data;
+      })
+    );
 
   recentEpisodes$ = this.http
     .get(`${this.apiUrl}/${WATCH_CATEGORY}/episodes`)

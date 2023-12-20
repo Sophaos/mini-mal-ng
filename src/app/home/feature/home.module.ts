@@ -4,7 +4,6 @@ import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeService } from '../data-access/home.service';
 import { ItemsContainerComponent } from '../ui/items-container/items-container.component';
-import { MediaCarouselComponent } from '../ui/media-carousel/media-carousel.component';
 import { CardModule } from 'primeng/card';
 import { MainPreviewComponent } from '../ui/main-preview/main-preview.component';
 import { ReviewRowComponent } from '../ui/review-row/review-row.component';
@@ -17,7 +16,6 @@ import { RecommendationRowComponent } from '../ui/recommendation-row/recommendat
     CommonModule,
     HomeRoutingModule,
     ItemsContainerComponent,
-    MediaCarouselComponent,
     MainPreviewComponent,
     CardModule,
     ReviewRowComponent,
