@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ItemsContainerComponent } from 'src/app/home/ui/items-container/items-container.component';
+import { ItemsContainerComponent } from 'src/app/shared/ui/items-container/items-container.component';
 
 @Component({
   selector: 'app-theme',

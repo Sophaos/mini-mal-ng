@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, map, switchMap, tap } from 'rxjs';
+import { Observable, Subject, map, switchMap, tap, timer } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/models/apiUrl';
 export interface AnimeQueryParams {
   filter?: string;
@@ -83,55 +83,6 @@ export class AnimeService {
     );
   }
 
-  getAnimeStaff$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/staff`).pipe(
-      map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-        }))
-      )
-    );
-  }
-
-  getAnimeRecommendations$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/recommendations`).pipe(
-      map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-          image: item.entry.images.jpg.image_url,
-        }))
-      )
-    );
-  }
-
-  getAnimeReviews$(id: number): Observable<any> {
-    const params: AnimeQueryParams = { preliminary: 'true' };
-    const httpParams = this.buildParams(params);
-    return this.http
-      .get(`${this.apiUrl}/${id}/reviews`, { params: httpParams })
-      .pipe(
-        map((response: any) => {
-          const currentDate = new Date();
-          const data = response.data.map((item: any) => {
-            const targetDate = new Date(item.date);
-
-            const timeDifferenceMillis =
-              currentDate.getTime() - targetDate.getTime();
-            const hoursDifference = timeDifferenceMillis / (1000 * 60 * 60);
-            return {
-              ...item.entry,
-              review: item.review,
-              score: item.score,
-              user: { ...item.user },
-              tags: [...item.tags],
-              hoursDifference: Math.round(hoursDifference),
-            };
-          });
-          return data;
-        })
-      );
-  }
-
   getAnimePictures$(id: number): Observable<any> {
     return this.http.get(`${this.apiUrl}/${id}/pictures`).pipe(
       map((response: any) =>
@@ -142,35 +93,63 @@ export class AnimeService {
     );
   }
 
-  getAnimeStreaming$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/streaming`).pipe(
-      map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-        }))
+  getAnimeStaff$(id: number): Observable<any> {
+    return timer(3500).pipe(
+      switchMap(() =>
+        this.http.get(`${this.apiUrl}/${id}/staff`).pipe(
+          map((response: any) =>
+            response.data.map((item: any) => ({
+              ...item,
+            }))
+          )
+        )
       )
     );
   }
 
-  getAnimeNews$(id: number, params?: AnimeQueryParams): Observable<any> {
-    const httpParams = this.buildParams(params);
-    return this.http
-      .get(`${this.apiUrl}/${id}/news`, { params: httpParams })
-      .pipe(
-        map((response: any) =>
-          response.data.map((item: any) => ({
-            ...item,
-          }))
+  getAnimeRecommendations$(id: number): Observable<any> {
+    return timer(3500).pipe(
+      switchMap(() =>
+        this.http.get(`${this.apiUrl}/${id}/recommendations`).pipe(
+          map((response: any) =>
+            response.data.map((item: any) => ({
+              ...item,
+              image: item.entry.images.jpg.image_url,
+            }))
+          )
         )
-      );
+      )
+    );
   }
 
-  getAnimeVideos$(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/${id}/videos`).pipe(
-      map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-        }))
+  getAnimeReviews$(id: number): Observable<any> {
+    const params: AnimeQueryParams = { preliminary: 'true' };
+    const httpParams = this.buildParams(params);
+    return timer(3500).pipe(
+      switchMap(() =>
+        this.http
+          .get(`${this.apiUrl}/${id}/reviews`, { params: httpParams })
+          .pipe(
+            map((response: any) => {
+              const currentDate = new Date();
+              const data = response.data.map((item: any) => {
+                const targetDate = new Date(item.date);
+
+                const timeDifferenceMillis =
+                  currentDate.getTime() - targetDate.getTime();
+                const hoursDifference = timeDifferenceMillis / (1000 * 60 * 60);
+                return {
+                  ...item.entry,
+                  review: item.review,
+                  score: item.score,
+                  user: { ...item.user },
+                  tags: [...item.tags],
+                  hoursDifference: Math.round(hoursDifference),
+                };
+              });
+              return data;
+            })
+          )
       )
     );
   }

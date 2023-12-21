@@ -3,13 +3,11 @@
     *ngFor="let s of staff"
     class="col-12 sm:col-6 md:col-4 lg:col-3 xl:col-2 flex flex-row"
   >
-    <img class="col-6 border-round" [src]="s.person.images.jpg.image_url" />
+    <img class="w-4 border-round-lg" [src]="s.person.images.jpg.image_url" />
     <div
-      class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
+      class="flex flex-column sm:flex-row justify-content-between align-items-start flex-1 gap-4"
     >
-      <div
-        class="flex flex-column align-items-center sm:align-items-start gap-3 col-12"
-      >
+      <div class="flex flex-column align-items-start gap-3 col-12">
         <div class="flex justify-content-between flex-wrap w-full">
           <div class="min-w-full">
             <div class="flex flex-row justify-content-between flex-wrap mb-3">

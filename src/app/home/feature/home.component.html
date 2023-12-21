@@ -1,4 +1,4 @@
-<ng-container *ngIf="vmMain$ | async as vm">
+<ng-container *ngIf="vmMain$ | async as vm; else loading">
   <app-main-preview
     header="Top Airing Animes"
     [data]="vm.currentSeason"
@@ -39,3 +39,7 @@
     </app-items-container>
   </div>
 </ng-container>
+
+<ng-template #loading>
+  <p>Loading...</p>
+</ng-template>

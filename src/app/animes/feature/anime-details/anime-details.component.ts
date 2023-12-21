@@ -28,35 +28,21 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  reviews$ = timer(2000).pipe(
-    switchMap(() =>
-      this.route.paramMap.pipe(
-        switchMap((params) =>
-          this.animeService.getAnimeReviews$(Number(params.get('id') || 0))
-        )
-      )
+  reviews$ = this.route.paramMap.pipe(
+    switchMap((params) =>
+      this.animeService.getAnimeReviews$(Number(params.get('id') || 0))
     )
   );
 
-  staff$ = timer(2000).pipe(
-    switchMap(() =>
-      this.route.paramMap.pipe(
-        switchMap((params) =>
-          this.animeService.getAnimeStaff$(Number(params.get('id') || 0))
-        )
-      )
+  staff$ = this.route.paramMap.pipe(
+    switchMap((params) =>
+      this.animeService.getAnimeStaff$(Number(params.get('id') || 0))
     )
   );
 
-  recommendations$ = timer(2000).pipe(
-    switchMap(() =>
-      this.route.paramMap.pipe(
-        switchMap((params) =>
-          this.animeService.getAnimeRecommendations$(
-            Number(params.get('id') || 0)
-          )
-        )
-      )
+  recommendations$ = this.route.paramMap.pipe(
+    switchMap((params) =>
+      this.animeService.getAnimeRecommendations$(Number(params.get('id') || 0))
     )
   );
 
