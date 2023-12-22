@@ -1,6 +1,13 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  finalize,
+  map,
+  tap,
+} from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/models/apiUrl';
 
 export interface SeasonQueryParams {
@@ -15,11 +22,6 @@ export interface SeasonParams extends SeasonQueryParams {
   season: string | string;
 }
 
-enum SubCategory {
-  NOW = 'now',
-  UPCOMING = 'upcoming',
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -28,8 +30,13 @@ export class SeasonsService {
   readonly category = 'seasons';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
-  getSeason$(params: SeasonParams): Observable<any> {
+  private isSeasonLoadingSubject = new BehaviorSubject<boolean>(false);
+
+  getSeasonData$(params: SeasonParams): Observable<any> {
     const httpParams = this.buildParams(params);
+
+    this.isSeasonLoadingSubject.next(true);
+
     return this.http
       .get(`${this.apiUrl}/${params.year}/${params.season}`, {
         params: httpParams,
@@ -41,15 +48,20 @@ export class SeasonsService {
             images: item.images.jpg.image_url,
           })),
           pagination: { ...response.pagination },
-        }))
+        })),
+        catchError((error) => {
+          // Handle errors here
+          console.error('Error fetching data:', error);
+          return [];
+        }),
+        finalize(() => {
+          this.isSeasonLoadingSubject.next(false); // Set loading to false when data is fetched or an error occurs
+        })
       );
   }
 
-  getSeasonNow$(params?: SeasonQueryParams): Observable<any> {
-    const httpParams = this.buildParams(params);
-    return this.http
-      .get(`${this.apiUrl}/${SubCategory.NOW}`, { params: httpParams })
-      .pipe();
+  getLoadingState$(): Observable<boolean> {
+    return this.isSeasonLoadingSubject.asObservable();
   }
 
   seasons$ = this.http.get(`${this.apiUrl}`).pipe(

@@ -7,8 +7,10 @@ import { ItemsContainerComponent } from '../../shared/ui/items-container/items-c
 import { CardModule } from 'primeng/card';
 import { MainPreviewComponent } from '../../shared/ui/main-preview/main-preview.component';
 import { ReviewRowComponent } from '../../shared/ui/review-row/review-row.component';
-import { DataViewModule } from 'primeng/dataview';
 import { RecommendationRowComponent } from '../../shared/ui/recommendation-row/recommendation-row.component';
+import { SkeletonMainPreviewComponent } from 'src/app/shared/ui/skeleton-main-preview/skeleton-main-preview.component';
+import { SkeletonMainReviewComponent } from 'src/app/shared/ui/skeleton-main-review/skeleton-main-review.component';
+import { SkeletonMainRecommendationComponent } from 'src/app/shared/ui/skeleton-main-recommendation/skeleton-main-recommendation.component';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -19,8 +21,10 @@ import { RecommendationRowComponent } from '../../shared/ui/recommendation-row/r
     MainPreviewComponent,
     CardModule,
     ReviewRowComponent,
-    DataViewModule,
     RecommendationRowComponent,
+    SkeletonMainPreviewComponent,
+    SkeletonMainReviewComponent,
+    SkeletonMainRecommendationComponent,
   ],
   providers: [HomeService],
 })

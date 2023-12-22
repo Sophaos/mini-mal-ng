@@ -6,6 +6,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { CardModule } from 'primeng/card';
 
 @Component({
   selector: 'app-data-view-filter',
@@ -18,6 +19,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
     InputNumberModule,
     ReactiveFormsModule,
     MultiSelectModule,
+    CardModule,
   ],
   templateUrl: './data-view-filter.component.html',
   styleUrls: ['./data-view-filter.component.scss'],

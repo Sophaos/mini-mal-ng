@@ -41,5 +41,16 @@
 </ng-container>
 
 <ng-template #loading>
-  <p>Loading...</p>
+  <app-skeleton-main-preview />
+  <div
+    class="flex flex-column xl:flex-row lg:flex-row md:flex-row flex-wrap gap-1 mt-1 w-full"
+  >
+    <div class="flex-1">
+      <app-skeleton-main-preview />
+    </div>
+
+    <div class="flex-1">
+      <app-skeleton-main-preview />
+    </div>
+  </div>
 </ng-template>

@@ -1,12 +1,8 @@
-<p-dataView #dv [value]="data">
-  <ng-template pTemplate="header">
-    <div class="flex justify-content-between">
-      <ng-content></ng-content>
-    </div>
-  </ng-template>
-  <ng-template let-anime pTemplate="listItem">
-    <div class="flex flex-wrap col-12 sm:col-12 md:col-6 lg:col-4 xl:col-3 p-2">
-      <app-media-data-card [media]="anime" />
-    </div>
-  </ng-template>
-</p-dataView>
+<div class="flex flex-row flex-wrap border-1 surface-border py-2">
+  <div
+    *ngFor="let anime of data"
+    class="flex flex-row flex-wrap col-12 sm:col-12 md:col-6 lg:col-4 xl:col-3 p-2"
+  >
+    <app-media-data-card [media]="anime" class="w-12" />
+  </div>
+</div>

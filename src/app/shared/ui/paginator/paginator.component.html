@@ -1,8 +1,10 @@
-<p-paginator
-  locale="en-US"
-  (onPageChange)="pageChange($event)"
-  [first]="pagination.first"
-  [rows]="pagination.rows"
-  [totalRecords]="pagination.total"
-  [rowsPerPageOptions]="rowsPerPageOptions"
-></p-paginator>
+<div class="surface-card p-1 border-1 surface-border">
+  <p-paginator
+    locale="en-US"
+    (onPageChange)="pageChange($event)"
+    [first]="pagination.first"
+    [rows]="pagination.rows"
+    [totalRecords]="pagination.total"
+    [rowsPerPageOptions]="rowsPerPageOptions"
+  ></p-paginator>
+</div>

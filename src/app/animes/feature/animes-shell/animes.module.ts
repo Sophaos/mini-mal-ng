@@ -16,7 +16,6 @@ import { DividerModule } from 'primeng/divider';
 import { GalleriaModule } from 'primeng/galleria';
 import { PanelModule } from 'primeng/panel';
 import { AccordionModule } from 'primeng/accordion';
-import { DataViewModule } from 'primeng/dataview';
 import { ReviewRowComponent } from 'src/app/shared/ui/review-row/review-row.component';
 import { RecommendationRowComponent } from 'src/app/shared/ui/recommendation-row/recommendation-row.component';
 import { DetailedReviewComponent } from 'src/app/shared/ui/detailed-review/detailed-review.component';
@@ -43,7 +42,6 @@ import { MediaRecommendationsComponent } from 'src/app/shared/ui/media-recommend
     GalleriaModule,
     PanelModule,
     AccordionModule,
-    DataViewModule,
     ReviewRowComponent,
     RecommendationRowComponent,
     DetailedReviewComponent,
