@@ -19,16 +19,16 @@ export class SeasonListComponent {
     )
   );
 
-  loading$ = this.seasonService.getLoadingState$();
+  isLoading$ = this.seasonService.isSeasonDataLoading$;
 
   vm$ = combineLatest([
     this.seasons$,
     this.animes$,
     this.route.paramMap,
     this.route.queryParamMap,
-    this.loading$,
+    this.isLoading$,
   ]).pipe(
-    map(([seasons, animes, params, queryParams, loading]) => {
+    map(([seasons, animes, params, queryParams, isLoading]) => {
       const seasonOptions = this.seasonOptions(seasons, params);
       const pagination = getPagination(
         queryParams,
@@ -39,9 +39,8 @@ export class SeasonListComponent {
         years,
         seasons: seasonOptions,
         pagination,
-        animes: animes.data,
+        animes: { data: animes.data, isLoading },
         filters: this.getSeasonFilterData(years, seasonOptions),
-        loading,
       };
     })
   );

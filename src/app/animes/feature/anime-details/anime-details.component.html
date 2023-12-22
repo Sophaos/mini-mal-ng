@@ -44,14 +44,11 @@
     </app-items-container>
   </ng-container>
   <ng-container *ngIf="vmExternal$ | async as vm">
-    <!-- <div class="flex flex-column xl:flex-row lg:flex-row md:flex-row gap-1"> -->
-
     <app-items-container title="Staff" [isCollapsed]="true" class="flex-1">
       <div class="h-20rem overflow-auto">
         <app-staff [staff]="vm.staff" />
       </div>
     </app-items-container>
-    <!-- </div> -->
     <app-items-container title="Latest Anime Review">
       <div class="max-h-30rem overflow-auto">
         <ng-container *ngFor="let media of vm.reviews">

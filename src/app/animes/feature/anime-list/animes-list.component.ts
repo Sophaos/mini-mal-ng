@@ -35,15 +35,18 @@ export class AnimesListComponent {
   );
   genres$ = this.animeService.animeGenres$;
 
+  isLoading$ = this.animeService.isAnimeDataLoading$;
+
   vm$ = combineLatest([
     this.animes$,
     this.genres$,
     this.route.queryParamMap,
+    this.isLoading$,
     this.inputs$,
   ]).pipe(
-    map(([animes, genres, queryParams]) => ({
+    map(([animes, genres, queryParams, isLoading]) => ({
       pagination: getPagination(queryParams, animes.pagination.items.total),
-      animes,
+      animes: { data: animes.data, isLoading },
       genres,
       filterDropdowns: this.getFilterDropdowns(genres),
       filterInputs: this.getFilterInputs(),
@@ -116,6 +119,7 @@ export class AnimesListComponent {
           : '',
         param: 'genres',
         options: genres,
+        multi: true,
       },
       {
         label: 'Status',

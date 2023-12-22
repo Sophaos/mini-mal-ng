@@ -29,7 +29,20 @@
     class="flex flex-column gap-2 border-round m-1"
   >
     <label htmlFor="username">{{ filter.label }}</label>
-    <ng-container>
+    <ng-container *ngIf="filter.multi">
+      <p-multiSelect
+        [options]="filter.options"
+        [(ngModel)]="filter.value"
+        optionLabel="label"
+        optionValue="value"
+        (onChange)="
+          filter.change
+            ? filter.change($event)
+            : changeQueryParamsMulti($event, filter.param, filter.value)
+        "
+      ></p-multiSelect>
+    </ng-container>
+    <ng-container *ngIf="!filter.multi">
       <p-dropdown
         [options]="filter.options"
         [(ngModel)]="filter.value"

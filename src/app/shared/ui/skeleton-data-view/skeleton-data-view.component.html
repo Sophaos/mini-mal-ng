@@ -1,69 +1,40 @@
-<!-- <div class="card">
-  <div class="flex flex-column">
-    <div class="flex flex-row"></div>
-    <div class="flex flex-wrap col-12 sm:col-12 md:col-6 lg:col-4 xl:col-3 p-2">
-      <div>
-        <p-skeleton width="100%" height="10rem"></p-skeleton>
-      </div>
-    </div>
-  </div>
-</div> -->
-
-<div class="card">
+<div class="flex flex-row flex-wrap border-1 surface-border py-2">
   <div
-    class="flex flex-column border-round border-1 surface-border p-4 surface-card"
+    *ngFor="let anime of [0, 1, 2, 3, 4, 5, 6, 7]"
+    class="flex flex-row flex-wrap col-12 sm:col-12 md:col-6 lg:col-4 xl:col-3 p-2"
   >
-    <div class="flex justify-content-between mb-3">
-      <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
-      <p-skeleton width="3rem" styleClass="mb-1"></p-skeleton>
-    </div>
     <div
-      class="flex flex-column-reverse xl:flex-row lg:flex-row pl-5 gap-3 align-items-start md:align-items-center lg:align-items-center xl:align-items-center"
+      class="p-4 flex flex-column h-full border-1 surface-border border-round w-full"
     >
-      <div class="flex flex-column flex-1 w-full">
-        <div>
-          <p-skeleton
-            width="10rem"
-            styleClass="mb-2"
-            height="2rem"
-          ></p-skeleton>
-          <p-skeleton
-            width="11rem"
-            styleClass="mb-2"
-            height="1rem"
-          ></p-skeleton>
-          <div class="flex flex-row gap-1">
-            <p-skeleton
-              width="3rem"
-              styleClass="mb-2"
-              borderRadius="16px"
-            ></p-skeleton>
-            <p-skeleton
-              width="2rem"
-              styleClass="mb-2"
-              borderRadius="16px"
-            ></p-skeleton>
-            <p-skeleton
-              width="2rem"
-              styleClass="mb-2"
-              borderRadius="16px"
-            ></p-skeleton>
-          </div>
+      <div class="flex align-items-center justify-content-center">
+        <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="flex align-items-center justify-content-center">
+        <p-skeleton width="10rem" styleClass="mb-2"></p-skeleton>
+      </div>
+      <div class="my-1 flex flex-row flex-wrap justify-content-center">
+        <p-skeleton width="3rem" styleClass="m-1"></p-skeleton>
+        <p-skeleton width="3rem" styleClass="m-1"></p-skeleton>
+        <p-skeleton width="3rem" styleClass="m-1"></p-skeleton>
+        <p-skeleton width="3rem" styleClass="m-1"></p-skeleton>
+      </div>
+      <div
+        class="flex flex-column xl:flex-row lg:flex-row md:flex-row align-items-center"
+      >
+        <div class="col-6">
+          <p-skeleton width="100%" height="17rem" styleClass="m-1"></p-skeleton>
         </div>
-        <p-skeleton width="100%" height="10rem"></p-skeleton>
+        <div class="col-6">
+          <p-skeleton width="100%" height="17rem" styleClass="m-1"></p-skeleton>
+        </div>
       </div>
-      <div class="flex flex-1 align-items-center justify-content-center">
-        <p-skeleton width="25rem" height="30rem"></p-skeleton>
+
+      <div
+        class="flex align-items-center justify-content-center gap-4 align-items-end h-full my-1"
+      >
+        <p-skeleton width="5rem" styleClass="mx-1"></p-skeleton>
+        <p-skeleton width="5rem" styleClass="mx-1"></p-skeleton>
       </div>
-    </div>
-    <div class="flex flex-row justify-content-center gap-1 mt-5">
-      <p-skeleton width="3rem" styleClass="mb-1"></p-skeleton>
-      <p-skeleton width="3rem" styleClass="mb-1"></p-skeleton>
-      <p-skeleton width="3rem" styleClass="mb-1"></p-skeleton>
-      <p-skeleton width="3rem" styleClass="mb-1"></p-skeleton>
-      <p-skeleton width="3rem" styleClass="mb-1"></p-skeleton>
-      <p-skeleton width="3rem" styleClass="mb-1"></p-skeleton>
-      <p-skeleton width="3rem" styleClass="mb-1"></p-skeleton>
     </div>
   </div>
 </div>

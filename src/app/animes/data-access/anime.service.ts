@@ -1,6 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, map, switchMap, tap, timer } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  Subject,
+  catchError,
+  finalize,
+  map,
+  switchMap,
+  tap,
+  timer,
+} from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/models/apiUrl';
 export interface AnimeQueryParams {
   filter?: string;
@@ -41,17 +51,23 @@ export class AnimeService {
   readonly category = 'anime';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
+  private isAnimeDataLoadingSubject = new BehaviorSubject<boolean>(true);
+  isAnimeDataLoading$ = this.isAnimeDataLoadingSubject.asObservable();
+
   animeGenres$ = this.http.get(`${JIKAN_API_BASE_URL}/genres/anime`).pipe(
-    map((response: any) =>
-      response.data.map((item: any) => ({
+    map((response: any) => {
+      let data = response.data.map((item: any) => ({
         value: item.mal_id.toString(),
         label: item.name,
-      }))
-    )
+      }));
+      // const defaultGenre = { value: 0, label: 'None' };
+      return data;
+    })
   );
 
   getAnimeSearch$(params?: AnimeQueryParams): Observable<any> {
     const httpParams = this.buildParams(params);
+    this.isAnimeDataLoadingSubject.next(true);
     return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
       map((response: any) => ({
         data: response.data.map((item: any) => ({
@@ -59,7 +75,14 @@ export class AnimeService {
           images: item.images.jpg.image_url,
         })),
         pagination: { ...response.pagination },
-      }))
+      })),
+      catchError((error) => {
+        console.error('Error fetching data:', error);
+        return [];
+      }),
+      finalize(() => {
+        this.isAnimeDataLoadingSubject.next(false);
+      })
     );
   }
 

@@ -15,6 +15,9 @@ import { PaginatorComponent } from 'src/app/shared/ui/paginator/paginator.compon
 import { DataViewComponent } from 'src/app/shared/ui/data-view/data-view.component';
 import { DataViewFilterComponent } from 'src/app/shared/ui/data-view-filter/data-view-filter.component';
 import { SkeletonDataViewComponent } from 'src/app/shared/ui/skeleton-data-view/skeleton-data-view.component';
+import { SkeletonDataViewFilterComponent } from 'src/app/shared/ui/skeleton-data-view-filter/skeleton-data-view-filter.component';
+import { SkeletonPaginatorComponent } from 'src/app/shared/ui/skeleton-paginator/skeleton-paginator.component';
+import { SkeletonDataListComponent } from 'src/app/shared/ui/skeleton-data-list/skeleton-data-list.component';
 
 @NgModule({
   declarations: [SeasonListComponent],
@@ -32,7 +35,7 @@ import { SkeletonDataViewComponent } from 'src/app/shared/ui/skeleton-data-view/
     PaginatorComponent,
     DataViewComponent,
     DataViewFilterComponent,
-    SkeletonDataViewComponent,
+    SkeletonDataListComponent,
   ],
   providers: [SeasonsService],
 })

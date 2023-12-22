@@ -30,13 +30,12 @@ export class SeasonsService {
   readonly category = 'seasons';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
-  private isSeasonLoadingSubject = new BehaviorSubject<boolean>(false);
+  private isSeasonDataLoadingSubject = new BehaviorSubject<boolean>(true);
+  isSeasonDataLoading$ = this.isSeasonDataLoadingSubject.asObservable();
 
   getSeasonData$(params: SeasonParams): Observable<any> {
     const httpParams = this.buildParams(params);
-
-    this.isSeasonLoadingSubject.next(true);
-
+    this.isSeasonDataLoadingSubject.next(true);
     return this.http
       .get(`${this.apiUrl}/${params.year}/${params.season}`, {
         params: httpParams,
@@ -50,18 +49,13 @@ export class SeasonsService {
           pagination: { ...response.pagination },
         })),
         catchError((error) => {
-          // Handle errors here
           console.error('Error fetching data:', error);
           return [];
         }),
         finalize(() => {
-          this.isSeasonLoadingSubject.next(false); // Set loading to false when data is fetched or an error occurs
+          this.isSeasonDataLoadingSubject.next(false);
         })
       );
-  }
-
-  getLoadingState$(): Observable<boolean> {
-    return this.isSeasonLoadingSubject.asObservable();
   }
 
   seasons$ = this.http.get(`${this.apiUrl}`).pipe(

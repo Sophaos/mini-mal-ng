@@ -1,8 +1,14 @@
-<div class="flex flex-row flex-wrap border-1 surface-border py-2">
-  <div
-    *ngFor="let anime of data"
-    class="flex flex-row flex-wrap col-12 sm:col-12 md:col-6 lg:col-4 xl:col-3 p-2"
-  >
-    <app-media-data-card [media]="anime" class="w-12" />
+<ng-container *ngIf="!isLoading; else loading">
+  <div class="flex flex-row flex-wrap border-1 surface-border py-2">
+    <div
+      *ngFor="let anime of data"
+      class="flex flex-row flex-wrap col-12 sm:col-12 md:col-6 lg:col-4 xl:col-3 p-2"
+    >
+      <app-media-data-card [media]="anime" class="w-12" />
+    </div>
   </div>
-</div>
+</ng-container>
+
+<ng-template #loading>
+  <app-skeleton-data-view />
+</ng-template>

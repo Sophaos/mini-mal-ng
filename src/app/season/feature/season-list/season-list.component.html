@@ -1,7 +1,7 @@
 <!-- <ng-container *ngIf="vm$ | async as vm; else loading"> -->
-<ng-container *ngIf="vm$ | async as vm">
+<ng-container *ngIf="vm$ | async as vm; else loading">
   <app-data-view-filter [filterDropdowns]="vm.filters" />
-  <app-data-view *ngIf="!vm.loading; else loading" [data]="vm.animes" />
+  <app-data-view [isLoading]="vm.animes.isLoading" [data]="vm.animes.data" />
   <app-paginator
     [pagination]="vm.pagination"
     (onPageChange)="handlePageChange($event)"
@@ -9,7 +9,5 @@
 </ng-container>
 
 <ng-template #loading>
-  <app-skeleton-data-view />
+  <app-skeleton-data-list />
 </ng-template>
-
-<!-- <app-skeleton-data-view /> -->
