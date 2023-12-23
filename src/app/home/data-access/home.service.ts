@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { JIKAN_API_BASE_URL } from 'src/app/shared/data-access/apiUrl';
+import { Review } from 'src/app/shared/data-access/review';
 
 const ANIME = 'anime';
 const REVIEWS = 'reviews';
@@ -46,22 +47,22 @@ export class HomeService {
     .pipe(
       map((response: any) => {
         const currentDate = new Date();
-        const data = response.data
+        const data: Review[] = response.data
           .map((item: any) => {
             const targetDate = new Date(item.date);
-
             const timeDifferenceMillis =
               currentDate.getTime() - targetDate.getTime();
             const hoursDifference = timeDifferenceMillis / (1000 * 60 * 60);
             return {
-              review: item.review,
+              id: item.entry.mal_id,
               score: item.score,
-              image: item.entry.images.jpg.image_url,
-              user: { ...item.user },
+              content: item.review,
+              imageSrc: item.entry.images.jpg.image_url,
+              title: item.entry.title,
+              user: item.user.username,
               tags: [...item.tags],
               hoursDifference: Math.round(hoursDifference),
-              id: item.entry.mal_id,
-            };
+            } as Review;
           })
           .slice(0, 10);
         return data;

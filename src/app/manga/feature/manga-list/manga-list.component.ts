@@ -12,6 +12,7 @@ import {
 } from 'rxjs';
 import { getPagination } from 'src/app/shared/data-access/pagination';
 import { MangaService } from '../../data-access/manga.service';
+import { DropdownData } from 'src/app/shared/data-access/dropdownData';
 
 @Component({
   selector: 'app-manga-list',
@@ -50,8 +51,7 @@ export class MangaListComponent implements OnInit {
     }))
   );
 
-  layout: any = 'list';
-  medias: any = [
+  medias: DropdownData[] = [
     { value: '', label: 'None' },
     { value: 'manga', label: 'Manga' },
     { value: 'novel', label: 'Novel' },
@@ -62,7 +62,7 @@ export class MangaListComponent implements OnInit {
     { value: 'manhua', label: 'Manhua' },
   ];
 
-  statuses: any = [
+  statuses: DropdownData[] = [
     { value: '', label: 'None' },
     { value: 'publishing', label: 'Publishing' },
     { value: 'complete', label: 'Complete' },
@@ -71,7 +71,7 @@ export class MangaListComponent implements OnInit {
     { value: 'upcoming', label: 'Upcoming' },
   ];
 
-  orders: any = [
+  orders: DropdownData[] = [
     { value: '', label: 'None' },
     { value: 'title', label: 'Title' },
     { value: 'start_date', label: 'Start Date' },
@@ -84,7 +84,7 @@ export class MangaListComponent implements OnInit {
     { value: 'favorites', label: 'Favorites' },
   ];
 
-  sorts: any = [
+  sorts: DropdownData[] = [
     { value: '', label: 'None' },
     { value: 'desc', label: 'Descending' },
     { value: 'asc', label: 'Ascending' },

@@ -52,7 +52,7 @@ export class DataViewFilterComponent {
     this.defaultChange(event.value, param);
   }
 
-  changeQueryParamsMulti(event: any, param: string, asas: any) {
+  changeQueryParamsMulti(event: any, param: string) {
     this.defaultChange(event.value.toString(), param);
   }
 }

@@ -35,11 +35,11 @@
       class="max-w-25rem"
     >
       <ng-template pTemplate="item" let-item>
-        <img [src]="item.jpg.large_image_url" style="width: 100%" />
+        <img [src]="item.imageLarge" style="width: 100%" />
       </ng-template>
       <ng-template pTemplate="thumbnail" let-item>
         <div class="grid grid-nogutter justify-content-center">
-          <img [src]="item.jpg.small_image_url" />
+          <img [src]="item.imageSmall" />
         </div>
       </ng-template>
     </p-galleria>

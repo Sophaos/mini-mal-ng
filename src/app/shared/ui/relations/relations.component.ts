@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { BasicDisplayData } from '../../data-access/basicDisplayData';
 
 @Component({
   selector: 'app-relations',
@@ -10,5 +11,5 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RelationsComponent {
-  @Input() relations!: any[];
+  @Input() relations!: BasicDisplayData[];
 }

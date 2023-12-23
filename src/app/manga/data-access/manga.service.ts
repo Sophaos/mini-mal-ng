@@ -2,6 +2,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, Subject, map, switchMap, tap } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
+import { Media } from 'src/app/shared/data-access/media';
+import { Pagination } from 'src/app/shared/data-access/pagination';
+import { DropdownData } from 'src/app/shared/data-access/dropdownData';
 
 export interface AnimeQueryParams {
   filter?: string;
@@ -41,133 +44,44 @@ export class MangaService {
   readonly category = 'manga';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
-  genres$ = this.http.get(`${JIKAN_API_BASE_URL}/genres/manga`).pipe(
-    map((response: any) =>
-      response.data.map((item: any) => ({
-        value: item.mal_id.toString(),
-        label: item.name,
-      }))
-    )
-  );
+  genres$: Observable<DropdownData[]> = this.http
+    .get(`${JIKAN_API_BASE_URL}/genres/manga`)
+    .pipe(
+      map((response: any) =>
+        response.data.map(
+          (item: any) =>
+            ({
+              value: item.mal_id.toString(),
+              label: item.name,
+            } as DropdownData)
+        )
+      )
+    );
 
   search$(params?: AnimeQueryParams): Observable<any> {
     const httpParams = this.buildParams(params);
     return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
-      map((response: any) => ({
-        data: response.data.map((item: any) => ({
-          ...item,
-          images: item.images.jpg.image_url,
-        })),
-        pagination: { ...response.pagination },
-      }))
+      map((response: any) => {
+        const data: Media[] = response.data.map((item: any) => ({
+          id: item.mal_id,
+          title: item.title,
+          titleEnglish: item.title_english,
+          from: item.aired?.from,
+          episodes: item.episodes,
+          genres: item.genres,
+          imageSrc: item.images.jpg.image_url,
+          synopsis: item.synopsis,
+          score: item.score,
+          members: item.members,
+        }));
+        const pagination: Pagination = {
+          ...response.pagination,
+        };
+        return { data, pagination };
+      })
     );
   }
 
-  // getAnimeFullById$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/full`).pipe();
-  // }
-
-  // getAnimeById$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}`).pipe();
-  // }
-
-  // getAnimeCharacters$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/characters`).pipe();
-  // }
-
-  // getAnimeStaff$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/staff`).pipe();
-  // }
-
-  // getAnimeEpisodes$(id: number, params?: AnimeQueryParams): Observable<any> {
-  //   const httpParams = this.buildParams(params);
-  //   return this.http
-  //     .get(`${this.apiUrl}/${id}/episodes`, { params: httpParams })
-  //     .pipe();
-  // }
-
-  // getAnimeEpisodeById$(id: number, episode?: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/episodes/${episode}`).pipe();
-  // }
-
-  // getAnimeNews$(id: number, params?: AnimeQueryParams): Observable<any> {
-  //   const httpParams = this.buildParams(params);
-  //   return this.http
-  //     .get(`${this.apiUrl}/${id}/news`, { params: httpParams })
-  //     .pipe();
-  // }
-
-  // getAnimeForum$(id: number, params?: AnimeQueryParams): Observable<any> {
-  //   const httpParams = this.buildParams(params);
-  //   return this.http
-  //     .get(`${this.apiUrl}/${id}/forum`, { params: httpParams })
-  //     .pipe();
-  // }
-
-  // getAnimeVideos$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/videos`).pipe();
-  // }
-
-  // getAnimeVideosEpisodes$(
-  //   id: number,
-  //   params?: AnimeQueryParams
-  // ): Observable<any> {
-  //   const httpParams = this.buildParams(params);
-  //   return this.http
-  //     .get(`${this.apiUrl}/${id}/videos/episodes`, { params: httpParams })
-  //     .pipe();
-  // }
-
-  // getAnimePicture$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/pictures`).pipe();
-  // }
-
-  // getAnimeStatistics$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/statistics`).pipe();
-  // }
-
-  // getAnimeMoreInfo$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/moreinfo`).pipe();
-  // }
-
-  // getAnimeRecommendations$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/recommendations`).pipe();
-  // }
-
-  // getAnimeUserUpdates$(id: number, params?: AnimeQueryParams): Observable<any> {
-  //   const httpParams = this.buildParams(params);
-  //   return this.http
-  //     .get(`${this.apiUrl}/${id}/userupdates`, { params: httpParams })
-  //     .pipe();
-  // }
-
-  // getAnimeReviews$(id: number, params?: AnimeQueryParams): Observable<any> {
-  //   const httpParams = this.buildParams(params);
-  //   return this.http
-  //     .get(`${this.apiUrl}/${id}/reviews`, { params: httpParams })
-  //     .pipe();
-  // }
-
-  // getAnimeRelations$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/relations`).pipe();
-  // }
-
-  // getAnimeThemes$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/themes`).pipe();
-  // }
-
-  // getAnimeExternal$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/external`).pipe();
-  // }
-
-  // getAnimeStreaming$(id: number): Observable<any> {
-  //   return this.http.get(`${this.apiUrl}/${id}/streaming`).pipe();
-  // }
-
-  // getAnimeSearch$(params?: AnimeQueryParams): Observable<any> {
-  //   const httpParams = this.buildParams(params);
-  //   return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe();
-  // }
   private buildParams(params?: AnimeQueryParams): HttpParams {
     let httpParams = new HttpParams();
     if (params?.q) {

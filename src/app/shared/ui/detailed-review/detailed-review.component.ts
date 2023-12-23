@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccordionModule } from 'primeng/accordion';
 import { AvatarModule } from 'primeng/avatar';
+import { DetailedReview } from '../../data-access/detailedReview';
 
 @Component({
   selector: 'app-detailed-review',
@@ -12,12 +13,5 @@ import { AvatarModule } from 'primeng/avatar';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DetailedReviewComponent {
-  @Input() score!: number;
-  @Input() text!: string;
-  @Input() image!: string;
-  @Input() title!: string;
-  @Input() user!: any;
-  @Input() tags!: string[];
-  @Input() hoursDifference!: number;
-  @Input() id!: any;
+  @Input() review!: DetailedReview;
 }

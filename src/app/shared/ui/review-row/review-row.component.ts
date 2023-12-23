@@ -4,6 +4,7 @@ import { RouterLink, RouterOutlet } from '@angular/router';
 import { AccordionModule } from 'primeng/accordion';
 import { AvatarModule } from 'primeng/avatar';
 import { ScrollPanelModule } from 'primeng/scrollpanel';
+import { Review } from '../../data-access/review';
 
 @Component({
   selector: 'app-review-row',
@@ -21,12 +22,5 @@ import { ScrollPanelModule } from 'primeng/scrollpanel';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ReviewRowComponent {
-  @Input() score!: number;
-  @Input() text!: string;
-  @Input() image!: string;
-  @Input() title!: string;
-  @Input() user!: any;
-  @Input() tags!: string[];
-  @Input() hoursDifference!: number;
-  @Input() id!: any;
+  @Input() review!: Review;
 }

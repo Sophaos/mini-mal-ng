@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ImageModule } from 'primeng/image';
+import { BasicDisplayData } from '../../data-access/basicDisplayData';
 
 @Component({
   selector: 'app-characters',
@@ -11,5 +12,5 @@ import { ImageModule } from 'primeng/image';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CharactersComponent {
-  @Input() characters!: any[];
+  @Input() characters!: BasicDisplayData[];
 }

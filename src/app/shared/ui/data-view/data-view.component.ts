@@ -14,5 +14,4 @@ import { SkeletonDataViewComponent } from '../skeleton-data-view/skeleton-data-v
 export class DataViewComponent {
   @Input({ required: true }) data!: any[];
   @Input() isLoading: boolean = true;
-  layout: any = 'list';
 }

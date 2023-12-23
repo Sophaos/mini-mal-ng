@@ -12,6 +12,10 @@ import {
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
 import { Recommendation } from 'src/app/shared/data-access/recommendation';
 import { Media } from 'src/app/shared/data-access/media';
+import { Pagination } from 'src/app/shared/data-access/pagination';
+import { BasicDisplayData } from 'src/app/shared/data-access/basicDisplayData';
+import { DetailedReview } from 'src/app/shared/data-access/detailedReview';
+import { ImageData } from 'src/app/shared/data-access/imageData';
 export interface AnimeQueryParams {
   filter?: string;
   page?: number | string;
@@ -72,7 +76,6 @@ export class AnimeService {
         value: item.mal_id.toString(),
         label: item.name,
       }));
-      // const defaultGenre = { value: 0, label: 'None' };
       return data;
     })
   );
@@ -81,24 +84,24 @@ export class AnimeService {
     const httpParams = this.buildParams(params);
     this.isAnimeDataLoadingSubject.next(true);
     return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
-      map((response: any) => ({
-        data: response.data.map(
-          (item: any) =>
-            ({
-              id: item.mal_id,
-              title: item.title,
-              titleEnglish: item.title_english,
-              from: item.aired?.from,
-              episodes: item.episodes,
-              genres: item.genres,
-              imageSrc: item.images.jpg.image_url,
-              synopsis: item.synopsis,
-              score: item.score,
-              members: item.members,
-            } as Media)
-        ),
-        pagination: { ...response.pagination },
-      })),
+      map((response: any) => {
+        const data: Media[] = response.data.map((item: any) => ({
+          id: item.mal_id,
+          title: item.title,
+          titleEnglish: item.title_english,
+          from: item.aired?.from,
+          episodes: item.episodes,
+          genres: item.genres,
+          imageSrc: item.images.jpg.image_url,
+          synopsis: item.synopsis,
+          score: item.score,
+          members: item.members,
+        }));
+        const pagination: Pagination = {
+          ...response.pagination,
+        };
+        return { data, pagination };
+      }),
       catchError((error) => {
         console.error('Error fetching data:', error);
         return [];
@@ -116,6 +119,12 @@ export class AnimeService {
         ...response.data,
         images: response.data.images.jpg.image_url,
         image_large: response.data.images.jpg.large_image_url,
+        relations: response.data.relations.map((r: any) => {
+          return {
+            title: r.relation,
+            informations: r.entry.map((e: any) => e.name),
+          } as BasicDisplayData;
+        }),
       })),
       catchError((error) => {
         console.error('Error fetching data:', error);
@@ -127,14 +136,22 @@ export class AnimeService {
     );
   }
 
-  getAnimeCharacters$(id: number): Observable<any> {
+  getAnimeCharacters$(id: number): Observable<BasicDisplayData[]> {
     this.isAnimeCharactersLoadingSubject.next(true);
     return this.http.get(`${this.apiUrl}/${id}/characters`).pipe(
-      map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-        }))
-      ),
+      map((response: any) => {
+        const data: BasicDisplayData[] = response.data.map(
+          (item: any) =>
+            ({
+              imageSrc: item.character.images.jpg.image_url,
+              title: `${item.character.name} (${item.role})`,
+              informations: item.voice_actors.map(
+                (v: any) => `${v.person.name} ${v.language}`
+              ),
+            } as BasicDisplayData)
+        );
+        return data;
+      }),
       catchError((error) => {
         console.error('Error fetching data:', error);
         return [];
@@ -145,15 +162,20 @@ export class AnimeService {
     );
   }
 
-  getAnimePictures$(id: number): Observable<any> {
+  getAnimePictures$(id: number): Observable<ImageData[]> {
     this.isAnimePicturesLoadingSubject.next(true);
 
     return this.http.get(`${this.apiUrl}/${id}/pictures`).pipe(
-      map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-        }))
-      ),
+      map((response: any) => {
+        const data: ImageData[] = response.data.map(
+          (item: any) =>
+            ({
+              imageLarge: item.jpg.large_image_url,
+              imageSmall: item.jpg.small_image_url,
+            } as ImageData)
+        );
+        return data;
+      }),
       catchError((error) => {
         console.error('Error fetching data:', error);
         return [];
@@ -164,17 +186,23 @@ export class AnimeService {
     );
   }
 
-  getAnimeStaff$(id: number): Observable<any> {
+  getAnimeStaff$(id: number): Observable<BasicDisplayData[]> {
     this.isAnimeStaffLoadingSubject.next(true);
 
     return timer(3500).pipe(
       switchMap(() =>
         this.http.get(`${this.apiUrl}/${id}/staff`).pipe(
-          map((response: any) =>
-            response.data.map((item: any) => ({
-              ...item,
-            }))
-          ),
+          map((response: any) => {
+            const data: BasicDisplayData[] = response.data.map(
+              (item: any) =>
+                ({
+                  imageSrc: item.person.images.jpg.image_url,
+                  title: `${item.person.name}`,
+                  informations: item.positions.map((v: string) => `${v} `),
+                } as BasicDisplayData)
+            );
+            return data;
+          }),
           catchError((error) => {
             console.error('Error fetching data:', error);
             return [];
@@ -198,20 +226,15 @@ export class AnimeService {
           .get(`${this.apiUrl}/${id}/reviews`, { params: httpParams })
           .pipe(
             map((response: any) => {
-              const currentDate = new Date();
-              const data = response.data.map((item: any) => {
-                const targetDate = new Date(item.date);
-                const timeDifferenceMillis =
-                  currentDate.getTime() - targetDate.getTime();
-                const hoursDifference = timeDifferenceMillis / (1000 * 60 * 60);
+              const data: DetailedReview[] = response.data.map((item: any) => {
                 return {
-                  ...item.entry,
-                  review: item.review,
+                  content: item.review,
                   score: item.score,
-                  user: { ...item.user },
+                  user: item.user.username,
+                  imageSrc: item.user.images.jpg.image_url,
                   tags: [...item.tags],
-                  hoursDifference: Math.round(hoursDifference),
-                };
+                  date: item.date,
+                } as DetailedReview;
               });
               return data;
             }),

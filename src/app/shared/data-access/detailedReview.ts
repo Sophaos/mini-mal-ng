@@ -1,10 +1,9 @@
-export interface Review {
-  id: number;
+export interface DetailedReview {
   score: number;
   content: string;
   imageSrc: string;
   title: string;
   user: string;
   tags: string[];
-  hoursDifference: number;
+  date: string;
 }

@@ -1,8 +1,8 @@
 <div class="flex flex-column xl:flex-row xl:align-items-start p-1 gap-2">
   <img
-    *ngIf="image"
+    *ngIf="review.imageSrc"
     class="w-9 sm:w-16rem xl:w-10rem shadow-2 block xl:block mx-auto border-round"
-    [src]="image"
+    [src]="review.imageSrc"
   />
   <div
     class="flex flex-column sm:flex-row justify-content-between align-items-center xl:align-items-start flex-1 gap-4"
@@ -11,12 +11,12 @@
       <div class="flex justify-content-between flex-wrap w-full">
         <a
           class="font-bold text-primary no-underline"
-          [routerLink]="['/animes', id]"
+          [routerLink]="['/animes', review.id]"
         >
-          {{ title }}
+          {{ review.title }}
         </a>
         <div class="flex align-items-center justify-content-center">
-          <div *ngFor="let tag of tags">
+          <div *ngFor="let tag of review.tags">
             <span *ngIf="tag === 'Recommended'" class="text-green-500">{{
               tag
             }}</span>
@@ -29,14 +29,16 @@
           </div>
         </div>
       </div>
-      <pre class="text-sm max-h-11rem w-auto overflow-auto">{{ text }}</pre>
+      <pre class="text-sm max-h-11rem w-auto overflow-auto">{{
+        review.content
+      }}</pre>
 
       <div class="flex flex-wrap w-full">
         <div class="flex align-items-center justify-content-center gap-1">
           <div class="font-light text-color-secondary">
-            {{ hoursDifference }} hours ago by
+            {{ review.hoursDifference }} hours ago by
           </div>
-          <div>{{ user.username }}</div>
+          <div>{{ review.user }}</div>
         </div>
       </div>
     </div>
@@ -46,7 +48,7 @@
       <div
         class="flex text-lg font-semibold gap-1 justify-content-center align-items-center"
       >
-        {{ score }}
+        {{ review.score }}
         <i class="pi pi-star-fill text-yellow-300"></i>
       </div>
     </div>

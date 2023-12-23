@@ -4,6 +4,7 @@ import { PaginatorState } from 'primeng/paginator';
 import { combineLatest, map, switchMap } from 'rxjs';
 import { SeasonsService } from '../../data-access/seasons.service';
 import { getPagination } from 'src/app/shared/data-access/pagination';
+import { DropdownData } from 'src/app/shared/data-access/dropdownData';
 
 @Component({
   selector: 'app-season-list',
@@ -45,8 +46,7 @@ export class SeasonListComponent implements OnInit {
     })
   );
 
-  layout: any = 'list';
-  medias: any = [
+  medias: DropdownData[] = [
     { value: 'tv', label: 'TV' },
     { value: 'movie', label: 'Movie' },
     { value: 'ova', label: 'OVA' },
@@ -75,7 +75,7 @@ export class SeasonListComponent implements OnInit {
     });
   }
 
-  getSeasonFilterData(years: any, seasons: any) {
+  getSeasonFilterData(years: DropdownData[], seasons: DropdownData[]) {
     return [
       {
         label: 'Year',

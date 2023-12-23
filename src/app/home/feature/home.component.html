@@ -9,17 +9,8 @@
   >
     <app-items-container title="Latest Anime Review" class="flex-1">
       <div class="max-h-30rem overflow-auto">
-        <div *ngFor="let media of vm.reviews">
-          <app-review-row
-            [text]="media.review"
-            [title]="media.title"
-            [image]="media.image"
-            [score]="media.score"
-            [user]="media.user"
-            [tags]="media.tags"
-            [id]="media.id"
-            [hoursDifference]="media.hoursDifference"
-          />
+        <div *ngFor="let review of vm.reviews">
+          <app-review-row [review]="review" />
         </div>
       </div>
     </app-items-container>

@@ -9,6 +9,7 @@ import { GalleriaModule } from 'primeng/galleria';
 import { ReactiveFormsModule } from '@angular/forms';
 import { DetailedMediaComponent } from 'src/app/shared/ui/detailed-media/detailed-media.component';
 import { ChipListComponent } from 'src/app/shared/ui/chip-list/chip-list.component';
+import { ImageData } from '../../data-access/imageData';
 
 @Component({
   selector: 'app-main-preview-content',
@@ -31,5 +32,5 @@ import { ChipListComponent } from 'src/app/shared/ui/chip-list/chip-list.compone
 export class MainPreviewContentComponent {
   @Input() media!: any;
   @Input() isDetailed: boolean = false;
-  @Input() pictures: any[] = [];
+  @Input() pictures: ImageData[] = [];
 }

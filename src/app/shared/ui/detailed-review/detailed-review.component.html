@@ -5,21 +5,21 @@
         <div class="flex justify-content-between gap-2 w-full">
           <div class="flex flex-row gap-2">
             <div class="flex align-items-center gap-2">
-              <p-avatar [image]="user.images.jpg.image_url" shape="circle" />
+              <p-avatar [image]="review.imageSrc" shape="circle" />
               <span class="font-bold white-space-nowrap">{{
-                user.username
+                review.user
               }}</span>
             </div>
             <div class="flex align-items-center justify-content-center gap-1">
               <div class="font-light text-color-secondary">
-                {{ hoursDifference }} hours ago
+                {{ review.date | date : "yyyy-MM-dd" }}
               </div>
             </div>
           </div>
 
           <div class="flex gap-3 justify-content-center align-items-center">
             <div class="flex align-items-center justify-content-center">
-              <div *ngFor="let tag of tags">
+              <div *ngFor="let tag of review.tags">
                 <span *ngIf="tag === 'Recommended'" class="text-green-500">{{
                   tag
                 }}</span>
@@ -34,14 +34,14 @@
               </div>
             </div>
             <div class="text-lg font-semibold">
-              {{ score }}
+              {{ review.score }}
               <i class="pi pi-star-fill text-yellow-300"></i>
             </div>
           </div>
         </div>
       </ng-template>
       <pre class="m-0 text-sm">
-        {{ text }}
+        {{ review.content }}
       </pre>
     </p-accordionTab>
   </p-accordion>

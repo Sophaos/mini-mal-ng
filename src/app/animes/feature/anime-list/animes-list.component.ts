@@ -12,6 +12,7 @@ import {
   tap,
 } from 'rxjs';
 import { getPagination } from 'src/app/shared/data-access/pagination';
+import { DropdownData } from 'src/app/shared/data-access/dropdownData';
 
 @Component({
   selector: 'app-animes-list',
@@ -53,8 +54,7 @@ export class AnimesListComponent implements OnInit {
     }))
   );
 
-  layout: any = 'list';
-  medias: any = [
+  medias: DropdownData[] = [
     { value: '', label: 'None' },
     { value: 'tv', label: 'TV' },
     { value: 'movie', label: 'Movie' },
@@ -64,14 +64,14 @@ export class AnimesListComponent implements OnInit {
     { value: 'music', label: 'Music' },
   ];
 
-  statuses: any = [
+  statuses: DropdownData[] = [
     { value: '', label: 'None' },
     { value: 'airing', label: 'Airing' },
     { value: 'complete', label: 'Complete' },
     { value: 'upcoming', label: 'Upcoming' },
   ];
 
-  ratings: any = [
+  ratings: DropdownData[] = [
     { value: '', label: 'None' },
     { value: 'g', label: 'G - All Ages' },
     { value: 'pg', label: 'PG - Children' },
@@ -80,7 +80,7 @@ export class AnimesListComponent implements OnInit {
     { value: 'r', label: 'R+ - Mild Nudity' },
   ];
 
-  orders: any = [
+  orders: DropdownData[] = [
     { value: '', label: 'None' },
     { value: 'title', label: 'Title' },
     { value: 'start_date', label: 'Start Date' },
@@ -92,7 +92,7 @@ export class AnimesListComponent implements OnInit {
     { value: 'favorites', label: 'Favorites' },
   ];
 
-  sorts: any = [
+  sorts: DropdownData[] = [
     { value: '', label: 'None' },
     { value: 'desc', label: 'Descending' },
     { value: 'asc', label: 'Ascending' },
