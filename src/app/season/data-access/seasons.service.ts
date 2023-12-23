@@ -8,7 +8,8 @@ import {
   map,
   tap,
 } from 'rxjs';
-import { JIKAN_API_BASE_URL } from '../../shared/data-access/models/apiUrl';
+import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
+import { Media } from 'src/app/shared/data-access/media';
 
 export interface SeasonQueryParams {
   filter?: string;
@@ -42,10 +43,21 @@ export class SeasonsService {
       })
       .pipe(
         map((response: any) => ({
-          data: response.data.map((item: any) => ({
-            ...item,
-            images: item.images.jpg.image_url,
-          })),
+          data: response.data.map(
+            (item: any) =>
+              ({
+                id: item.mal_id,
+                title: item.title,
+                titleEnglish: item.title_english,
+                from: item.aired?.from,
+                episodes: item.episodes,
+                genres: item.genres,
+                imageSrc: item.images.jpg.image_url,
+                synopsis: item.synopsis,
+                score: item.score,
+                members: item.members,
+              } as Media)
+          ),
           pagination: { ...response.pagination },
         })),
         catchError((error) => {

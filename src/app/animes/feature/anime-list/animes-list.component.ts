@@ -11,7 +11,7 @@ import {
   debounceTime,
   tap,
 } from 'rxjs';
-import { getPagination } from 'src/app/shared/data-access/models/Pagination';
+import { getPagination } from 'src/app/shared/data-access/pagination';
 
 @Component({
   selector: 'app-animes-list',
@@ -19,7 +19,7 @@ import { getPagination } from 'src/app/shared/data-access/models/Pagination';
   styleUrls: ['./animes-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimesListComponent {
+export class AnimesListComponent implements OnInit {
   private inputsSubject = new BehaviorSubject<any>(null);
   inputsChange = this.inputsSubject.asObservable();
   inputs$ = this.inputsChange.pipe(
@@ -103,6 +103,20 @@ export class AnimesListComponent {
     private router: Router,
     private animeService: AnimeService
   ) {}
+
+  ngOnInit(): void {
+    const queryParams = this.route.snapshot.queryParams;
+    const defaultQueryParams = {
+      page: 1,
+      limit: 8,
+    };
+    const updatedQueryParams = { ...defaultQueryParams, ...queryParams };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: updatedQueryParams,
+      queryParamsHandling: 'merge',
+    });
+  }
 
   getFilterDropdowns(genres: any[]) {
     return [

@@ -1,9 +1,9 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
-import { combineLatest, distinctUntilChanged, map, switchMap } from 'rxjs';
+import { combineLatest, map, switchMap } from 'rxjs';
 import { SeasonsService } from '../../data-access/seasons.service';
-import { getPagination } from 'src/app/shared/data-access/models/Pagination';
+import { getPagination } from 'src/app/shared/data-access/pagination';
 
 @Component({
   selector: 'app-season-list',
@@ -11,7 +11,7 @@ import { getPagination } from 'src/app/shared/data-access/models/Pagination';
   styleUrls: ['./season-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class SeasonListComponent {
+export class SeasonListComponent implements OnInit {
   seasons$ = this.seasonService.seasons$;
   animes$ = combineLatest([this.route.paramMap, this.route.queryParamMap]).pipe(
     switchMap(([params, queryParams]) =>
@@ -60,6 +60,20 @@ export class SeasonListComponent {
     private router: Router,
     private seasonService: SeasonsService
   ) {}
+
+  ngOnInit(): void {
+    const queryParams = this.route.snapshot.queryParams;
+    const defaultQueryParams = {
+      page: 1,
+      limit: 8,
+    };
+    const updatedQueryParams = { ...defaultQueryParams, ...queryParams };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: updatedQueryParams,
+      queryParamsHandling: 'merge',
+    });
+  }
 
   getSeasonFilterData(years: any, seasons: any) {
     return [

@@ -5,9 +5,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
-import { SearchService } from '../../../shared/data-access/search.service';
 import { MenubarModule } from 'primeng/menubar';
-import { AutoCompleteCompleteEvent } from 'primeng/autocomplete';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { MenuItem } from 'primeng/api';
@@ -43,10 +41,6 @@ export class HeaderComponent implements OnInit {
         label: 'Season',
         routerLink: seasonUrl,
       },
-      // {
-      //   label: 'Mangas',
-      //   routerLink: '/mangas',
-      // },
     ];
   }
 

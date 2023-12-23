@@ -9,7 +9,9 @@ import {
   switchMap,
   timer,
 } from 'rxjs';
-import { JIKAN_API_BASE_URL } from '../../shared/data-access/models/apiUrl';
+import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
+import { Recommendation } from 'src/app/shared/data-access/recommendation';
+import { Media } from 'src/app/shared/data-access/media';
 export interface AnimeQueryParams {
   filter?: string;
   page?: number | string;
@@ -80,10 +82,21 @@ export class AnimeService {
     this.isAnimeDataLoadingSubject.next(true);
     return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
       map((response: any) => ({
-        data: response.data.map((item: any) => ({
-          ...item,
-          images: item.images.jpg.image_url,
-        })),
+        data: response.data.map(
+          (item: any) =>
+            ({
+              id: item.mal_id,
+              title: item.title,
+              titleEnglish: item.title_english,
+              from: item.aired?.from,
+              episodes: item.episodes,
+              genres: item.genres,
+              imageSrc: item.images.jpg.image_url,
+              synopsis: item.synopsis,
+              score: item.score,
+              members: item.members,
+            } as Media)
+        ),
         pagination: { ...response.pagination },
       })),
       catchError((error) => {
@@ -214,17 +227,22 @@ export class AnimeService {
     );
   }
 
-  getAnimeRecommendations$(id: number): Observable<any> {
+  getAnimeRecommendations$(id: number): Observable<Recommendation[]> {
     this.isAnimeRecommendationsLoadingSubject.next(false);
 
     return timer(3500).pipe(
       switchMap(() =>
         this.http.get(`${this.apiUrl}/${id}/recommendations`).pipe(
           map((response: any) =>
-            response.data.map((item: any) => ({
-              ...item,
-              image: item.entry.images.jpg.image_url,
-            }))
+            response.data.map(
+              (item: any) =>
+                ({
+                  id: item.entry.mal_id,
+                  title: item.entry.title,
+                  votes: item.votes,
+                  imageSrc: item.entry.images.jpg.image_url,
+                } as Recommendation)
+            )
           ),
           catchError((error) => {
             console.error('Error fetching data:', error);

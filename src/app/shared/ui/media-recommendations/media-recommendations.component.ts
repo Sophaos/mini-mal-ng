@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { Recommendation } from '../../data-access/recommendation';
 
 @Component({
   selector: 'app-media-recommendations',
@@ -11,5 +12,5 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MediaRecommendationsComponent {
-  @Input() recommendations!: any[];
+  @Input() recommendations!: Recommendation[];
 }

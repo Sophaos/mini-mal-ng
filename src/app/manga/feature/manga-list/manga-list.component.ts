@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 import {
@@ -10,7 +10,7 @@ import {
   combineLatest,
   map,
 } from 'rxjs';
-import { getPagination } from 'src/app/shared/data-access/models/Pagination';
+import { getPagination } from 'src/app/shared/data-access/pagination';
 import { MangaService } from '../../data-access/manga.service';
 
 @Component({
@@ -19,7 +19,7 @@ import { MangaService } from '../../data-access/manga.service';
   styleUrls: ['./manga-list.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class MangaListComponent {
+export class MangaListComponent implements OnInit {
   private inputsSubject = new BehaviorSubject<any>(null);
   inputsChange = this.inputsSubject.asObservable();
   inputs$ = this.inputsChange.pipe(
@@ -95,6 +95,20 @@ export class MangaListComponent {
     private router: Router,
     private mangaService: MangaService
   ) {}
+
+  ngOnInit(): void {
+    const queryParams = this.route.snapshot.queryParams;
+    const defaultQueryParams = {
+      page: 1,
+      limit: 8,
+    };
+    const updatedQueryParams = { ...defaultQueryParams, ...queryParams };
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: updatedQueryParams,
+      queryParamsHandling: 'merge',
+    });
+  }
 
   getFilterDropdowns(genres: any[]) {
     return [

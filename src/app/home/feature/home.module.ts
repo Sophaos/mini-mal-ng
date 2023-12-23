@@ -9,8 +9,7 @@ import { MainPreviewComponent } from '../../shared/ui/main-preview/main-preview.
 import { ReviewRowComponent } from '../../shared/ui/review-row/review-row.component';
 import { RecommendationRowComponent } from '../../shared/ui/recommendation-row/recommendation-row.component';
 import { SkeletonMainPreviewComponent } from 'src/app/shared/ui/skeleton-main-preview/skeleton-main-preview.component';
-import { SkeletonMainReviewComponent } from 'src/app/shared/ui/skeleton-main-review/skeleton-main-review.component';
-import { SkeletonMainRecommendationComponent } from 'src/app/shared/ui/skeleton-main-recommendation/skeleton-main-recommendation.component';
+import { SkeletonPanelHeaderComponent } from 'src/app/shared/ui/skeleton-panel-header/skeleton-panel-header.component';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -23,8 +22,7 @@ import { SkeletonMainRecommendationComponent } from 'src/app/shared/ui/skeleton-
     ReviewRowComponent,
     RecommendationRowComponent,
     SkeletonMainPreviewComponent,
-    SkeletonMainReviewComponent,
-    SkeletonMainRecommendationComponent,
+    SkeletonPanelHeaderComponent,
   ],
   providers: [HomeService],
 })

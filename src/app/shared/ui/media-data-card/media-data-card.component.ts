@@ -1,9 +1,9 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ChipModule } from 'primeng/chip';
 import { ImageModule } from 'primeng/image';
 import { RouterLink } from '@angular/router';
 import { ChipListComponent } from '../chip-list/chip-list.component';
+import { Media } from '../../data-access/media';
 
 @Component({
   selector: 'app-media-data-card',
@@ -14,5 +14,5 @@ import { ChipListComponent } from '../chip-list/chip-list.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MediaDataCardComponent {
-  @Input() media: any;
+  @Input() media!: Media;
 }
