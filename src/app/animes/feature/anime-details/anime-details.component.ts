@@ -10,6 +10,15 @@ import { AnimeService } from '../../data-access/anime.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimeDetailsComponent implements OnInit {
+  isAnimeDetailsLoading$ = this.animeService.isAnimeDetailsLoading$;
+  isAnimePicturesLoading$ = this.animeService.isAnimePicturesLoading$;
+  isAnimeCharactersLoading$ = this.animeService.isAnimeCharactersLoading$;
+
+  isAnimeStaffLoading$ = this.animeService.isAnimeStaffLoading$;
+  isAnimeReviewsLoading$ = this.animeService.isAnimeReviewsLoading$;
+  isAnimeRecommendationsLoading$ =
+    this.animeService.isAnimeRecommendationsLoading$;
+
   anime$ = this.route.paramMap.pipe(
     switchMap((params) =>
       this.animeService.getAnimeFullById$(Number(params.get('id') || 0))
@@ -50,24 +59,56 @@ export class AnimeDetailsComponent implements OnInit {
     this.anime$,
     this.pictures$,
     this.characters$,
+    this.isAnimeDetailsLoading$,
+    this.isAnimePicturesLoading$,
+    this.isAnimeCharactersLoading$,
   ]).pipe(
-    map(([anime, pictures, characters]) => ({
-      anime,
-      pictures,
-      characters,
-    }))
+    map(
+      ([
+        anime,
+        pictures,
+        characters,
+        isAnimeDetailsLoading,
+        isAnimePicturesLoading,
+        isAnimeCharactersLoading,
+      ]) => ({
+        anime,
+        pictures,
+        characters,
+        isLoading:
+          isAnimeDetailsLoading ||
+          isAnimePicturesLoading ||
+          isAnimeCharactersLoading,
+      })
+    )
   );
 
   vmExternal$ = combineLatest([
     this.staff$,
     this.reviews$,
     this.recommendations$,
+    this.isAnimeStaffLoading$,
+    this.isAnimeReviewsLoading$,
+    this.isAnimeRecommendationsLoading$,
   ]).pipe(
-    map(([staff, reviews, recommendations]) => ({
-      staff,
-      reviews,
-      recommendations,
-    }))
+    map(
+      ([
+        staff,
+        reviews,
+        recommendations,
+        isAnimeStaffLoading,
+        isAnimeReviewsLoading,
+        isAnimeRecommendationsLoading,
+      ]) => ({
+        staff,
+        reviews,
+        recommendations,
+        isLoading:
+          isAnimeStaffLoading ||
+          isAnimeReviewsLoading ||
+          isAnimeRecommendationsLoading,
+      })
+    )
   );
 
   constructor(

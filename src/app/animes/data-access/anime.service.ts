@@ -3,12 +3,10 @@ import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
   Observable,
-  Subject,
   catchError,
   finalize,
   map,
   switchMap,
-  tap,
   timer,
 } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/models/apiUrl';
@@ -39,10 +37,6 @@ export interface AnimeQueryParamsWithId extends AnimeQueryParams {
   id: number;
 }
 
-interface AnimeQueryParamsWithEpisodes extends AnimeQueryParamsWithId {
-  episode: number;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -50,9 +44,25 @@ export class AnimeService {
   constructor(private http: HttpClient) {}
   readonly category = 'anime';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
-
   private isAnimeDataLoadingSubject = new BehaviorSubject<boolean>(true);
+  private isAnimeDetailsLoadingSubject = new BehaviorSubject<boolean>(true);
+  private isAnimeCharactersLoadingSubject = new BehaviorSubject<boolean>(true);
+  private isAnimePicturesLoadingSubject = new BehaviorSubject<boolean>(true);
+  private isAnimeStaffLoadingSubject = new BehaviorSubject<boolean>(true);
+  private isAnimeReviewsLoadingSubject = new BehaviorSubject<boolean>(true);
+  private isAnimeRecommendationsLoadingSubject = new BehaviorSubject<boolean>(
+    true
+  );
+
   isAnimeDataLoading$ = this.isAnimeDataLoadingSubject.asObservable();
+  isAnimeDetailsLoading$ = this.isAnimeDetailsLoadingSubject.asObservable();
+  isAnimeCharactersLoading$ =
+    this.isAnimeCharactersLoadingSubject.asObservable();
+  isAnimePicturesLoading$ = this.isAnimePicturesLoadingSubject.asObservable();
+  isAnimeStaffLoading$ = this.isAnimeStaffLoadingSubject.asObservable();
+  isAnimeReviewsLoading$ = this.isAnimeReviewsLoadingSubject.asObservable();
+  isAnimeRecommendationsLoading$ =
+    this.isAnimeRecommendationsLoadingSubject.asObservable();
 
   animeGenres$ = this.http.get(`${JIKAN_API_BASE_URL}/genres/anime`).pipe(
     map((response: any) => {
@@ -87,36 +97,63 @@ export class AnimeService {
   }
 
   getAnimeFullById$(id: number | string): Observable<any> {
+    this.isAnimeDetailsLoadingSubject.next(true);
     return this.http.get(`${this.apiUrl}/${id}/full`).pipe(
       map((response: any) => ({
         ...response.data,
         images: response.data.images.jpg.image_url,
         image_large: response.data.images.jpg.large_image_url,
-      }))
+      })),
+      catchError((error) => {
+        console.error('Error fetching data:', error);
+        return [];
+      }),
+      finalize(() => {
+        this.isAnimeDetailsLoadingSubject.next(false);
+      })
     );
   }
 
   getAnimeCharacters$(id: number): Observable<any> {
+    this.isAnimeCharactersLoadingSubject.next(true);
     return this.http.get(`${this.apiUrl}/${id}/characters`).pipe(
       map((response: any) =>
         response.data.map((item: any) => ({
           ...item,
         }))
-      )
+      ),
+      catchError((error) => {
+        console.error('Error fetching data:', error);
+        return [];
+      }),
+      finalize(() => {
+        this.isAnimeCharactersLoadingSubject.next(false);
+      })
     );
   }
 
   getAnimePictures$(id: number): Observable<any> {
+    this.isAnimePicturesLoadingSubject.next(true);
+
     return this.http.get(`${this.apiUrl}/${id}/pictures`).pipe(
       map((response: any) =>
         response.data.map((item: any) => ({
           ...item,
         }))
-      )
+      ),
+      catchError((error) => {
+        console.error('Error fetching data:', error);
+        return [];
+      }),
+      finalize(() => {
+        this.isAnimePicturesLoadingSubject.next(false);
+      })
     );
   }
 
   getAnimeStaff$(id: number): Observable<any> {
+    this.isAnimeStaffLoadingSubject.next(true);
+
     return timer(3500).pipe(
       switchMap(() =>
         this.http.get(`${this.apiUrl}/${id}/staff`).pipe(
@@ -124,22 +161,14 @@ export class AnimeService {
             response.data.map((item: any) => ({
               ...item,
             }))
-          )
-        )
-      )
-    );
-  }
-
-  getAnimeRecommendations$(id: number): Observable<any> {
-    return timer(3500).pipe(
-      switchMap(() =>
-        this.http.get(`${this.apiUrl}/${id}/recommendations`).pipe(
-          map((response: any) =>
-            response.data.map((item: any) => ({
-              ...item,
-              image: item.entry.images.jpg.image_url,
-            }))
-          )
+          ),
+          catchError((error) => {
+            console.error('Error fetching data:', error);
+            return [];
+          }),
+          finalize(() => {
+            this.isAnimeStaffLoadingSubject.next(false);
+          })
         )
       )
     );
@@ -148,6 +177,8 @@ export class AnimeService {
   getAnimeReviews$(id: number): Observable<any> {
     const params: AnimeQueryParams = { preliminary: 'true' };
     const httpParams = this.buildParams(params);
+    this.isAnimeReviewsLoadingSubject.next(true);
+
     return timer(3500).pipe(
       switchMap(() =>
         this.http
@@ -157,7 +188,6 @@ export class AnimeService {
               const currentDate = new Date();
               const data = response.data.map((item: any) => {
                 const targetDate = new Date(item.date);
-
                 const timeDifferenceMillis =
                   currentDate.getTime() - targetDate.getTime();
                 const hoursDifference = timeDifferenceMillis / (1000 * 60 * 60);
@@ -171,8 +201,39 @@ export class AnimeService {
                 };
               });
               return data;
+            }),
+            catchError((error) => {
+              console.error('Error fetching data:', error);
+              return [];
+            }),
+            finalize(() => {
+              this.isAnimeReviewsLoadingSubject.next(false);
             })
           )
+      )
+    );
+  }
+
+  getAnimeRecommendations$(id: number): Observable<any> {
+    this.isAnimeRecommendationsLoadingSubject.next(false);
+
+    return timer(3500).pipe(
+      switchMap(() =>
+        this.http.get(`${this.apiUrl}/${id}/recommendations`).pipe(
+          map((response: any) =>
+            response.data.map((item: any) => ({
+              ...item,
+              image: item.entry.images.jpg.image_url,
+            }))
+          ),
+          catchError((error) => {
+            console.error('Error fetching data:', error);
+            return [];
+          }),
+          finalize(() => {
+            this.isAnimeRecommendationsLoadingSubject.next(false);
+          })
+        )
       )
     );
   }

@@ -1,78 +1,102 @@
 <div class="flex flex-column gap-1 mt-1">
-  <ng-container *ngIf="vmAnime$ | async as vm">
-    <p-panel>
-      <app-main-preview-content
-        [media]="vm.anime"
-        [isDetailed]="true"
-        [pictures]="vm.pictures"
-      />
-    </p-panel>
-    <app-items-container
-      *ngIf="vm.anime.background"
-      title="Background"
-      [isCollapsed]="false"
-    >
-      <div>{{ vm.anime.background }}</div>
-    </app-items-container>
-    <app-items-container title="Relations" [isCollapsed]="true">
-      <div class="h-7rem overflow-auto">
-        <app-relations [relations]="vm.anime.relations" />
-      </div>
-    </app-items-container>
-    <div class="flex flex-column xl:flex-row lg:flex-row md:flex-row gap-1">
-      <app-theme
-        class="flex-1"
-        [data]="vm.anime.theme.openings"
-        title="Opening Theme"
-        [isCollapsed]="true"
-      />
-      <app-theme
-        class="flex-1"
-        [data]="vm.anime.theme.endings"
-        title="Ending Theme"
-        [isCollapsed]="true"
-      />
-    </div>
-    <app-items-container
-      title="Characters"
-      [isCollapsed]="false"
-      class="flex-1"
-    >
-      <div class="h-20rem overflow-auto">
-        <app-characters [characters]="vm.characters" />
-      </div>
-    </app-items-container>
-  </ng-container>
-  <ng-container *ngIf="vmExternal$ | async as vm">
-    <app-items-container title="Staff" [isCollapsed]="true" class="flex-1">
-      <div class="h-20rem overflow-auto">
-        <app-staff [staff]="vm.staff" />
-      </div>
-    </app-items-container>
-    <app-items-container title="Latest Anime Review">
-      <div class="max-h-30rem overflow-auto">
-        <ng-container *ngFor="let media of vm.reviews">
-          <app-detailed-review
-            class="w-12"
-            [text]="media.review"
-            [title]="media.title"
-            [image]="media.image"
-            [score]="media.score"
-            [user]="media.user"
-            [tags]="media.tags"
-            [id]="media.id"
-            [hoursDifference]="media.hoursDifference"
-          />
-        </ng-container>
-      </div>
-    </app-items-container>
-    <app-items-container title="Recommendations">
-      <div class="max-h-30rem overflow-auto">
-        <app-media-recommendations
-          *ngIf="vm.recommendations && vm.recommendations.length > 0"
-          [recommendations]="vm.recommendations"
+  <ng-container *ngIf="vmAnime$ | async as vm; else mainLoading">
+    <ng-container *ngIf="!vm.isLoading; else mainLoading">
+      <p-panel>
+        <app-main-preview-content
+          [media]="vm.anime"
+          [isDetailed]="true"
+          [pictures]="vm.pictures"
+        />
+      </p-panel>
+      <app-items-container
+        *ngIf="vm.anime.background"
+        title="Background"
+        [isCollapsed]="false"
+      >
+        <div>{{ vm.anime.background }}</div>
+      </app-items-container>
+      <app-items-container title="Relations" [isCollapsed]="true">
+        <div class="h-7rem overflow-auto">
+          <app-relations [relations]="vm.anime.relations" />
+        </div>
+      </app-items-container>
+      <div class="flex flex-column xl:flex-row lg:flex-row md:flex-row gap-1">
+        <app-theme
+          class="flex-1"
+          [data]="vm.anime.theme.openings"
+          title="Opening Theme"
+          [isCollapsed]="true"
+        />
+        <app-theme
+          class="flex-1"
+          [data]="vm.anime.theme.endings"
+          title="Ending Theme"
+          [isCollapsed]="true"
         />
       </div>
-    </app-items-container>
+      <app-items-container
+        title="Characters"
+        [isCollapsed]="false"
+        class="flex-1"
+      >
+        <div class="h-20rem overflow-auto">
+          <app-characters [characters]="vm.characters" />
+        </div>
+      </app-items-container>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="vmExternal$ | async as vm; else externalLoading">
+    <ng-container *ngIf="!vm.isLoading; else externalLoading">
+      <app-items-container title="Staff" [isCollapsed]="true" class="flex-1">
+        <div class="h-20rem overflow-auto">
+          <app-staff [staff]="vm.staff" />
+        </div>
+      </app-items-container>
+      <app-items-container title="Latest Anime Review">
+        <div class="max-h-30rem overflow-auto">
+          <ng-container *ngFor="let media of vm.reviews">
+            <app-detailed-review
+              class="w-12"
+              [text]="media.review"
+              [title]="media.title"
+              [image]="media.image"
+              [score]="media.score"
+              [user]="media.user"
+              [tags]="media.tags"
+              [id]="media.id"
+              [hoursDifference]="media.hoursDifference"
+            />
+          </ng-container>
+        </div>
+      </app-items-container>
+      <app-items-container title="Recommendations">
+        <div class="max-h-30rem overflow-auto">
+          <app-media-recommendations
+            *ngIf="vm.recommendations && vm.recommendations.length > 0"
+            [recommendations]="vm.recommendations"
+          />
+        </div>
+      </app-items-container>
+    </ng-container>
   </ng-container>
 </div>
+
+<ng-template #mainLoading>
+  <div class="flex flex-column gap-1">
+    <app-skeleton-main-preview />
+    <app-skeleton-panel-header />
+    <app-skeleton-panel-header />
+    <div class="flex flex-column xl:flex-row lg:flex-row md:flex-row gap-1">
+      <app-skeleton-panel-header class="flex-1" />
+      <app-skeleton-panel-header class="flex-1" />
+    </div>
+    <app-skeleton-panel-header />
+  </div>
+</ng-template>
+<ng-template #externalLoading>
+  <div class="flex flex-column gap-1">
+    <app-skeleton-panel-header />
+    <app-skeleton-panel-header />
+    <app-skeleton-panel-header />
+  </div>
+</ng-template>

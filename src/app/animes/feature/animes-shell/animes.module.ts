@@ -25,6 +25,8 @@ import { CharactersComponent } from 'src/app/shared/ui/characters/characters.com
 import { RelationsComponent } from 'src/app/shared/ui/relations/relations.component';
 import { MediaRecommendationsComponent } from 'src/app/shared/ui/media-recommendations/media-recommendations.component';
 import { SkeletonDataListComponent } from 'src/app/shared/ui/skeleton-data-list/skeleton-data-list.component';
+import { SkeletonMainPreviewComponent } from 'src/app/shared/ui/skeleton-main-preview/skeleton-main-preview.component';
+import { SkeletonPanelHeaderComponent } from 'src/app/shared/ui/skeleton-panel-header/skeleton-panel-header.component';
 
 @NgModule({
   declarations: [AnimesListComponent, AnimeDetailsComponent],
@@ -52,6 +54,8 @@ import { SkeletonDataListComponent } from 'src/app/shared/ui/skeleton-data-list/
     RelationsComponent,
     MediaRecommendationsComponent,
     SkeletonDataListComponent,
+    SkeletonMainPreviewComponent,
+    SkeletonPanelHeaderComponent,
   ],
   providers: [AnimeService],
 })
