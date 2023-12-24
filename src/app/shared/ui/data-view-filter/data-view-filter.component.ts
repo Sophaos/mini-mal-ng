@@ -7,6 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CardModule } from 'primeng/card';
+import { DropdownData } from '../../data-access/dropdownData';
 
 @Component({
   selector: 'app-data-view-filter',
@@ -26,8 +27,8 @@ import { CardModule } from 'primeng/card';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataViewFilterComponent {
-  @Input() filterDropdowns: any[] = [];
-  @Input() filterInputs: any[] = [];
+  @Input() filterDropdowns: DropdownData[] = [];
+  @Input() filterInputs: DropdownData[] = [];
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 
@@ -48,11 +49,11 @@ export class DataViewFilterComponent {
     });
   }
 
-  changeQueryParams(event: any, param: string) {
-    this.defaultChange(event.value, param);
+  changeQueryParams(event: string, param: string) {
+    this.defaultChange(event, param);
   }
 
-  changeQueryParamsMulti(event: any, param: string) {
-    this.defaultChange(event.value.toString(), param);
+  changeQueryParamsMulti(event: string | number, param: string) {
+    this.defaultChange(event.toString(), param);
   }
 }

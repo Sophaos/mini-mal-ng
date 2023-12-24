@@ -198,7 +198,7 @@ export class AnimeService {
                 ({
                   imageSrc: item.person.images.jpg.image_url,
                   title: `${item.person.name}`,
-                  informations: item.positions.map((v: string) => `${v} `),
+                  informations: item.positions.map((v: string) => `${v}`),
                 } as BasicDisplayData)
             );
             return data;
@@ -215,7 +215,7 @@ export class AnimeService {
     );
   }
 
-  getAnimeReviews$(id: number): Observable<any> {
+  getAnimeReviews$(id: number): Observable<DetailedReview[]> {
     const params: AnimeQueryParams = { preliminary: 'true' };
     const httpParams = this.buildParams(params);
     this.isAnimeReviewsLoadingSubject.next(true);

@@ -12,6 +12,7 @@ import {
 } from 'rxjs';
 import { getPagination } from 'src/app/shared/data-access/pagination';
 import { MangaService } from '../../data-access/manga.service';
+import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
 import { DropdownData } from 'src/app/shared/data-access/dropdownData';
 
 @Component({
@@ -51,7 +52,7 @@ export class MangaListComponent implements OnInit {
     }))
   );
 
-  medias: DropdownData[] = [
+  medias: DropdownOption[] = [
     { value: '', label: 'None' },
     { value: 'manga', label: 'Manga' },
     { value: 'novel', label: 'Novel' },
@@ -62,7 +63,7 @@ export class MangaListComponent implements OnInit {
     { value: 'manhua', label: 'Manhua' },
   ];
 
-  statuses: DropdownData[] = [
+  statuses: DropdownOption[] = [
     { value: '', label: 'None' },
     { value: 'publishing', label: 'Publishing' },
     { value: 'complete', label: 'Complete' },
@@ -71,7 +72,7 @@ export class MangaListComponent implements OnInit {
     { value: 'upcoming', label: 'Upcoming' },
   ];
 
-  orders: DropdownData[] = [
+  orders: DropdownOption[] = [
     { value: '', label: 'None' },
     { value: 'title', label: 'Title' },
     { value: 'start_date', label: 'Start Date' },
@@ -84,7 +85,7 @@ export class MangaListComponent implements OnInit {
     { value: 'favorites', label: 'Favorites' },
   ];
 
-  sorts: DropdownData[] = [
+  sorts: DropdownOption[] = [
     { value: '', label: 'None' },
     { value: 'desc', label: 'Descending' },
     { value: 'asc', label: 'Ascending' },
@@ -110,7 +111,7 @@ export class MangaListComponent implements OnInit {
     });
   }
 
-  getFilterDropdowns(genres: any[]) {
+  getFilterDropdowns(genres: DropdownOption[]): DropdownData[] {
     return [
       {
         label: 'Media',
@@ -147,14 +148,14 @@ export class MangaListComponent implements OnInit {
     ];
   }
 
-  getFilterInputs() {
+  getFilterInputs(): DropdownData[] {
     return [
       {
         label: 'Filter',
         value: this.route.snapshot.queryParams['q'],
         param: 'q',
         type: 'string',
-        change: (event: any, param: any) =>
+        change: (event: string | number, param: string) =>
           this.inputsSubject.next({ event, param }),
       },
       {
@@ -162,7 +163,7 @@ export class MangaListComponent implements OnInit {
         value: this.route.snapshot.queryParams['min_score'],
         param: 'min_score',
         type: 'number',
-        change: (event: any, param: any) =>
+        change: (event: string | number, param: string) =>
           this.inputsSubject.next({ event, param }),
       },
       {
@@ -170,7 +171,7 @@ export class MangaListComponent implements OnInit {
         value: this.route.snapshot.queryParams['max_score'],
         param: 'max_score',
         type: 'number',
-        change: (event: any, param: any) =>
+        change: (event: string | number, param: string) =>
           this.inputsSubject.next({ event, param }),
       },
     ];
@@ -223,9 +224,5 @@ export class MangaListComponent implements OnInit {
       queryParams: updatedQueryParams,
       queryParamsHandling: 'merge',
     });
-  }
-
-  changeQueryParams(event: any, param: string) {
-    this.defaultChange(event.value, param);
   }
 }

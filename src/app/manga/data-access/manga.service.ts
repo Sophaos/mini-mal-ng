@@ -4,7 +4,7 @@ import { Observable, Subject, map, switchMap, tap } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
 import { Media } from 'src/app/shared/data-access/media';
 import { Pagination } from 'src/app/shared/data-access/pagination';
-import { DropdownData } from 'src/app/shared/data-access/dropdownData';
+import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
 
 export interface AnimeQueryParams {
   filter?: string;
@@ -44,7 +44,7 @@ export class MangaService {
   readonly category = 'manga';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
-  genres$: Observable<DropdownData[]> = this.http
+  genres$: Observable<DropdownOption[]> = this.http
     .get(`${JIKAN_API_BASE_URL}/genres/manga`)
     .pipe(
       map((response: any) =>
@@ -53,7 +53,7 @@ export class MangaService {
             ({
               value: item.mal_id.toString(),
               label: item.name,
-            } as DropdownData)
+            } as DropdownOption)
         )
       )
     );

@@ -4,6 +4,7 @@ import { PaginatorState } from 'primeng/paginator';
 import { combineLatest, map, switchMap } from 'rxjs';
 import { SeasonsService } from '../../data-access/seasons.service';
 import { getPagination } from 'src/app/shared/data-access/pagination';
+import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
 import { DropdownData } from 'src/app/shared/data-access/dropdownData';
 
 @Component({
@@ -46,7 +47,7 @@ export class SeasonListComponent implements OnInit {
     })
   );
 
-  medias: DropdownData[] = [
+  medias: DropdownOption[] = [
     { value: 'tv', label: 'TV' },
     { value: 'movie', label: 'Movie' },
     { value: 'ova', label: 'OVA' },
@@ -75,21 +76,24 @@ export class SeasonListComponent implements OnInit {
     });
   }
 
-  getSeasonFilterData(years: DropdownData[], seasons: DropdownData[]) {
+  getSeasonFilterData(
+    years: DropdownOption[],
+    seasons: DropdownOption[]
+  ): DropdownData[] {
     return [
       {
         label: 'Year',
         value: Number(this.route.snapshot.params['year']),
         param: 'year',
         options: years,
-        change: (event: any) => this.yearChange(event),
+        change: (event: string | number) => this.yearChange(event),
       },
       {
         label: 'Season',
         param: 'season',
         value: this.route.snapshot.params['season'],
         options: seasons,
-        change: (event: any) => this.seasonChange(event),
+        change: (event: string | number) => this.seasonChange(event),
       },
       {
         label: 'Media',
@@ -100,9 +104,9 @@ export class SeasonListComponent implements OnInit {
     ];
   }
 
-  yearChange(event: any) {
+  yearChange(event: string | number) {
     this.router.navigate(
-      ['/season', event.value, this.route.snapshot.params['season']],
+      ['/season', event, this.route.snapshot.params['season']],
       {
         relativeTo: this.route,
         queryParams: this.getQueryParamstWithDefaultPagination(),
@@ -111,9 +115,9 @@ export class SeasonListComponent implements OnInit {
     );
   }
 
-  seasonChange(event: any) {
+  seasonChange(event: string | number) {
     this.router.navigate(
-      ['/season', this.route.snapshot.params['year'], event.value],
+      ['/season', this.route.snapshot.params['year'], event],
       {
         relativeTo: this.route,
         queryParams: this.getQueryParamstWithDefaultPagination(),
@@ -156,7 +160,7 @@ export class SeasonListComponent implements OnInit {
     return {
       ...this.route.snapshot.queryParams,
       page: 1,
-      limit: 10,
+      limit: 8,
     };
   }
 

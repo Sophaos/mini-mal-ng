@@ -12,14 +12,22 @@
         type="text"
         pInputText
         [(ngModel)]="filter.value"
-        (ngModelChange)="filter.change($event, filter.param)"
+        (ngModelChange)="
+          filter.change
+            ? filter.change($event.value, filter.param)
+            : changeQueryParams($event.value, filter.param)
+        "
       />
     </ng-container>
     <ng-container *ngIf="filter.type === 'number'">
       <p-inputNumber
         [id]="filter.label"
         [(ngModel)]="filter.value"
-        (ngModelChange)="filter.change($event, filter.param)"
+        (ngModelChange)="
+          filter.change
+            ? filter.change($event.value, filter.param)
+            : changeQueryParams($event.value, filter.param)
+        "
       />
     </ng-container>
   </div>
@@ -37,8 +45,8 @@
         optionValue="value"
         (onChange)="
           filter.change
-            ? filter.change($event)
-            : changeQueryParamsMulti($event, filter.param)
+            ? filter.change($event.value, filter.param)
+            : changeQueryParamsMulti($event.value, filter.param)
         "
       ></p-multiSelect>
     </ng-container>
@@ -50,8 +58,8 @@
         optionValue="value"
         (onChange)="
           filter.change
-            ? filter.change($event)
-            : changeQueryParams($event, filter.param)
+            ? filter.change($event.value, filter.param)
+            : changeQueryParams($event.value, filter.param)
         "
       />
     </ng-container>

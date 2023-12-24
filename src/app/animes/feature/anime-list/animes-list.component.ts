@@ -12,6 +12,7 @@ import {
   tap,
 } from 'rxjs';
 import { getPagination } from 'src/app/shared/data-access/pagination';
+import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
 import { DropdownData } from 'src/app/shared/data-access/dropdownData';
 
 @Component({
@@ -54,7 +55,7 @@ export class AnimesListComponent implements OnInit {
     }))
   );
 
-  medias: DropdownData[] = [
+  medias: DropdownOption[] = [
     { value: '', label: 'None' },
     { value: 'tv', label: 'TV' },
     { value: 'movie', label: 'Movie' },
@@ -64,14 +65,14 @@ export class AnimesListComponent implements OnInit {
     { value: 'music', label: 'Music' },
   ];
 
-  statuses: DropdownData[] = [
+  statuses: DropdownOption[] = [
     { value: '', label: 'None' },
     { value: 'airing', label: 'Airing' },
     { value: 'complete', label: 'Complete' },
     { value: 'upcoming', label: 'Upcoming' },
   ];
 
-  ratings: DropdownData[] = [
+  ratings: DropdownOption[] = [
     { value: '', label: 'None' },
     { value: 'g', label: 'G - All Ages' },
     { value: 'pg', label: 'PG - Children' },
@@ -80,7 +81,7 @@ export class AnimesListComponent implements OnInit {
     { value: 'r', label: 'R+ - Mild Nudity' },
   ];
 
-  orders: DropdownData[] = [
+  orders: DropdownOption[] = [
     { value: '', label: 'None' },
     { value: 'title', label: 'Title' },
     { value: 'start_date', label: 'Start Date' },
@@ -92,7 +93,7 @@ export class AnimesListComponent implements OnInit {
     { value: 'favorites', label: 'Favorites' },
   ];
 
-  sorts: DropdownData[] = [
+  sorts: DropdownOption[] = [
     { value: '', label: 'None' },
     { value: 'desc', label: 'Descending' },
     { value: 'asc', label: 'Ascending' },
@@ -118,7 +119,7 @@ export class AnimesListComponent implements OnInit {
     });
   }
 
-  getFilterDropdowns(genres: any[]) {
+  getFilterDropdowns(genres: DropdownOption[]): DropdownData[] {
     return [
       {
         label: 'Media',
@@ -162,14 +163,14 @@ export class AnimesListComponent implements OnInit {
     ];
   }
 
-  getFilterInputs() {
+  getFilterInputs(): DropdownData[] {
     return [
       {
         label: 'Filter',
         value: this.route.snapshot.queryParams['q'],
         param: 'q',
         type: 'string',
-        change: (event: any, param: any) =>
+        change: (event: string | number, param: string) =>
           this.inputsSubject.next({ event, param }),
       },
       {
@@ -177,7 +178,7 @@ export class AnimesListComponent implements OnInit {
         value: this.route.snapshot.queryParams['min_score'],
         param: 'min_score',
         type: 'number',
-        change: (event: any, param: any) =>
+        change: (event: string | number, param: string) =>
           this.inputsSubject.next({ event, param }),
       },
       {
@@ -185,7 +186,7 @@ export class AnimesListComponent implements OnInit {
         value: this.route.snapshot.queryParams['max_score'],
         param: 'max_score',
         type: 'number',
-        change: (event: any, param: any) =>
+        change: (event: string | number, param: string) =>
           this.inputsSubject.next({ event, param }),
       },
     ];

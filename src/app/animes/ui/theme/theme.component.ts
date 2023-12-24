@@ -11,7 +11,7 @@ import { ItemsContainerComponent } from 'src/app/shared/ui/items-container/items
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ThemeComponent {
-  @Input() data!: any[];
+  @Input() data!: string[];
   @Input() isCollapsed: boolean = false;
   @Input() title!: string;
 }
