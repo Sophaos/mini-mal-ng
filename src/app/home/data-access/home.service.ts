@@ -2,6 +2,7 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { map } from 'rxjs';
 import { JIKAN_API_BASE_URL } from 'src/app/shared/data-access/apiUrl';
+import { Media } from 'src/app/shared/data-access/media';
 import { Review } from 'src/app/shared/data-access/review';
 
 const ANIME = 'anime';
@@ -16,7 +17,7 @@ const TOP_ANIME_PARAMS = {
 };
 
 const REVIEWS_PARAMS = {
-  page: 0,
+  page: 1,
 };
 
 @Injectable({
@@ -32,11 +33,22 @@ export class HomeService {
     })
     .pipe(
       map((response: any) =>
-        response.data.map((item: any) => ({
-          ...item,
-          image: item.images.jpg.image_url,
-          image_large: item.images.jpg.large_image_url,
-        }))
+        response.data.map(
+          (item: any) =>
+            ({
+              id: item.mal_id,
+              title: item.title,
+              titleEnglish: item.title_english,
+              from: item.aired?.from,
+              episodes: item.episodes,
+              imageSrc: item.images.jpg.image_url,
+              synopsis: item.synopsis,
+              score: item.score,
+              members: item.members,
+              genres: item.genres.map((r: any) => r.name),
+              imageLargeSrc: item.images.jpg.large_image_url,
+            } satisfies Media)
+        )
       )
     );
 

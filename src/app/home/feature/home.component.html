@@ -9,14 +9,14 @@
   >
     <app-items-container title="Latest Anime Review" class="flex-1">
       <div class="max-h-30rem overflow-auto">
-        <div *ngFor="let review of vm.reviews">
+        <div class="mb-2" *ngFor="let review of vm.reviews">
           <app-review-row [review]="review" />
         </div>
       </div>
     </app-items-container>
     <app-items-container title="Latest Anime Recommendations" class="flex-1">
       <div class="max-h-30rem overflow-auto">
-        <ng-container *ngFor="let media of vm.recommendations">
+        <div class="mb-2" *ngFor="let media of vm.recommendations">
           <app-recommendation-row
             [title]="media.title"
             [likedMedia]="media.likedMedia"
@@ -25,7 +25,7 @@
             [hoursDifference]="media.hoursDifference"
             [user]="media.user"
           />
-        </ng-container>
+        </div>
       </div>
     </app-items-container>
   </div>

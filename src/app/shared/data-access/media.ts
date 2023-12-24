@@ -10,6 +10,7 @@ export interface Media {
   score: number;
   members: number;
 
+  imageLargeSrc?: string;
   themes?: string[];
   status?: string;
   demographics?: string[];

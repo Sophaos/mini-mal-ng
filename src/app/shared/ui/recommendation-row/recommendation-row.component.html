@@ -22,7 +22,7 @@
           >
             <div>If you liked:</div>
             <a
-              class="font-bold text-primary no-underline"
+              class="font-bold text-primary no-underline max-w-20rem white-space-nowrap overflow-hidden text-overflow-ellipsis"
               [routerLink]="['/animes', likedMedia.id]"
             >
               {{ likedMedia.title }}
@@ -31,7 +31,7 @@
           <div class="flex flex-row justify-content-between flex-wrap">
             <div>You might like:</div>
             <a
-              class="font-bold text-primary no-underline"
+              class="font-bold text-primary no-underline max-w-20rem white-space-nowrap overflow-hidden text-overflow-ellipsis"
               [routerLink]="['/animes', mightLikeMedia.id]"
             >
               {{ mightLikeMedia.title }}

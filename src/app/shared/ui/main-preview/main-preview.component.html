@@ -6,14 +6,14 @@
           {{ header }}
         </div>
 
-        <div
+        <a
           *ngIf="link"
           [routerLink]="link"
           [queryParams]="queryParams"
           class="no-underline font-bold text-primary cursor-pointer"
         >
           {{ header }}
-        </div>
+        </a>
       </div>
     </ng-template>
     <p-carousel

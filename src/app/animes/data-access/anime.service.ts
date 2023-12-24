@@ -94,11 +94,11 @@ export class AnimeService {
               titleEnglish: item.title_english,
               from: item.aired?.from,
               episodes: item.episodes,
-              genres: item.genres,
               imageSrc: item.images.jpg.image_url,
               synopsis: item.synopsis,
               score: item.score,
               members: item.members,
+              genres: item.genres.map((r: any) => r.name),
             } satisfies Media)
         );
         const pagination: Pagination = {
@@ -126,7 +126,7 @@ export class AnimeService {
           ({
             ...response.data,
             images: response.data.images.jpg.image_url,
-            image_large: response.data.images.jpg.large_image_url,
+            imageLargeSrc: response.data.images.jpg.large_image_url,
             relations: response.data.relations.map(
               (r: any) =>
                 ({

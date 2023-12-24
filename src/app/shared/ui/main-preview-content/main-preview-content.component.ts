@@ -10,6 +10,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { DetailedMediaComponent } from 'src/app/shared/ui/detailed-media/detailed-media.component';
 import { ChipListComponent } from 'src/app/shared/ui/chip-list/chip-list.component';
 import { ImageData } from '../../data-access/imageData';
+import { Media } from '../../data-access/media';
 
 @Component({
   selector: 'app-main-preview-content',
@@ -30,7 +31,7 @@ import { ImageData } from '../../data-access/imageData';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainPreviewContentComponent {
-  @Input() media!: any;
+  @Input() media!: Media;
   @Input() isDetailed: boolean = false;
   @Input() pictures: ImageData[] = [];
 }

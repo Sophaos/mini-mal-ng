@@ -10,7 +10,7 @@
     <div class="flex flex-column align-items-center sm:align-items-start gap-3">
       <div class="flex justify-content-between flex-wrap w-full">
         <a
-          class="font-bold text-primary no-underline"
+          class="font-bold text-primary no-underline max-w-20rem white-space-nowrap overflow-hidden text-overflow-ellipsis"
           [routerLink]="['/animes', review.id]"
         >
           {{ review.title }}
@@ -29,7 +29,7 @@
           </div>
         </div>
       </div>
-      <pre class="text-sm max-h-11rem w-auto overflow-auto">{{
+      <pre class="text-sm max-h-7rem w-auto overflow-auto">{{
         review.content
       }}</pre>
 
