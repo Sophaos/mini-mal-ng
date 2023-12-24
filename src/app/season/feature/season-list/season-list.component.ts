@@ -4,8 +4,9 @@ import { PaginatorState } from 'primeng/paginator';
 import { combineLatest, map, switchMap } from 'rxjs';
 import { SeasonsService } from '../../data-access/seasons.service';
 import { getPagination } from 'src/app/shared/data-access/pagination';
-import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
 import { DropdownData } from 'src/app/shared/data-access/dropdownData';
+import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
+import { RouteQueryParams } from 'src/app/shared/data-access/routeQueryParams';
 
 @Component({
   selector: 'app-season-list',
@@ -32,10 +33,7 @@ export class SeasonListComponent implements OnInit {
   ]).pipe(
     map(([seasons, animes, params, queryParams, isLoading]) => {
       const seasonOptions = this.seasonOptions(seasons, params);
-      const pagination = getPagination(
-        queryParams,
-        animes.pagination.items.total
-      );
+      const pagination = getPagination(queryParams, animes.pagination.total);
       const years = seasons.years;
       return {
         years,
@@ -139,7 +137,7 @@ export class SeasonListComponent implements OnInit {
       limit: queryParams.get('limit') ?? 16,
     });
 
-  updateRouteQueryParams(updatedParams: any): void {
+  updateRouteQueryParams(updatedParams: RouteQueryParams): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: updatedParams,
@@ -148,7 +146,7 @@ export class SeasonListComponent implements OnInit {
   }
 
   handlePageChange(event: PaginatorState) {
-    const updatedParams = {
+    const updatedParams: RouteQueryParams = {
       ...this.route.snapshot.queryParams,
       page: (event.page ?? 0) + 1,
       limit: event.rows,

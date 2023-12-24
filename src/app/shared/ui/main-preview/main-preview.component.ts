@@ -9,6 +9,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
 import { MainPreviewContentComponent } from '../main-preview-content/main-preview-content.component';
 import { PanelModule } from 'primeng/panel';
+import { Media } from '../../data-access/media';
 @Component({
   selector: 'app-main-preview',
   standalone: true,
@@ -29,7 +30,7 @@ import { PanelModule } from 'primeng/panel';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainPreviewComponent {
-  @Input() data!: any[];
+  @Input() data!: Media[];
   @Input() header!: string;
   @Input() link?: (string | number)[];
   @Input() queryParams: Params = {};

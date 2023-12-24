@@ -2,6 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MediaDataCardComponent } from '../media-data-card/media-data-card.component';
 import { SkeletonDataViewComponent } from '../skeleton-data-view/skeleton-data-view.component';
+import { Media } from '../../data-access/media';
 
 @Component({
   selector: 'app-data-view',
@@ -12,6 +13,6 @@ import { SkeletonDataViewComponent } from '../skeleton-data-view/skeleton-data-v
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataViewComponent {
-  @Input({ required: true }) data!: any[];
+  @Input({ required: true }) data!: Media[];
   @Input() isLoading: boolean = true;
 }

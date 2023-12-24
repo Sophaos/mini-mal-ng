@@ -16,6 +16,7 @@ import { Pagination } from 'src/app/shared/data-access/pagination';
 import { BasicDisplayData } from 'src/app/shared/data-access/basicDisplayData';
 import { DetailedReview } from 'src/app/shared/data-access/detailedReview';
 import { ImageData } from 'src/app/shared/data-access/imageData';
+import { Data } from 'src/app/shared/data-access/data';
 export interface AnimeQueryParams {
   filter?: string;
   page?: number | string;
@@ -80,25 +81,30 @@ export class AnimeService {
     })
   );
 
-  getAnimeSearch$(params?: AnimeQueryParams): Observable<any> {
+  getAnimeSearch$(params?: AnimeQueryParams): Observable<Data<Media>> {
     const httpParams = this.buildParams(params);
     this.isAnimeDataLoadingSubject.next(true);
     return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
       map((response: any) => {
-        const data: Media[] = response.data.map((item: any) => ({
-          id: item.mal_id,
-          title: item.title,
-          titleEnglish: item.title_english,
-          from: item.aired?.from,
-          episodes: item.episodes,
-          genres: item.genres,
-          imageSrc: item.images.jpg.image_url,
-          synopsis: item.synopsis,
-          score: item.score,
-          members: item.members,
-        }));
+        const data: Media[] = response.data.map(
+          (item: any) =>
+            ({
+              id: item.mal_id,
+              title: item.title,
+              titleEnglish: item.title_english,
+              from: item.aired?.from,
+              episodes: item.episodes,
+              genres: item.genres,
+              imageSrc: item.images.jpg.image_url,
+              synopsis: item.synopsis,
+              score: item.score,
+              members: item.members,
+            } satisfies Media)
+        );
         const pagination: Pagination = {
-          ...response.pagination,
+          first: response.pagination.first,
+          rows: response.pagination.rows,
+          total: response.pagination.items.total,
         };
         return { data, pagination };
       }),
@@ -115,17 +121,29 @@ export class AnimeService {
   getAnimeFullById$(id: number | string): Observable<any> {
     this.isAnimeDetailsLoadingSubject.next(true);
     return this.http.get(`${this.apiUrl}/${id}/full`).pipe(
-      map((response: any) => ({
-        ...response.data,
-        images: response.data.images.jpg.image_url,
-        image_large: response.data.images.jpg.large_image_url,
-        relations: response.data.relations.map((r: any) => {
-          return {
-            title: r.relation,
-            informations: r.entry.map((e: any) => e.name),
-          } as BasicDisplayData;
-        }),
-      })),
+      map(
+        (response: any) =>
+          ({
+            ...response.data,
+            images: response.data.images.jpg.image_url,
+            image_large: response.data.images.jpg.large_image_url,
+            relations: response.data.relations.map(
+              (r: any) =>
+                ({
+                  title: r.relation,
+                  informations: r.entry.map((e: any) => e.name),
+                } satisfies BasicDisplayData)
+            ),
+            from: response.data.aired.string,
+            genres: response.data.genres.map((r: any) => r.name),
+            themes: response.data.themes.map((r: any) => r.name),
+            demographics: response.data.demographics.map((r: any) => r.name),
+            studios: response.data.studios.map((r: any) => r.name),
+            producers: response.data.producers.map((r: any) => r.name),
+            streaming: response.data.streaming.map((r: any) => r.name),
+            licensors: response.data.licensors.map((r: any) => r.name),
+          } satisfies Media)
+      ),
       catchError((error) => {
         console.error('Error fetching data:', error);
         return [];
@@ -148,7 +166,7 @@ export class AnimeService {
               informations: item.voice_actors.map(
                 (v: any) => `${v.person.name} ${v.language}`
               ),
-            } as BasicDisplayData)
+            } satisfies BasicDisplayData)
         );
         return data;
       }),
@@ -172,7 +190,7 @@ export class AnimeService {
             ({
               imageLarge: item.jpg.large_image_url,
               imageSmall: item.jpg.small_image_url,
-            } as ImageData)
+            } satisfies ImageData)
         );
         return data;
       }),
@@ -199,7 +217,7 @@ export class AnimeService {
                   imageSrc: item.person.images.jpg.image_url,
                   title: `${item.person.name}`,
                   informations: item.positions.map((v: string) => `${v}`),
-                } as BasicDisplayData)
+                } satisfies BasicDisplayData)
             );
             return data;
           }),
@@ -234,7 +252,7 @@ export class AnimeService {
                   imageSrc: item.user.images.jpg.image_url,
                   tags: [...item.tags],
                   date: item.date,
-                } as DetailedReview;
+                } satisfies DetailedReview;
               });
               return data;
             }),
@@ -264,7 +282,7 @@ export class AnimeService {
                   title: item.entry.title,
                   votes: item.votes,
                   imageSrc: item.entry.images.jpg.image_url,
-                } as Recommendation)
+                } satisfies Recommendation)
             )
           ),
           catchError((error) => {

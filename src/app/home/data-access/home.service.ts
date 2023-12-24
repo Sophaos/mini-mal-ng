@@ -62,7 +62,7 @@ export class HomeService {
               user: item.user.username,
               tags: [...item.tags],
               hoursDifference: Math.round(hoursDifference),
-            } as Review;
+            } satisfies Review;
           })
           .slice(0, 10);
         return data;

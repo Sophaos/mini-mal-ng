@@ -26,7 +26,7 @@
           {{ media.season | titlecase }} {{ media.year }}
         </a>
       </app-label-info>
-      <app-label-info label="Aired" [value]="media.aired.string" />
+      <app-label-info label="Aired" [value]="media.from" />
       <app-label-info label="Status" [value]="media.status" />
       <app-label-info label="Duration" [value]="media.duration" />
       <app-label-info label="Episodes" [value]="media.episodes" />
@@ -44,11 +44,23 @@
   </div>
   <p-divider></p-divider>
   <div class="flex flex-column my-2 text-sm ml-2">
-    <app-label-list label="Studios" [data]="media.studios" />
-    <app-label-list label="Producers" [data]="media.producers" />
-    <app-label-list label="Streaming" [data]="media.streaming" />
     <app-label-list
-      *ngIf="media.licensors?.length > 0"
+      *ngIf="media.studios"
+      label="Studios"
+      [data]="media.studios"
+    />
+    <app-label-list
+      *ngIf="media.producers"
+      label="Producers"
+      [data]="media.producers"
+    />
+    <app-label-list
+      *ngIf="media.streaming"
+      label="Streaming"
+      [data]="media.streaming"
+    />
+    <app-label-list
+      *ngIf="media.licensors && media.licensors.length > 0"
       label="Licensors"
       [data]="media.licensors"
     />

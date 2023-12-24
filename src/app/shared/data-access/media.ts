@@ -9,4 +9,22 @@ export interface Media {
   synopsis: string;
   score: number;
   members: number;
+
+  themes?: string[];
+  status?: string;
+  demographics?: string[];
+  rank?: number;
+  popularity?: number;
+  favorites?: number;
+  year?: number;
+  season?: string;
+  aired?: string;
+  duration?: string;
+  type?: string;
+  source?: string;
+  rating?: number;
+  studios?: string[];
+  producers?: string[];
+  streaming?: string[];
+  licensors?: string[];
 }

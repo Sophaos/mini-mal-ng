@@ -11,6 +11,7 @@ import {
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
 import { Media } from 'src/app/shared/data-access/media';
 import { Pagination } from 'src/app/shared/data-access/pagination';
+import { Data } from 'src/app/shared/data-access/data';
 
 export interface SeasonQueryParams {
   filter?: string;
@@ -35,7 +36,7 @@ export class SeasonsService {
   private isSeasonDataLoadingSubject = new BehaviorSubject<boolean>(true);
   isSeasonDataLoading$ = this.isSeasonDataLoadingSubject.asObservable();
 
-  getSeasonData$(params: SeasonParams): Observable<any> {
+  getSeasonData$(params: SeasonParams): Observable<Data<Media>> {
     const httpParams = this.buildParams(params);
     this.isSeasonDataLoadingSubject.next(true);
     return this.http
@@ -57,7 +58,9 @@ export class SeasonsService {
             members: item.members,
           }));
           const pagination: Pagination = {
-            ...response.pagination,
+            first: response.pagination.first,
+            rows: response.pagination.rows,
+            total: response.pagination.items.total,
           };
           return { data, pagination };
         }),

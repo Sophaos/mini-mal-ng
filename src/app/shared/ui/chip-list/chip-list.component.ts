@@ -11,5 +11,5 @@ import { ChipModule } from 'primeng/chip';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChipListComponent {
-  @Input() data!: any[];
+  @Input() data!: string[];
 }

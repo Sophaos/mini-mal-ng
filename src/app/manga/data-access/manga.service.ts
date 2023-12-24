@@ -1,10 +1,11 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, Subject, map, switchMap, tap } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
 import { Media } from 'src/app/shared/data-access/media';
 import { Pagination } from 'src/app/shared/data-access/pagination';
 import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
+import { Data } from 'src/app/shared/data-access/data';
 
 export interface AnimeQueryParams {
   filter?: string;
@@ -53,12 +54,12 @@ export class MangaService {
             ({
               value: item.mal_id.toString(),
               label: item.name,
-            } as DropdownOption)
+            } satisfies DropdownOption)
         )
       )
     );
 
-  search$(params?: AnimeQueryParams): Observable<any> {
+  search$(params?: AnimeQueryParams): Observable<Data<Media>> {
     const httpParams = this.buildParams(params);
     return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
       map((response: any) => {
@@ -75,7 +76,9 @@ export class MangaService {
           members: item.members,
         }));
         const pagination: Pagination = {
-          ...response.pagination,
+          first: response.pagination.first,
+          rows: response.pagination.rows,
+          total: response.pagination.items.total,
         };
         return { data, pagination };
       })

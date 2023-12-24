@@ -14,6 +14,8 @@ import {
 import { getPagination } from 'src/app/shared/data-access/pagination';
 import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
 import { DropdownData } from 'src/app/shared/data-access/dropdownData';
+import { ParamData } from 'src/app/shared/data-access/paramData';
+import { RouteQueryParams } from 'src/app/shared/data-access/routeQueryParams';
 
 @Component({
   selector: 'app-animes-list',
@@ -22,14 +24,15 @@ import { DropdownData } from 'src/app/shared/data-access/dropdownData';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimesListComponent implements OnInit {
-  private inputsSubject = new BehaviorSubject<any>(null);
+  private inputsSubject = new BehaviorSubject<ParamData>({
+    value: '',
+    param: '',
+  });
   inputsChange = this.inputsSubject.asObservable();
   inputs$ = this.inputsChange.pipe(
     debounceTime(500),
     distinctUntilChanged(),
-    tap((res) => {
-      if (res) this.defaultChange(res.event, res.param);
-    })
+    tap((res) => this.defaultChange(res))
   );
 
   animes$ = this.route.queryParamMap.pipe(
@@ -47,7 +50,7 @@ export class AnimesListComponent implements OnInit {
     this.inputs$,
   ]).pipe(
     map(([animes, genres, queryParams, isLoading]) => ({
-      pagination: getPagination(queryParams, animes.pagination.items.total),
+      pagination: getPagination(queryParams, animes.pagination.total),
       animes: { data: animes.data, isLoading },
       genres,
       filterDropdowns: this.getFilterDropdowns(genres),
@@ -171,7 +174,7 @@ export class AnimesListComponent implements OnInit {
         param: 'q',
         type: 'string',
         change: (event: string | number, param: string) =>
-          this.inputsSubject.next({ event, param }),
+          this.inputsSubject.next({ value: event, param }),
       },
       {
         label: 'Min Score',
@@ -179,7 +182,7 @@ export class AnimesListComponent implements OnInit {
         param: 'min_score',
         type: 'number',
         change: (event: string | number, param: string) =>
-          this.inputsSubject.next({ event, param }),
+          this.inputsSubject.next({ value: event, param }),
       },
       {
         label: 'Max Score',
@@ -187,7 +190,7 @@ export class AnimesListComponent implements OnInit {
         param: 'max_score',
         type: 'number',
         change: (event: string | number, param: string) =>
-          this.inputsSubject.next({ event, param }),
+          this.inputsSubject.next({ value: event, param }),
       },
     ];
   }
@@ -207,7 +210,7 @@ export class AnimesListComponent implements OnInit {
       limit: queryParams.get('limit') ?? 16,
     });
 
-  updateRouteQueryParams(updatedParams: any): void {
+  updateRouteQueryParams(updatedParams: RouteQueryParams): void {
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: updatedParams,
@@ -217,7 +220,7 @@ export class AnimesListComponent implements OnInit {
 
   handlePageChange(event: PaginatorState) {
     const currentParams = this.route.snapshot.queryParams;
-    const updatedParams = {
+    const updatedParams: RouteQueryParams = {
       ...currentParams,
       page: (event.page ?? 0) + 1,
       limit: event.rows,
@@ -225,11 +228,12 @@ export class AnimesListComponent implements OnInit {
     this.updateRouteQueryParams(updatedParams);
   }
 
-  defaultChange(value: string | number, param: string) {
+  defaultChange(paramData: ParamData) {
+    if (paramData.param === '') return;
     let updatedQueryParams = {
       page: 1,
       limit: 16,
-      [param]: value,
+      [paramData.param]: paramData.value,
     };
     updatedQueryParams = {
       ...this.route.snapshot.queryParams,
@@ -240,9 +244,5 @@ export class AnimesListComponent implements OnInit {
       queryParams: updatedQueryParams,
       queryParamsHandling: 'merge',
     });
-  }
-
-  changeQueryParams(event: any, param: string) {
-    this.defaultChange(event.value, param);
   }
 }

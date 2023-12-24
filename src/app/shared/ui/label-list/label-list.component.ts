@@ -10,6 +10,6 @@ import { CommonModule } from '@angular/common';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LabelListComponent {
-  @Input() data!: any[];
+  @Input() data!: string[];
   @Input() label!: string;
 }
