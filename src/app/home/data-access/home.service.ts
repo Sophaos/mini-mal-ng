@@ -94,16 +94,12 @@ export class HomeService {
               currentDate.getTime() - targetDate.getTime();
             const hoursDifference = timeDifferenceMillis / (1000 * 60 * 60);
             return {
-              likedMedia: {
-                ...item.entry[0],
-                id: item.entry[0].mal_id,
-                image: item.entry[0].images.jpg.image_url,
-              },
-              mightLikeMedia: {
-                ...item.entry[1],
-                id: item.entry[1].mal_id,
-                image: item.entry[1].images.jpg.image_url,
-              },
+              likedMediaTitle: item.entry[0].title,
+              likedMediaId: item.entry[0].mal_id,
+              likedMediaImage: item.entry[0].images.jpg.image_url,
+              mightLikeMediatitle: item.entry[1].title,
+              mightLikeMediaId: item.entry[1].mal_id,
+              mightLikeMediaImage: item.entry[1].images.jpg.image_url,
               content: item.content,
               user: item.user.username,
               hoursDifference: Math.round(hoursDifference),

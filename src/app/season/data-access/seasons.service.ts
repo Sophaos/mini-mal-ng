@@ -12,6 +12,8 @@ import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
 import { Media } from 'src/app/shared/data-access/media';
 import { Pagination } from 'src/app/shared/data-access/pagination';
 import { Data } from 'src/app/shared/data-access/data';
+import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
+import { SeasonData } from 'src/app/shared/data-access/seasonData';
 
 export interface SeasonQueryParams {
   filter?: string;
@@ -51,7 +53,7 @@ export class SeasonsService {
             titleEnglish: item.title_english,
             from: item.aired?.from,
             episodes: item.episodes,
-            genres: item.genres,
+            genres: item.genres.map((r: any) => r.name),
             imageSrc: item.images.jpg.image_url,
             synopsis: item.synopsis,
             score: item.score,
@@ -76,16 +78,26 @@ export class SeasonsService {
 
   seasons$ = this.http.get(`${this.apiUrl}`).pipe(
     map((res: any) => {
-      const labels = res.data.map((item: any) => ({
-        ...item,
-        labels: item.seasons.map((s: string) => ({
-          label: s.charAt(0).toUpperCase() + s.slice(1),
-          value: s,
-        })),
+      const seasonData: SeasonData[] = res.data.map(
+        (item: any) =>
+          ({
+            year: item.year,
+            seasonOptions: item.seasons.map(
+              (s: string) =>
+                ({
+                  label: s.charAt(0).toUpperCase() + s.slice(1),
+                  value: s,
+                } satisfies DropdownOption)
+            ),
+          } satisfies SeasonData)
+      );
+      const yearOptions: DropdownOption[] = seasonData.map((s: any) => ({
+        label: s.year,
+        value: s.year,
       }));
-      const years = labels.map((s: any) => ({ label: s.year, value: s.year }));
-      return { labels, years };
-    })
+      return { seasonData, yearOptions };
+    }),
+    tap((res) => console.log(res))
   );
 
   private buildParams(params?: SeasonQueryParams): HttpParams {

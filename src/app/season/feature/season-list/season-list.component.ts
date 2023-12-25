@@ -7,6 +7,7 @@ import { getPagination } from 'src/app/shared/data-access/pagination';
 import { DropdownData } from 'src/app/shared/data-access/dropdownData';
 import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
 import { RouteQueryParams } from 'src/app/shared/data-access/routeQueryParams';
+import { SeasonData } from 'src/app/shared/data-access/seasonData';
 
 @Component({
   selector: 'app-season-list',
@@ -32,15 +33,13 @@ export class SeasonListComponent implements OnInit {
     this.isLoading$,
   ]).pipe(
     map(([seasons, animes, params, queryParams, isLoading]) => {
-      const seasonOptions = this.seasonOptions(seasons, params);
+      const seasonOptions = this.seasonOptions(seasons.seasonData, params);
       const pagination = getPagination(queryParams, animes.pagination.total);
-      const years = seasons.years;
+      const yearsOptions = seasons.yearOptions;
       return {
-        years,
-        seasons: seasonOptions,
         pagination,
         animes: { data: animes.data, isLoading },
-        filters: this.getSeasonFilterData(years, seasonOptions),
+        filters: this.getSeasonFilterData(yearsOptions, seasonOptions ?? []),
       };
     })
   );
@@ -124,9 +123,9 @@ export class SeasonListComponent implements OnInit {
     );
   }
 
-  seasonOptions = (seasons: any, params: ParamMap) =>
-    seasons.labels.find((s: any) => s.year === Number(params.get('year')))
-      .labels;
+  seasonOptions = (seasons: SeasonData[], params: ParamMap) =>
+    seasons.find((s: SeasonData) => s.year === Number(params.get('year')))
+      ?.seasonOptions;
 
   getSeasonAnimes = (params: ParamMap, queryParams: ParamMap) =>
     this.seasonService.getSeasonData$({

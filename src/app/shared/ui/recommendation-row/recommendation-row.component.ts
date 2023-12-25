@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
+import { HomeRecommendation } from '../../data-access/homeReview';
 
 @Component({
   selector: 'app-recommendation-row',
@@ -11,9 +12,5 @@ import { RouterLink } from '@angular/router';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class RecommendationRowComponent {
-  @Input() user!: string;
-  @Input() hoursDifference!: number;
-  @Input() content!: string;
-  @Input() likedMedia!: any;
-  @Input() mightLikeMedia!: any;
+  @Input() recommendation!: HomeRecommendation;
 }
