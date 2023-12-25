@@ -7,14 +7,22 @@
   <div
     class="flex flex-column xl:flex-row lg:flex-row md:flex-row flex-wrap gap-1 mt-1 w-full"
   >
-    <app-items-container title="Latest Anime Review" class="flex-1">
+    <app-items-container
+      title="Latest Anime Review"
+      class="flex-1"
+      [isCollapsed]="false"
+    >
       <div class="max-h-30rem overflow-auto">
         <div class="mb-2" *ngFor="let review of vm.reviews">
           <app-review-row [review]="review" />
         </div>
       </div>
     </app-items-container>
-    <app-items-container title="Latest Anime Recommendations" class="flex-1">
+    <app-items-container
+      title="Latest Anime Recommendations"
+      class="flex-1"
+      [isCollapsed]="false"
+    >
       <div class="max-h-30rem overflow-auto">
         <div class="mb-2" *ngFor="let recommendation of vm.recommendations">
           <app-recommendation-row [recommendation]="recommendation" />

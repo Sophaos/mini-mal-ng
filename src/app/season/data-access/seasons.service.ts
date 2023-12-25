@@ -12,8 +12,8 @@ import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
 import { Media } from 'src/app/shared/data-access/media';
 import { Pagination } from 'src/app/shared/data-access/pagination';
 import { Data } from 'src/app/shared/data-access/data';
-import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
 import { SeasonData } from 'src/app/shared/data-access/seasonData';
+import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
 
 export interface SeasonQueryParams {
   filter?: string;
@@ -91,10 +91,13 @@ export class SeasonsService {
             ),
           } satisfies SeasonData)
       );
-      const yearOptions: DropdownOption[] = seasonData.map((s: any) => ({
-        label: s.year,
-        value: s.year,
-      }));
+      const yearOptions: DropdownOption[] = seasonData.map(
+        (s: SeasonData) =>
+          ({
+            label: s.year,
+            value: s.year,
+          } satisfies DropdownOption)
+      );
       return { seasonData, yearOptions };
     }),
     tap((res) => console.log(res))

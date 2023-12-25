@@ -1,3 +1,5 @@
+import { BasicDisplayData } from './basicDisplayData';
+
 export interface Media {
   id: number;
   title: string;
@@ -9,8 +11,8 @@ export interface Media {
   synopsis: string;
   score: number;
   members: number;
-
   imageLargeSrc?: string;
+  background?: string;
   themes?: string[];
   status?: string;
   demographics?: string[];
@@ -28,4 +30,7 @@ export interface Media {
   producers?: string[];
   streaming?: string[];
   licensors?: string[];
+  openings?: string[];
+  endings?: string[];
+  relations?: BasicDisplayData[];
 }

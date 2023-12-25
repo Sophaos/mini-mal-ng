@@ -1,7 +1,8 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { map } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { JIKAN_API_BASE_URL } from 'src/app/shared/data-access/apiUrl';
+import { HomeRecommendation } from 'src/app/shared/data-access/homeReview';
 import { Media } from 'src/app/shared/data-access/media';
 import { Review } from 'src/app/shared/data-access/review';
 
@@ -32,8 +33,8 @@ export class HomeService {
       params: this.buildParams(TOP_ANIME_PARAMS),
     })
     .pipe(
-      map((response: any) =>
-        response.data.map(
+      map((response: any) => {
+        const data: Media[] = response.data.map(
           (item: any) =>
             ({
               id: item.mal_id,
@@ -48,8 +49,9 @@ export class HomeService {
               genres: item.genres.map((r: any) => r.name),
               imageLargeSrc: item.images.jpg.large_image_url,
             } satisfies Media)
-        )
-      )
+        );
+        return data;
+      })
     );
 
   animeReviews$ = this.http
@@ -86,8 +88,7 @@ export class HomeService {
     .pipe(
       map((response: any) => {
         const currentDate = new Date();
-
-        const data = response.data
+        const data: HomeRecommendation[] = response.data
           .map((item: any) => {
             const targetDate = new Date(item.date);
             const timeDifferenceMillis =
@@ -103,7 +104,7 @@ export class HomeService {
               content: item.content,
               user: item.user.username,
               hoursDifference: Math.round(hoursDifference),
-            };
+            } satisfies HomeRecommendation;
           })
           .slice(0, 10);
         return data;

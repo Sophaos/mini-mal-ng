@@ -5,7 +5,7 @@
     <div class="flex-1">
       <p-divider align="center">Statistics</p-divider>
       <app-label-info label="Score" [value]="media.score">
-        <i class="pi pi-star-fill text-yellow-300"></i>
+        <i class="pi pi-star-fill text-yellow-300 ml-1"></i>
       </app-label-info>
       <app-label-info label="Rank" [value]="media.rank" />
       <app-label-info label="Popularity" [value]="media.popularity" />
@@ -43,7 +43,7 @@
     </div>
   </div>
   <p-divider></p-divider>
-  <div class="flex flex-column my-2 text-sm ml-2">
+  <div class="flex flex-column my-2 text-sm">
     <app-label-list
       *ngIf="media.studios"
       label="Studios"

@@ -17,6 +17,7 @@ import { BasicDisplayData } from 'src/app/shared/data-access/basicDisplayData';
 import { DetailedReview } from 'src/app/shared/data-access/detailedReview';
 import { ImageData } from 'src/app/shared/data-access/imageData';
 import { Data } from 'src/app/shared/data-access/data';
+import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
 export interface AnimeQueryParams {
   filter?: string;
   page?: number | string;
@@ -73,7 +74,7 @@ export class AnimeService {
 
   animeGenres$ = this.http.get(`${JIKAN_API_BASE_URL}/genres/anime`).pipe(
     map((response: any) => {
-      let data = response.data.map((item: any) => ({
+      const data: DropdownOption[] = response.data.map((item: any) => ({
         value: item.mal_id.toString(),
         label: item.name,
       }));
@@ -118,14 +119,32 @@ export class AnimeService {
     );
   }
 
-  getAnimeFullById$(id: number | string): Observable<any> {
+  getAnimeFullById$(id: number | string): Observable<Media> {
     this.isAnimeDetailsLoadingSubject.next(true);
     return this.http.get(`${this.apiUrl}/${id}/full`).pipe(
       map(
         (response: any) =>
           ({
-            ...response.data,
-            images: response.data.images.jpg.image_url,
+            id: response.data.mal_id,
+            title: response.data.title,
+            titleEnglish: response.data.title_english,
+            from: response.data.aired?.string,
+            episodes: response.data.episodes,
+            imageSrc: response.data.images.jpg.image_url,
+            synopsis: response.data.synopsis,
+            score: response.data.score,
+            members: response.data.members,
+            rank: response.data.rank,
+            popularity: response.data.popularity,
+            favorites: response.data.favorites,
+            source: response.data.source,
+            type: response.data.type,
+            rating: response.data.rating,
+            status: response.data.status,
+            duration: response.data.duration,
+            season: response.data.season,
+            year: response.data.year,
+            background: response.data.background,
             imageLargeSrc: response.data.images.jpg.large_image_url,
             relations: response.data.relations.map(
               (r: any) =>
@@ -134,7 +153,6 @@ export class AnimeService {
                   informations: r.entry.map((e: any) => e.name),
                 } satisfies BasicDisplayData)
             ),
-            from: response.data.aired.string,
             genres: response.data.genres.map((r: any) => r.name),
             themes: response.data.themes.map((r: any) => r.name),
             demographics: response.data.demographics.map((r: any) => r.name),
@@ -142,6 +160,8 @@ export class AnimeService {
             producers: response.data.producers.map((r: any) => r.name),
             streaming: response.data.streaming.map((r: any) => r.name),
             licensors: response.data.licensors.map((r: any) => r.name),
+            openings: response.data.theme.openings.map((r: any) => r),
+            endings: response.data.theme.endings.map((r: any) => r),
           } satisfies Media)
       ),
       catchError((error) => {

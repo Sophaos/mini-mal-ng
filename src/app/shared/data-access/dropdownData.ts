@@ -1,4 +1,4 @@
-import { DropdownOption } from './DropdownOption';
+import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
 
 export interface DropdownData {
   label: string;

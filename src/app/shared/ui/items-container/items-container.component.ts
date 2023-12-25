@@ -14,7 +14,5 @@ import { PanelModule } from 'primeng/panel';
 })
 export class ItemsContainerComponent {
   @Input() title: string = '';
-  @Input() link?: (string | number)[];
-  @Input() queryParams: Params = {};
-  @Input() isCollapsed: boolean = false;
+  @Input() isCollapsed: boolean = true;
 }

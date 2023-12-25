@@ -45,36 +45,38 @@ export class MangaService {
   readonly category = 'manga';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
-  genres$: Observable<DropdownOption[]> = this.http
-    .get(`${JIKAN_API_BASE_URL}/genres/manga`)
-    .pipe(
-      map((response: any) =>
-        response.data.map(
-          (item: any) =>
-            ({
-              value: item.mal_id.toString(),
-              label: item.name,
-            } satisfies DropdownOption)
-        )
-      )
-    );
+  genres$ = this.http.get(`${JIKAN_API_BASE_URL}/genres/manga`).pipe(
+    map((response: any) => {
+      const data: DropdownOption[] = response.data.map(
+        (item: any) =>
+          ({
+            value: item.mal_id.toString(),
+            label: item.name,
+          } satisfies DropdownOption)
+      );
+      return data;
+    })
+  );
 
   search$(params?: AnimeQueryParams): Observable<Data<Media>> {
     const httpParams = this.buildParams(params);
     return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
       map((response: any) => {
-        const data: Media[] = response.data.map((item: any) => ({
-          id: item.mal_id,
-          title: item.title,
-          titleEnglish: item.title_english,
-          from: item.aired?.from,
-          episodes: item.episodes,
-          genres: item.genres,
-          imageSrc: item.images.jpg.image_url,
-          synopsis: item.synopsis,
-          score: item.score,
-          members: item.members,
-        }));
+        const data: Media[] = response.data.map(
+          (item: any) =>
+            ({
+              id: item.mal_id,
+              title: item.title,
+              titleEnglish: item.title_english,
+              from: item.aired?.from,
+              episodes: item.episodes,
+              genres: item.genres,
+              imageSrc: item.images.jpg.image_url,
+              synopsis: item.synopsis,
+              score: item.score,
+              members: item.members,
+            } satisfies Media)
+        );
         const pagination: Pagination = {
           first: response.pagination.first,
           rows: response.pagination.rows,

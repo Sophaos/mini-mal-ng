@@ -18,7 +18,6 @@ import { SkeletonPanelHeaderComponent } from 'src/app/shared/ui/skeleton-panel-h
     HomeRoutingModule,
     ItemsContainerComponent,
     MainPreviewComponent,
-    CardModule,
     ReviewRowComponent,
     RecommendationRowComponent,
     SkeletonMainPreviewComponent,
