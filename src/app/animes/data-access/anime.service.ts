@@ -159,7 +159,7 @@ export class AnimeService {
               favorites: response.data.favorites,
               source: response.data.source,
               type: response.data.type,
-              rating: Number(response.data.rating),
+              rating: response.data.rating,
               status: response.data.status,
               duration: response.data.duration,
               season: response.data.season,

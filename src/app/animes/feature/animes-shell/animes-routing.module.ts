@@ -9,8 +9,8 @@ const routes: Routes = [
     component: AnimesListComponent,
   },
   {
-    path: ':id', // Define the route with the :id parameter
-    component: AnimeDetailsComponent, // Replace with the actual component for displaying anime details
+    path: ':id',
+    component: AnimeDetailsComponent,
   },
 ];
 

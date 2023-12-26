@@ -8,6 +8,7 @@ import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
 import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
 import { RouteQueryParams } from 'src/app/shared/data-access/models/routeQueryParams';
 import { SeasonData } from 'src/app/shared/data-access/models/seasonData';
+import { getCurrentSeason } from 'src/app/shared/utils/currentSeason';
 
 @Component({
   selector: 'app-season-list',
@@ -130,7 +131,7 @@ export class SeasonListComponent implements OnInit {
   getSeasonAnimes = (params: ParamMap, queryParams: ParamMap) =>
     this.seasonService.getSeasonData$({
       year: params.get('year') ?? new Date().getFullYear(),
-      season: params.get('season') ?? this.getCurrentSeason(),
+      season: params.get('season') ?? getCurrentSeason(),
       filter: queryParams.get('filter') ?? 'tv',
       page: queryParams.get('page') ?? 1,
       limit: queryParams.get('limit') ?? 16,
@@ -159,20 +160,5 @@ export class SeasonListComponent implements OnInit {
       page: 1,
       limit: 8,
     };
-  }
-
-  getCurrentSeason(): string {
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
-
-    if (currentMonth >= 3 && currentMonth <= 5) {
-      return 'spring';
-    } else if (currentMonth >= 6 && currentMonth <= 8) {
-      return 'summer';
-    } else if (currentMonth >= 9 && currentMonth <= 11) {
-      return 'fall';
-    } else {
-      return 'winter';
-    }
   }
 }

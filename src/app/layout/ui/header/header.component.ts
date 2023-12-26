@@ -9,6 +9,7 @@ import { MenubarModule } from 'primeng/menubar';
 import { CommonModule } from '@angular/common';
 import { MenuItem } from 'primeng/api';
 import { AvatarModule } from 'primeng/avatar';
+import { getCurrentSeason } from 'src/app/shared/utils/currentSeason';
 
 @Component({
   selector: 'app-header',
@@ -25,7 +26,7 @@ export class HeaderComponent implements OnInit {
   currentYear = new Date().getFullYear();
   constructor() {}
   ngOnInit(): void {
-    this.currentSeason = this.getCurrentSeason();
+    this.currentSeason = getCurrentSeason();
     const seasonUrl = `/season/${this.currentYear}/${this.currentSeason}`;
     this.items = [
       {
@@ -41,20 +42,5 @@ export class HeaderComponent implements OnInit {
         routerLink: seasonUrl,
       },
     ];
-  }
-
-  getCurrentSeason(): string {
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
-
-    if (currentMonth >= 3 && currentMonth <= 5) {
-      return 'spring';
-    } else if (currentMonth >= 6 && currentMonth <= 8) {
-      return 'summer';
-    } else if (currentMonth >= 9 && currentMonth <= 11) {
-      return 'fall';
-    } else {
-      return 'winter';
-    }
   }
 }

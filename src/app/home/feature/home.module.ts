@@ -4,7 +4,6 @@ import { HomeComponent } from './home.component';
 import { HomeRoutingModule } from './home-routing.module';
 import { HomeService } from '../data-access/home.service';
 import { ItemsContainerComponent } from '../../shared/ui/items-container/items-container.component';
-import { CardModule } from 'primeng/card';
 import { MainPreviewComponent } from '../../shared/ui/main-preview/main-preview.component';
 import { ReviewRowComponent } from '../../shared/ui/review-row/review-row.component';
 import { RecommendationRowComponent } from '../../shared/ui/recommendation-row/recommendation-row.component';

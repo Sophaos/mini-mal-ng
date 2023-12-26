@@ -25,7 +25,7 @@ export interface Media {
   duration?: string;
   type?: string;
   source?: string;
-  rating?: number;
+  rating?: string;
   studios?: string[];
   producers?: string[];
   streaming?: string[];

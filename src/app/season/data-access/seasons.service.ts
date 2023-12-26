@@ -1,13 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  Observable,
-  catchError,
-  finalize,
-  map,
-  tap,
-} from 'rxjs';
+import { BehaviorSubject, Observable, catchError, finalize, map } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
 import { Media } from 'src/app/shared/data-access/models/media';
 import { Pagination } from 'src/app/shared/data-access/models/pagination';
@@ -121,20 +114,5 @@ export class SeasonsService {
       httpParams = httpParams.set('limit', params.limit.toString());
     }
     return httpParams;
-  }
-
-  getCurrentSeason(): string {
-    const currentDate = new Date();
-    const currentMonth = currentDate.getMonth() + 1; // Month is zero-indexed, so we add 1
-
-    if (currentMonth >= 3 && currentMonth <= 5) {
-      return 'spring';
-    } else if (currentMonth >= 6 && currentMonth <= 8) {
-      return 'summer';
-    } else if (currentMonth >= 9 && currentMonth <= 11) {
-      return 'fall';
-    } else {
-      return 'winter';
-    }
   }
 }

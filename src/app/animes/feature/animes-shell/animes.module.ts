@@ -7,15 +7,9 @@ import { AnimeRoutingModule } from './animes-routing.module';
 import { AnimeService } from '../../data-access/anime.service';
 import { DataViewComponent } from 'src/app/shared/ui/data-view/data-view.component';
 import { PaginatorComponent } from 'src/app/shared/ui/paginator/paginator.component';
-import { ReactiveFormsModule } from '@angular/forms';
 import { DataViewFilterComponent } from 'src/app/shared/ui/data-view-filter/data-view-filter.component';
 import { ItemsContainerComponent } from 'src/app/shared/ui/items-container/items-container.component';
-import { CardModule } from 'primeng/card';
 import { MainPreviewContentComponent } from 'src/app/shared/ui/main-preview-content/main-preview-content.component';
-import { DividerModule } from 'primeng/divider';
-import { GalleriaModule } from 'primeng/galleria';
-import { PanelModule } from 'primeng/panel';
-import { AccordionModule } from 'primeng/accordion';
 import { ReviewRowComponent } from 'src/app/shared/ui/review-row/review-row.component';
 import { RecommendationRowComponent } from 'src/app/shared/ui/recommendation-row/recommendation-row.component';
 import { DetailedReviewComponent } from 'src/app/shared/ui/detailed-review/detailed-review.component';
@@ -35,7 +29,6 @@ import { SkeletonPanelHeaderComponent } from 'src/app/shared/ui/skeleton-panel-h
     AnimeRoutingModule,
     DataViewComponent,
     PaginatorComponent,
-    ReactiveFormsModule,
     DataViewFilterComponent,
     ItemsContainerComponent,
     MainPreviewContentComponent,

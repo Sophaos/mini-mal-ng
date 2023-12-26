@@ -1,7 +1,7 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
 import { HomeService } from '../data-access/home.service';
 import { combineLatest, map } from 'rxjs';
-import { SeasonsService } from 'src/app/season/data-access/seasons.service';
+import { getCurrentSeason } from 'src/app/shared/utils/currentSeason';
 
 @Component({
   selector: 'app-home',
@@ -28,10 +28,7 @@ export class HomeComponent {
     }))
   );
 
-  constructor(
-    private homeService: HomeService,
-    private seasonService: SeasonsService
-  ) {
-    this.currentSeason = this.seasonService.getCurrentSeason();
+  constructor(private homeService: HomeService) {
+    this.currentSeason = getCurrentSeason();
   }
 }
