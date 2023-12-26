@@ -10,12 +10,12 @@ import {
   combineLatest,
   map,
 } from 'rxjs';
-import { getPagination } from 'src/app/shared/data-access/pagination';
+import { getPagination } from 'src/app/shared/data-access/models/pagination';
 import { MangaService } from '../../data-access/manga.service';
-import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
-import { DropdownData } from 'src/app/shared/data-access/dropdownData';
-import { ParamData } from 'src/app/shared/data-access/paramData';
-import { RouteQueryParams } from 'src/app/shared/data-access/routeQueryParams';
+import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
+import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
+import { ParamData } from 'src/app/shared/data-access/models/paramData';
+import { RouteQueryParams } from 'src/app/shared/data-access/models/routeQueryParams';
 
 @Component({
   selector: 'app-manga-list',

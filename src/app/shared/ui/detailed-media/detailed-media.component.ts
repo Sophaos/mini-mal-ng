@@ -4,7 +4,7 @@ import { DividerModule } from 'primeng/divider';
 import { RouterLink } from '@angular/router';
 import { LabelListComponent } from '../label-list/label-list.component';
 import { LabelInfoComponent } from '../label-info/label-info.component';
-import { Media } from '../../data-access/media';
+import { Media } from '../../data-access/models/media';
 
 @Component({
   selector: 'app-detailed-media',

@@ -1,25 +1,32 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { map } from 'rxjs';
 import { JIKAN_API_BASE_URL } from 'src/app/shared/data-access/apiUrl';
-import { HomeRecommendation } from 'src/app/shared/data-access/homeReview';
-import { Media } from 'src/app/shared/data-access/media';
-import { Review } from 'src/app/shared/data-access/review';
+import { Data } from 'src/app/shared/data-access/models/data';
+import { HomeRecommendation } from 'src/app/shared/data-access/models/homeReview';
+import { Media } from 'src/app/shared/data-access/models/media';
+import { Review } from 'src/app/shared/data-access/models/review';
+import { GeneralRecommendationResponse } from 'src/app/shared/data-access/response/generalRecommendationResponse';
+import { GeneralReviewResponse } from 'src/app/shared/data-access/response/generalReviewResponse';
+import { MediaResponse } from 'src/app/shared/data-access/response/mediaReponse';
 
 const ANIME = 'anime';
 const REVIEWS = 'reviews';
 const TOP_CATEGORY = 'top';
 
-const TOP_ANIME_PARAMS = {
+const TOP_ANIME_PARAMS: TopAnimeQuery = {
   filter: 'airing',
   sfw: true,
   limit: 10,
   page: 1,
 };
 
-const REVIEWS_PARAMS = {
-  page: 1,
-};
+interface TopAnimeQuery {
+  filter: string;
+  sfw: boolean;
+  limit: number;
+  page: number;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -29,13 +36,13 @@ export class HomeService {
   readonly apiUrl = `${JIKAN_API_BASE_URL}`;
 
   topAnimes$ = this.http
-    .get(`${this.apiUrl}/${TOP_CATEGORY}/${ANIME}`, {
+    .get<Data<MediaResponse>>(`${this.apiUrl}/${TOP_CATEGORY}/${ANIME}`, {
       params: this.buildParams(TOP_ANIME_PARAMS),
     })
     .pipe(
-      map((response: any) => {
+      map((response) => {
         const data: Media[] = response.data.map(
-          (item: any) =>
+          (item) =>
             ({
               id: item.mal_id,
               title: item.title,
@@ -46,7 +53,7 @@ export class HomeService {
               synopsis: item.synopsis,
               score: item.score,
               members: item.members,
-              genres: item.genres.map((r: any) => r.name),
+              genres: item.genres.map((r) => r.name),
               imageLargeSrc: item.images.jpg.large_image_url,
             } satisfies Media)
         );
@@ -55,14 +62,14 @@ export class HomeService {
     );
 
   animeReviews$ = this.http
-    .get(`${this.apiUrl}/${REVIEWS}/${ANIME}`, {
-      params: this.buildParams(REVIEWS_PARAMS),
+    .get<Data<GeneralReviewResponse>>(`${this.apiUrl}/${REVIEWS}/${ANIME}`, {
+      params: this.buildTopReviewsParams(),
     })
     .pipe(
-      map((response: any) => {
+      map((response) => {
         const currentDate = new Date();
         const data: Review[] = response.data
-          .map((item: any) => {
+          .map((item) => {
             const targetDate = new Date(item.date);
             const timeDifferenceMillis =
               currentDate.getTime() - targetDate.getTime();
@@ -84,12 +91,14 @@ export class HomeService {
     );
 
   recentAnimeRecommendations$ = this.http
-    .get(`${this.apiUrl}/recommendations/anime`)
+    .get<Data<GeneralRecommendationResponse>>(
+      `${this.apiUrl}/recommendations/anime`
+    )
     .pipe(
-      map((response: any) => {
+      map((response) => {
         const currentDate = new Date();
         const data: HomeRecommendation[] = response.data
-          .map((item: any) => {
+          .map((item) => {
             const targetDate = new Date(item.date);
             const timeDifferenceMillis =
               currentDate.getTime() - targetDate.getTime();
@@ -111,11 +120,8 @@ export class HomeService {
       })
     );
 
-  private buildParams(params?: any): HttpParams {
+  private buildParams(params?: TopAnimeQuery): HttpParams {
     let httpParams = new HttpParams();
-    if (params?.type) {
-      httpParams = httpParams.set('type', params.type);
-    }
     if (params?.filter) {
       httpParams = httpParams.set('filter', params.filter);
     }
@@ -125,6 +131,12 @@ export class HomeService {
     if (params?.limit) {
       httpParams = httpParams.set('limit', params.limit.toString());
     }
+    return httpParams;
+  }
+
+  private buildTopReviewsParams(): HttpParams {
+    let httpParams = new HttpParams();
+    httpParams = httpParams.set('page', 1);
     return httpParams;
   }
 }

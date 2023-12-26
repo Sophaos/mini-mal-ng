@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BasicDisplayData } from '../../data-access/basicDisplayData';
+import { BasicDisplayData } from '../../data-access/models/basicDisplayData';
 
 @Component({
   selector: 'app-relations',

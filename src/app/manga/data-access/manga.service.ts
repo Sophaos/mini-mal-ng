@@ -2,10 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable, map } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
-import { Media } from 'src/app/shared/data-access/media';
-import { Pagination } from 'src/app/shared/data-access/pagination';
-import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
-import { Data } from 'src/app/shared/data-access/data';
+import { Media } from 'src/app/shared/data-access/models/media';
+import { Pagination } from 'src/app/shared/data-access/models/pagination';
+import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
+import { Data } from 'src/app/shared/data-access/models/data';
+import { DataWithPagination } from 'src/app/shared/data-access/models/dataWithPagination';
+import { DataWithPaginationResponse } from 'src/app/shared/data-access/response/dataWithPaginationResponse';
+import { GenreResponse } from 'src/app/shared/data-access/response/genreResponse';
+import { MediaResponse } from 'src/app/shared/data-access/response/mediaReponse';
 
 export interface AnimeQueryParams {
   filter?: string;
@@ -33,10 +37,6 @@ export interface AnimeQueryParamsWithId extends AnimeQueryParams {
   id: number;
 }
 
-interface AnimeQueryParamsWithEpisodes extends AnimeQueryParamsWithId {
-  episode: number;
-}
-
 @Injectable({
   providedIn: 'root',
 })
@@ -45,46 +45,52 @@ export class MangaService {
   readonly category = 'manga';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
-  genres$ = this.http.get(`${JIKAN_API_BASE_URL}/genres/manga`).pipe(
-    map((response: any) => {
-      const data: DropdownOption[] = response.data.map(
-        (item: any) =>
-          ({
-            value: item.mal_id.toString(),
-            label: item.name,
-          } satisfies DropdownOption)
-      );
-      return data;
-    })
-  );
-
-  search$(params?: AnimeQueryParams): Observable<Data<Media>> {
-    const httpParams = this.buildParams(params);
-    return this.http.get(`${this.apiUrl}`, { params: httpParams }).pipe(
-      map((response: any) => {
-        const data: Media[] = response.data.map(
-          (item: any) =>
+  genres$ = this.http
+    .get<Data<GenreResponse>>(`${JIKAN_API_BASE_URL}/genres/manga`)
+    .pipe(
+      map((response) => {
+        const data: DropdownOption[] = response.data.map(
+          (item) =>
             ({
-              id: item.mal_id,
-              title: item.title,
-              titleEnglish: item.title_english,
-              from: item.aired?.from,
-              episodes: item.episodes,
-              genres: item.genres,
-              imageSrc: item.images.jpg.image_url,
-              synopsis: item.synopsis,
-              score: item.score,
-              members: item.members,
-            } satisfies Media)
+              value: item.mal_id.toString(),
+              label: item.name,
+            } satisfies DropdownOption)
         );
-        const pagination: Pagination = {
-          first: response.pagination.first,
-          rows: response.pagination.rows,
-          total: response.pagination.items.total,
-        };
-        return { data, pagination };
+        return data;
       })
     );
+
+  search$(params?: AnimeQueryParams): Observable<DataWithPagination<Media>> {
+    const httpParams = this.buildParams(params);
+    return this.http
+      .get<DataWithPaginationResponse<MediaResponse>>(`${this.apiUrl}`, {
+        params: httpParams,
+      })
+      .pipe(
+        map((response) => {
+          const data: Media[] = response.data.map(
+            (item) =>
+              ({
+                id: item.mal_id,
+                title: item.title,
+                titleEnglish: item.title_english,
+                from: item.aired?.from,
+                episodes: item.episodes,
+                genres: item.genres.map((r) => r.name),
+                imageSrc: item.images.jpg.image_url,
+                synopsis: item.synopsis,
+                score: item.score,
+                members: item.members,
+              } satisfies Media)
+          );
+          const pagination: Pagination = {
+            first: response.pagination.current_page,
+            rows: response.pagination.items.per_page,
+            total: response.pagination.items.total,
+          };
+          return { data, pagination };
+        })
+      );
   }
 
   private buildParams(params?: AnimeQueryParams): HttpParams {

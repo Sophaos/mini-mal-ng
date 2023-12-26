@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PaginatorModule, PaginatorState } from 'primeng/paginator';
-import { Pagination } from '../../data-access/pagination';
+import { Pagination } from '../../data-access/models/pagination';
 
 @Component({
   selector: 'app-paginator',

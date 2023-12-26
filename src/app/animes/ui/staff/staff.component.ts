@@ -1,6 +1,6 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BasicDisplayData } from 'src/app/shared/data-access/basicDisplayData';
+import { BasicDisplayData } from 'src/app/shared/data-access/models/basicDisplayData';
 
 @Component({
   selector: 'app-staff',

@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { Recommendation } from '../../data-access/recommendation';
+import { Recommendation } from '../../data-access/models/recommendation';
 
 @Component({
   selector: 'app-media-recommendations',

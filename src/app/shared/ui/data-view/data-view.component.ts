@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MediaDataCardComponent } from '../media-data-card/media-data-card.component';
 import { SkeletonDataViewComponent } from '../skeleton-data-view/skeleton-data-view.component';
-import { Media } from '../../data-access/media';
+import { Media } from '../../data-access/models/media';
 
 @Component({
   selector: 'app-data-view',

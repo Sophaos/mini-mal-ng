@@ -3,11 +3,11 @@ import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 import { combineLatest, map, switchMap } from 'rxjs';
 import { SeasonsService } from '../../data-access/seasons.service';
-import { getPagination } from 'src/app/shared/data-access/pagination';
-import { DropdownData } from 'src/app/shared/data-access/dropdownData';
-import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
-import { RouteQueryParams } from 'src/app/shared/data-access/routeQueryParams';
-import { SeasonData } from 'src/app/shared/data-access/seasonData';
+import { getPagination } from 'src/app/shared/data-access/models/pagination';
+import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
+import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
+import { RouteQueryParams } from 'src/app/shared/data-access/models/routeQueryParams';
+import { SeasonData } from 'src/app/shared/data-access/models/seasonData';
 
 @Component({
   selector: 'app-season-list',

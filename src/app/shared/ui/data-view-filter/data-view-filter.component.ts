@@ -7,7 +7,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CardModule } from 'primeng/card';
-import { DropdownData } from '../../data-access/dropdownData';
+import { DropdownData } from '../../data-access/models/dropdownData';
 
 @Component({
   selector: 'app-data-view-filter',

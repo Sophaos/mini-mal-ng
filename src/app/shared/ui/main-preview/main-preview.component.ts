@@ -9,7 +9,7 @@ import { TabViewModule } from 'primeng/tabview';
 import { CardModule } from 'primeng/card';
 import { MainPreviewContentComponent } from '../main-preview-content/main-preview-content.component';
 import { PanelModule } from 'primeng/panel';
-import { Media } from '../../data-access/media';
+import { Media } from '../../data-access/models/media';
 @Component({
   selector: 'app-main-preview',
   standalone: true,

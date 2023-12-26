@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AccordionModule } from 'primeng/accordion';
 import { AvatarModule } from 'primeng/avatar';
-import { DetailedReview } from '../../data-access/detailedReview';
+import { DetailedReview } from '../../data-access/models/detailedReview';
 
 @Component({
   selector: 'app-detailed-review',

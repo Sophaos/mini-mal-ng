@@ -9,11 +9,15 @@ import {
   tap,
 } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
-import { Media } from 'src/app/shared/data-access/media';
-import { Pagination } from 'src/app/shared/data-access/pagination';
-import { Data } from 'src/app/shared/data-access/data';
-import { SeasonData } from 'src/app/shared/data-access/seasonData';
-import { DropdownOption } from 'src/app/shared/data-access/DropdownOption';
+import { Media } from 'src/app/shared/data-access/models/media';
+import { Pagination } from 'src/app/shared/data-access/models/pagination';
+import { Data } from 'src/app/shared/data-access/models/data';
+import { SeasonData } from 'src/app/shared/data-access/models/seasonData';
+import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
+import { MediaResponse } from 'src/app/shared/data-access/response/mediaReponse';
+import { DataWithPagination } from 'src/app/shared/data-access/models/dataWithPagination';
+import { DataWithPaginationResponse } from 'src/app/shared/data-access/response/dataWithPaginationResponse';
+import { SeasonResponse } from 'src/app/shared/data-access/response/seasonResponse';
 
 export interface SeasonQueryParams {
   filter?: string;
@@ -38,30 +42,33 @@ export class SeasonsService {
   private isSeasonDataLoadingSubject = new BehaviorSubject<boolean>(true);
   isSeasonDataLoading$ = this.isSeasonDataLoadingSubject.asObservable();
 
-  getSeasonData$(params: SeasonParams): Observable<Data<Media>> {
+  getSeasonData$(params: SeasonParams): Observable<DataWithPagination<Media>> {
     const httpParams = this.buildParams(params);
     this.isSeasonDataLoadingSubject.next(true);
     return this.http
-      .get(`${this.apiUrl}/${params.year}/${params.season}`, {
-        params: httpParams,
-      })
+      .get<DataWithPaginationResponse<MediaResponse>>(
+        `${this.apiUrl}/${params.year}/${params.season}`,
+        {
+          params: httpParams,
+        }
+      )
       .pipe(
-        map((response: any) => {
-          const data: Media[] = response.data.map((item: any) => ({
+        map((response) => {
+          const data: Media[] = response.data.map((item) => ({
             id: item.mal_id,
             title: item.title,
             titleEnglish: item.title_english,
             from: item.aired?.from,
             episodes: item.episodes,
-            genres: item.genres.map((r: any) => r.name),
+            genres: item.genres.map((r) => r.name),
             imageSrc: item.images.jpg.image_url,
             synopsis: item.synopsis,
             score: item.score,
             members: item.members,
           }));
           const pagination: Pagination = {
-            first: response.pagination.first,
-            rows: response.pagination.rows,
+            first: response.pagination.current_page,
+            rows: response.pagination.items.per_page,
             total: response.pagination.items.total,
           };
           return { data, pagination };
@@ -76,10 +83,10 @@ export class SeasonsService {
       );
   }
 
-  seasons$ = this.http.get(`${this.apiUrl}`).pipe(
-    map((res: any) => {
+  seasons$ = this.http.get<Data<SeasonResponse>>(`${this.apiUrl}`).pipe(
+    map((res) => {
       const seasonData: SeasonData[] = res.data.map(
-        (item: any) =>
+        (item) =>
           ({
             year: item.year,
             seasonOptions: item.seasons.map(
@@ -99,8 +106,7 @@ export class SeasonsService {
           } satisfies DropdownOption)
       );
       return { seasonData, yearOptions };
-    }),
-    tap((res) => console.log(res))
+    })
   );
 
   private buildParams(params?: SeasonQueryParams): HttpParams {
