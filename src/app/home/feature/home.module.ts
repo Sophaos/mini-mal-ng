@@ -9,6 +9,10 @@ import { ReviewRowComponent } from '../../shared/ui/review-row/review-row.compon
 import { RecommendationRowComponent } from '../../shared/ui/recommendation-row/recommendation-row.component';
 import { SkeletonMainPreviewComponent } from 'src/app/shared/ui/skeleton-main-preview/skeleton-main-preview.component';
 import { SkeletonPanelHeaderComponent } from 'src/app/shared/ui/skeleton-panel-header/skeleton-panel-header.component';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { homeReducer } from '../data-access/home.reducers';
+import { HomeEffects } from '../data-access/home.effects';
 
 @NgModule({
   declarations: [HomeComponent],
@@ -21,6 +25,8 @@ import { SkeletonPanelHeaderComponent } from 'src/app/shared/ui/skeleton-panel-h
     RecommendationRowComponent,
     SkeletonMainPreviewComponent,
     SkeletonPanelHeaderComponent,
+    StoreModule.forFeature('home', homeReducer),
+    EffectsModule.forFeature([HomeEffects]),
   ],
   providers: [HomeService],
 })

@@ -6,6 +6,9 @@ import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
 import { HeaderComponent } from './layout/ui/header/header.component';
 import { FooterComponent } from './layout/ui/footer/footer.component';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 @NgModule({
   declarations: [AppComponent],
@@ -16,6 +19,11 @@ import { FooterComponent } from './layout/ui/footer/footer.component';
     HttpClientModule,
     HeaderComponent,
     FooterComponent,
+    StoreModule.forRoot({}),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25,
+    }),
+    EffectsModule.forRoot([]),
   ],
   bootstrap: [AppComponent],
 })

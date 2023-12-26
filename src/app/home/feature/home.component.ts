@@ -1,7 +1,14 @@
-import { ChangeDetectionStrategy, Component } from '@angular/core';
-import { HomeService } from '../data-access/home.service';
+import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
 import { combineLatest, map } from 'rxjs';
 import { getCurrentSeason } from 'src/app/shared/utils/currentSeason';
+import { Store } from '@ngrx/store';
+import {
+  selectPageLoading,
+  selectRecentAnimeRecommendations,
+  selectRecentAnimeReviews,
+  selectTopAiringAnimes,
+} from '../data-access/home.selectors';
+import { HomePageActions } from '../data-access/home.actions';
 
 @Component({
   selector: 'app-home',
@@ -9,26 +16,34 @@ import { getCurrentSeason } from 'src/app/shared/utils/currentSeason';
   styleUrls: ['./home.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
   currentSeason = '';
   currentYear = new Date().getFullYear();
-  animeReviews$ = this.homeService.animeReviews$;
-  currentSeason$ = this.homeService.topAnimes$;
-  animeRecommendations = this.homeService.recentAnimeRecommendations$;
+  topAiringAnimes$ = this.store.select(selectTopAiringAnimes);
+  animeReviews$ = this.store.select(selectRecentAnimeReviews);
+  animeRecommendations$ = this.store.select(selectRecentAnimeRecommendations);
+  isLoading$ = this.store.select(selectPageLoading);
 
   vmMain$ = combineLatest([
-    this.currentSeason$,
+    this.topAiringAnimes$,
     this.animeReviews$,
-    this.animeRecommendations,
+    this.animeRecommendations$,
+    this.isLoading$,
   ]).pipe(
-    map(([currentSeason, reviews, recommendations]) => ({
-      currentSeason,
+    map(([topAiringAnimes, reviews, recommendations, isLoading]) => ({
+      topAiringAnimes,
       reviews,
       recommendations,
+      isLoading,
     }))
   );
 
-  constructor(private homeService: HomeService) {
+  constructor(private store: Store) {
     this.currentSeason = getCurrentSeason();
+  }
+  ngOnInit(): void {
+    this.store.dispatch(HomePageActions.loadTopAiringAnimes());
+    this.store.dispatch(HomePageActions.loadRecentAnimeReviews());
+    this.store.dispatch(HomePageActions.loadRecentAnimeRecommendations());
   }
 }
