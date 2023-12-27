@@ -16,13 +16,10 @@ import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
 import { Media } from 'src/app/shared/data-access/models/media';
 import { Pagination } from 'src/app/shared/data-access/models/pagination';
 import { Data } from 'src/app/shared/data-access/models/data';
-import { SeasonData } from 'src/app/shared/data-access/models/seasonData';
-import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
 import { MediaResponse } from 'src/app/shared/data-access/response/mediaReponse';
 import { DataWithPagination } from 'src/app/shared/data-access/models/dataWithPagination';
 import { DataWithPaginationResponse } from 'src/app/shared/data-access/response/dataWithPaginationResponse';
 import { SeasonResponse } from 'src/app/shared/data-access/response/seasonResponse';
-import { YearsSeasonsData } from 'src/app/shared/data-access/models/yearsSeasonsData';
 import { SeasonParams } from 'src/app/shared/data-access/models/seasonParams';
 import { SeasonQueryParams } from 'src/app/shared/data-access/models/seasonQueryParams';
 

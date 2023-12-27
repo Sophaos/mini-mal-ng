@@ -16,6 +16,13 @@ import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption
 import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
 import { ParamData } from 'src/app/shared/data-access/models/paramData';
 import { RouteQueryParams } from 'src/app/shared/data-access/models/routeQueryParams';
+import {
+  MEDIAS,
+  ORDERS,
+  RATINGS,
+  SORTS,
+  STATUSES,
+} from '../../data-access/dropdownOptions';
 
 @Component({
   selector: 'app-animes-list',
@@ -58,50 +65,6 @@ export class AnimesListComponent implements OnInit {
     }))
   );
 
-  medias: DropdownOption[] = [
-    { value: '', label: 'None' },
-    { value: 'tv', label: 'TV' },
-    { value: 'movie', label: 'Movie' },
-    { value: 'ova', label: 'OVA' },
-    { value: 'special', label: 'Special' },
-    { value: 'ona', label: 'ONA' },
-    { value: 'music', label: 'Music' },
-  ];
-
-  statuses: DropdownOption[] = [
-    { value: '', label: 'None' },
-    { value: 'airing', label: 'Airing' },
-    { value: 'complete', label: 'Complete' },
-    { value: 'upcoming', label: 'Upcoming' },
-  ];
-
-  ratings: DropdownOption[] = [
-    { value: '', label: 'None' },
-    { value: 'g', label: 'G - All Ages' },
-    { value: 'pg', label: 'PG - Children' },
-    { value: 'pg13', label: 'PG-13 - Teens 13 or older' },
-    { value: 'r17', label: 'R - 17+ (violence & profanity)' },
-    { value: 'r', label: 'R+ - Mild Nudity' },
-  ];
-
-  orders: DropdownOption[] = [
-    { value: '', label: 'None' },
-    { value: 'title', label: 'Title' },
-    { value: 'start_date', label: 'Start Date' },
-    { value: 'end_date', label: 'End Date' },
-    { value: 'episodes', label: 'Episodes' },
-    { value: 'score', label: 'Score' },
-    { value: 'rank', label: 'Rank' },
-    { value: 'popularity', label: 'Popularity' },
-    { value: 'favorites', label: 'Favorites' },
-  ];
-
-  sorts: DropdownOption[] = [
-    { value: '', label: 'None' },
-    { value: 'desc', label: 'Descending' },
-    { value: 'asc', label: 'Ascending' },
-  ];
-
   constructor(
     private route: ActivatedRoute,
     private router: Router,
@@ -128,7 +91,7 @@ export class AnimesListComponent implements OnInit {
         label: 'Media',
         value: this.route.snapshot.queryParams['type'],
         param: 'type',
-        options: this.medias,
+        options: MEDIAS,
       },
       {
         label: 'Genre(s)',
@@ -143,25 +106,25 @@ export class AnimesListComponent implements OnInit {
         label: 'Status',
         value: this.route.snapshot.queryParams['status'],
         param: 'status',
-        options: this.statuses,
+        options: STATUSES,
       },
       {
         label: 'Rating',
         value: this.route.snapshot.queryParams['rating'],
         param: 'rating',
-        options: this.ratings,
+        options: RATINGS,
       },
       {
         label: 'Order By',
         value: this.route.snapshot.queryParams['order_by'],
         param: 'order_by',
-        options: this.orders,
+        options: ORDERS,
       },
       {
         label: 'Sort',
         value: this.route.snapshot.queryParams['sort'],
         param: 'sort',
-        options: this.sorts,
+        options: SORTS,
       },
     ];
   }

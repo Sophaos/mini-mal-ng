@@ -1,17 +1,25 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Params, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 import { combineLatest, map, switchMap } from 'rxjs';
 import { SeasonsService } from '../../data-access/seasons.service';
-import { getPagination } from 'src/app/shared/data-access/models/pagination';
+import {
+  getPagination,
+  getPagination2,
+} from 'src/app/shared/data-access/models/pagination';
 import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
 import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
 import { RouteQueryParams } from 'src/app/shared/data-access/models/routeQueryParams';
 import { SeasonData } from 'src/app/shared/data-access/models/seasonData';
 import { getCurrentSeason } from 'src/app/shared/utils/currentSeason';
 import { Store } from '@ngrx/store';
-import { selectYearsSeasonsData } from '../../data-access/season.selectors';
+import {
+  selectQueryParams,
+  selectRouteParams,
+  selectYearsSeasonsData,
+} from '../../data-access/season.selectors';
 import { SeasonPageActions } from '../../data-access/season.actions';
+import { MEDIAS } from '../../data-access/dropdownOptions';
 
 @Component({
   selector: 'app-season-list',
@@ -21,7 +29,10 @@ import { SeasonPageActions } from '../../data-access/season.actions';
 })
 export class SeasonListComponent implements OnInit {
   seasons$ = this.store.select(selectYearsSeasonsData);
-  animes$ = combineLatest([this.route.paramMap, this.route.queryParamMap]).pipe(
+  routeParams$ = this.store.select(selectRouteParams);
+  queryParams$ = this.store.select(selectQueryParams);
+
+  animes$ = combineLatest([this.routeParams$, this.queryParams$]).pipe(
     switchMap(([params, queryParams]) =>
       this.getSeasonAnimes(params, queryParams)
     )
@@ -32,13 +43,16 @@ export class SeasonListComponent implements OnInit {
   vm$ = combineLatest([
     this.seasons$,
     this.animes$,
-    this.route.paramMap,
-    this.route.queryParamMap,
+    this.routeParams$,
+    this.queryParams$,
     this.isLoading$,
   ]).pipe(
-    map(([seasons, animes, params, queryParams, isLoading]) => {
-      const seasonOptions = this.seasonOptions(seasons?.seasonData, params);
-      const pagination = getPagination(queryParams, animes.pagination.total);
+    map(([seasons, animes, routeParams, queryParams, isLoading]) => {
+      const seasonOptions = this.seasonOptions(
+        seasons?.seasonData,
+        routeParams
+      );
+      const pagination = getPagination2(queryParams, animes.pagination.total);
       const yearsOptions = seasons?.yearOptions;
       return {
         pagination,
@@ -47,15 +61,6 @@ export class SeasonListComponent implements OnInit {
       };
     })
   );
-
-  medias: DropdownOption[] = [
-    { value: 'tv', label: 'TV' },
-    { value: 'movie', label: 'Movie' },
-    { value: 'ova', label: 'OVA' },
-    { value: 'special', label: 'Special' },
-    { value: 'ona', label: 'ONA' },
-    { value: 'music', label: 'Music' },
-  ];
 
   constructor(
     private route: ActivatedRoute,
@@ -102,7 +107,7 @@ export class SeasonListComponent implements OnInit {
         label: 'Media',
         value: this.route.snapshot.queryParams['filter'],
         param: 'filter',
-        options: this.medias,
+        options: MEDIAS,
       },
     ];
   }
@@ -129,17 +134,17 @@ export class SeasonListComponent implements OnInit {
     );
   }
 
-  seasonOptions = (seasons: SeasonData[], params: ParamMap) =>
-    seasons.find((s: SeasonData) => s.year === Number(params.get('year')))
+  seasonOptions = (seasons: SeasonData[], params: Params) =>
+    seasons.find((s: SeasonData) => s.year === Number(params['year']))
       ?.seasonOptions;
 
-  getSeasonAnimes = (params: ParamMap, queryParams: ParamMap) =>
+  getSeasonAnimes = (params: Params, queryParams: Params) =>
     this.seasonService.getSeasonData$({
-      year: params.get('year') ?? new Date().getFullYear(),
-      season: params.get('season') ?? getCurrentSeason(),
-      filter: queryParams.get('filter') ?? 'tv',
-      page: queryParams.get('page') ?? 1,
-      limit: queryParams.get('limit') ?? 16,
+      year: params['year'] ?? new Date().getFullYear(),
+      season: params['season'] ?? getCurrentSeason(),
+      filter: queryParams['filter'] ?? 'tv',
+      page: queryParams['page'] ?? 1,
+      limit: queryParams['limit'] ?? 16,
     });
 
   updateRouteQueryParams(updatedParams: RouteQueryParams): void {
