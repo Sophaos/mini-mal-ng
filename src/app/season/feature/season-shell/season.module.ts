@@ -14,10 +14,11 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { PaginatorComponent } from 'src/app/shared/ui/paginator/paginator.component';
 import { DataViewComponent } from 'src/app/shared/ui/data-view/data-view.component';
 import { DataViewFilterComponent } from 'src/app/shared/ui/data-view-filter/data-view-filter.component';
-import { SkeletonDataViewComponent } from 'src/app/shared/ui/skeleton-data-view/skeleton-data-view.component';
-import { SkeletonDataViewFilterComponent } from 'src/app/shared/ui/skeleton-data-view-filter/skeleton-data-view-filter.component';
-import { SkeletonPaginatorComponent } from 'src/app/shared/ui/skeleton-paginator/skeleton-paginator.component';
 import { SkeletonDataListComponent } from 'src/app/shared/ui/skeleton-data-list/skeleton-data-list.component';
+import { StoreModule } from '@ngrx/store';
+import { SeasonEffects } from '../../data-access/season.effects';
+import { EffectsModule } from '@ngrx/effects';
+import { seasonReducer } from '../../data-access/season.reducers';
 
 @NgModule({
   declarations: [SeasonListComponent],
@@ -36,6 +37,8 @@ import { SkeletonDataListComponent } from 'src/app/shared/ui/skeleton-data-list/
     DataViewComponent,
     DataViewFilterComponent,
     SkeletonDataListComponent,
+    StoreModule.forFeature('season', seasonReducer),
+    EffectsModule.forFeature([SeasonEffects]),
   ],
   providers: [SeasonsService],
 })

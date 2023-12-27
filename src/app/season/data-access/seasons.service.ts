@@ -1,6 +1,17 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, catchError, finalize, map } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  finalize,
+  map,
+  throwError,
+} from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
 import { Media } from 'src/app/shared/data-access/models/media';
 import { Pagination } from 'src/app/shared/data-access/models/pagination';
@@ -11,18 +22,9 @@ import { MediaResponse } from 'src/app/shared/data-access/response/mediaReponse'
 import { DataWithPagination } from 'src/app/shared/data-access/models/dataWithPagination';
 import { DataWithPaginationResponse } from 'src/app/shared/data-access/response/dataWithPaginationResponse';
 import { SeasonResponse } from 'src/app/shared/data-access/response/seasonResponse';
-
-export interface SeasonQueryParams {
-  filter?: string;
-  page?: number | string;
-  sfw?: boolean | string;
-  limit?: number | string;
-}
-
-export interface SeasonParams extends SeasonQueryParams {
-  year: number | string;
-  season: string | string;
-}
+import { YearsSeasonsData } from 'src/app/shared/data-access/models/yearsSeasonsData';
+import { SeasonParams } from 'src/app/shared/data-access/models/seasonParams';
+import { SeasonQueryParams } from 'src/app/shared/data-access/models/seasonQueryParams';
 
 @Injectable({
   providedIn: 'root',
@@ -76,31 +78,27 @@ export class SeasonsService {
       );
   }
 
-  seasons$ = this.http.get<Data<SeasonResponse>>(`${this.apiUrl}`).pipe(
-    map((res) => {
-      const seasonData: SeasonData[] = res.data.map(
-        (item) =>
-          ({
-            year: item.year,
-            seasonOptions: item.seasons.map(
-              (s: string) =>
-                ({
-                  label: s.charAt(0).toUpperCase() + s.slice(1),
-                  value: s,
-                } satisfies DropdownOption)
-            ),
-          } satisfies SeasonData)
-      );
-      const yearOptions: DropdownOption[] = seasonData.map(
-        (s: SeasonData) =>
-          ({
-            label: s.year,
-            value: s.year,
-          } satisfies DropdownOption)
-      );
-      return { seasonData, yearOptions };
-    })
-  );
+  getMediaData(params: SeasonParams) {
+    const httpParams = this.buildParams(params);
+    return this.http
+      .get<DataWithPaginationResponse<MediaResponse>>(
+        `${this.apiUrl}/${params.year}/${params.season}`,
+        {
+          params: httpParams,
+        }
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getSeasonData() {
+    return this.http
+      .get<Data<SeasonResponse>>(`${this.apiUrl}`)
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError({ status }: HttpErrorResponse) {
+    return throwError(() => `${status}: Something bad happened.`);
+  }
 
   private buildParams(params?: SeasonQueryParams): HttpParams {
     let httpParams = new HttpParams();

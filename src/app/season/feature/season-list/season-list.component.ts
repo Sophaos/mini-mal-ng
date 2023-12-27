@@ -9,6 +9,9 @@ import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption
 import { RouteQueryParams } from 'src/app/shared/data-access/models/routeQueryParams';
 import { SeasonData } from 'src/app/shared/data-access/models/seasonData';
 import { getCurrentSeason } from 'src/app/shared/utils/currentSeason';
+import { Store } from '@ngrx/store';
+import { selectYearsSeasonsData } from '../../data-access/season.selectors';
+import { SeasonPageActions } from '../../data-access/season.actions';
 
 @Component({
   selector: 'app-season-list',
@@ -17,7 +20,7 @@ import { getCurrentSeason } from 'src/app/shared/utils/currentSeason';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeasonListComponent implements OnInit {
-  seasons$ = this.seasonService.seasons$;
+  seasons$ = this.store.select(selectYearsSeasonsData);
   animes$ = combineLatest([this.route.paramMap, this.route.queryParamMap]).pipe(
     switchMap(([params, queryParams]) =>
       this.getSeasonAnimes(params, queryParams)
@@ -34,9 +37,9 @@ export class SeasonListComponent implements OnInit {
     this.isLoading$,
   ]).pipe(
     map(([seasons, animes, params, queryParams, isLoading]) => {
-      const seasonOptions = this.seasonOptions(seasons.seasonData, params);
+      const seasonOptions = this.seasonOptions(seasons?.seasonData, params);
       const pagination = getPagination(queryParams, animes.pagination.total);
-      const yearsOptions = seasons.yearOptions;
+      const yearsOptions = seasons?.yearOptions;
       return {
         pagination,
         animes: { data: animes.data, isLoading },
@@ -57,10 +60,12 @@ export class SeasonListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private seasonService: SeasonsService
+    private seasonService: SeasonsService,
+    private store: Store
   ) {}
 
   ngOnInit(): void {
+    this.store.dispatch(SeasonPageActions.loadSeasonData());
     const queryParams = this.route.snapshot.queryParams;
     const defaultQueryParams = {
       page: 1,
