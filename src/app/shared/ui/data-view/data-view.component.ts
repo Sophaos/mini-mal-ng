@@ -13,6 +13,6 @@ import { Media } from '../../data-access/models/media';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DataViewComponent {
-  @Input({ required: true }) data!: Media[];
+  @Input({ required: true }) data: Media[] = [];
   @Input() isLoading: boolean = true;
 }

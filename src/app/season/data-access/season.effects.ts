@@ -1,20 +1,53 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import {
+  catchError,
+  exhaustMap,
+  map,
+  of,
+  switchMap,
+  withLatestFrom,
+} from 'rxjs';
 import { SeasonAPIActions, SeasonPageActions } from './season.actions';
 import { Media } from 'src/app/shared/data-access/models/media';
 import { SeasonsService } from './seasons.service';
 import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
 import { SeasonData } from 'src/app/shared/data-access/models/seasonData';
 import { Pagination } from 'src/app/shared/data-access/models/pagination';
+import { SeasonState } from './season.reducers';
+import { Store } from '@ngrx/store';
+import { ROUTER_NAVIGATION } from '@ngrx/router-store';
+import { selectRouteParams, selectQueryParams } from './season.selectors';
+import { getCurrentSeason } from 'src/app/shared/utils/currentSeason';
 
 @Injectable()
 export class SeasonEffects {
+  loadMediaDataFromRouter$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(ROUTER_NAVIGATION),
+      withLatestFrom(
+        this.store.select(selectRouteParams),
+        this.store.select(selectQueryParams)
+      ),
+      switchMap(([_, routeParams, queryParams]) => {
+        const seasonParams = {
+          year: routeParams['year'] ?? new Date().getFullYear(),
+          season: routeParams['season'] ?? getCurrentSeason(),
+          filter: queryParams['filter'] ?? 'tv',
+          page: queryParams['page'] ?? 1,
+          limit: queryParams['limit'] ?? 16,
+        };
+
+        return of(SeasonPageActions.loadMediaData(seasonParams));
+      })
+    )
+  );
+
   loadMediaData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SeasonPageActions.loadMediaData),
-      exhaustMap((param) =>
-        this.seasonService.getMediaData(param).pipe(
+      exhaustMap((params) =>
+        this.seasonService.getMediaData(params).pipe(
           map((response) => {
             const data: Media[] = response.data.map((item) => ({
               id: item.mal_id,
@@ -85,6 +118,7 @@ export class SeasonEffects {
 
   constructor(
     private seasonService: SeasonsService,
-    private actions$: Actions
+    private actions$: Actions,
+    private store: Store<SeasonState>
   ) {}
 }

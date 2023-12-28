@@ -9,6 +9,7 @@ import {
   selectTopAiringAnimes,
 } from '../data-access/home.selectors';
 import { HomePageActions } from '../data-access/home.actions';
+import { HomeState } from '../data-access/home.reducers';
 
 @Component({
   selector: 'app-home',
@@ -38,7 +39,7 @@ export class HomeComponent implements OnInit {
     }))
   );
 
-  constructor(private store: Store) {
+  constructor(private store: Store<HomeState>) {
     this.currentSeason = getCurrentSeason();
   }
   ngOnInit(): void {
