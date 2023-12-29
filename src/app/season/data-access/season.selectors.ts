@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { SeasonState } from './season.reducers';
 import { getRouterSelectors } from '@ngrx/router-store';
-import { getPagination2 } from 'src/app/shared/data-access/models/pagination';
+import { getPagination } from 'src/app/shared/data-access/models/pagination';
 
 export const selectSeasonState = createFeatureSelector<SeasonState>('season');
 
@@ -27,11 +27,16 @@ export const selectMediaData = createSelector(
   ({ mediaData }) => mediaData
 );
 
+export const selectMediaList = createSelector(
+  selectSeasonState,
+  ({ mediaData }) => mediaData?.data
+);
+
 export const selectSeasonPagination = createSelector(
   selectSeasonState,
   selectQueryParams,
   ({ mediaData }, queryParams) =>
-    getPagination2(queryParams, mediaData ? mediaData.pagination.total : 0)
+    getPagination(queryParams, mediaData ? mediaData.pagination.total : 0)
 );
 
 export const selectYearOptions = createSelector(

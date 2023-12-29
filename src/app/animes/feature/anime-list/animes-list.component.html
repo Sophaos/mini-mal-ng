@@ -3,7 +3,10 @@
     [filterDropdowns]="vm.filterDropdowns"
     [filterInputs]="vm.filterInputs"
   />
-  <app-data-view [isLoading]="vm.animes.isLoading" [data]="vm.animes.data" />
+  <app-data-view
+    [isLoading]="vm.animeListDataLoading"
+    [data]="vm.animes ?? []"
+  />
   <app-paginator
     [pagination]="vm.pagination"
     (onPageChange)="handlePageChange($event)"

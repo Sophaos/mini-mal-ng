@@ -9,12 +9,14 @@ import { Store } from '@ngrx/store';
 import {
   selectMediaData,
   selectMediaDataLoading,
+  selectMediaList,
   selectSeasonOptions,
   selectSeasonPagination,
   selectYearOptions,
 } from '../../data-access/season.selectors';
 import { SeasonPageActions } from '../../data-access/season.actions';
 import { MEDIAS } from '../../data-access/dropdownOptions';
+import { SeasonState } from '../../data-access/season.reducers';
 
 @Component({
   selector: 'app-season-list',
@@ -23,7 +25,7 @@ import { MEDIAS } from '../../data-access/dropdownOptions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SeasonListComponent implements OnInit {
-  animes$ = this.store.select(selectMediaData);
+  animes$ = this.store.select(selectMediaList);
   mediaDataLoading$ = this.store.select(selectMediaDataLoading);
   pagination$ = this.store.select(selectSeasonPagination);
   yearsOptions$ = this.store.select(selectYearOptions);
@@ -40,7 +42,7 @@ export class SeasonListComponent implements OnInit {
       ([animes, mediaDataLoading, pagination, yearsOptions, seasonOptions]) => {
         return {
           pagination,
-          animes: animes?.data,
+          animes: animes,
           mediaDataLoading,
           filters: this.getSeasonFilterData(yearsOptions, seasonOptions ?? []),
         };
@@ -51,7 +53,7 @@ export class SeasonListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private store: Store
+    private store: Store<SeasonState>
   ) {}
 
   ngOnInit(): void {

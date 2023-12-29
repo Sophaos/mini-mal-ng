@@ -1,4 +1,8 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import {
   BehaviorSubject,
@@ -7,6 +11,7 @@ import {
   finalize,
   map,
   switchMap,
+  throwError,
   timer,
 } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
@@ -82,62 +87,7 @@ export class AnimeService {
   isAnimeRecommendationsLoading$ =
     this.isAnimeRecommendationsLoadingSubject.asObservable();
 
-  animeGenres$ = this.http
-    .get<Data<GenreResponse>>(`${JIKAN_API_BASE_URL}/genres/anime`)
-    .pipe(
-      map((response) => {
-        const data: DropdownOption[] = response.data.map((item) => ({
-          value: item.mal_id.toString(),
-          label: item.name,
-        }));
-        return data;
-      })
-    );
-
-  getAnimeSearch$(
-    params?: AnimeQueryParams
-  ): Observable<DataWithPagination<Media>> {
-    const httpParams = this.buildParams(params);
-    this.isAnimeDataLoadingSubject.next(true);
-    return this.http
-      .get<DataWithPaginationResponse<MediaResponse>>(`${this.apiUrl}`, {
-        params: httpParams,
-      })
-      .pipe(
-        map((response) => {
-          const data: Media[] = response.data.map(
-            (item) =>
-              ({
-                id: item.mal_id,
-                title: item.title,
-                titleEnglish: item.title_english,
-                from: item.aired?.from,
-                episodes: item.episodes,
-                imageSrc: item.images.jpg.image_url,
-                synopsis: item.synopsis,
-                score: item.score,
-                members: item.members,
-                genres: item.genres.map((r) => r.name),
-              } satisfies Media)
-          );
-          const pagination: Pagination = {
-            first: response.pagination.current_page,
-            rows: response.pagination.items.per_page,
-            total: response.pagination.items.total,
-          };
-          return { data, pagination };
-        }),
-        catchError((error) => {
-          console.error('Error fetching data:', error);
-          return [];
-        }),
-        finalize(() => {
-          this.isAnimeDataLoadingSubject.next(false);
-        })
-      );
-  }
-
-  getAnimeFullById$(id: number | string): Observable<Media> {
+  getAnimeFullById$(id: number): Observable<Media> {
     this.isAnimeDetailsLoadingSubject.next(true);
     return this.http
       .get<MediaDetailedDataResponse>(`${this.apiUrl}/${id}/full`)
@@ -340,6 +290,26 @@ export class AnimeService {
           )
       )
     );
+  }
+
+  getAnimeList(params?: AnimeQueryParams) {
+    const httpParams = this.buildParams(params);
+    console.log(params, 'hello');
+    return this.http
+      .get<DataWithPaginationResponse<MediaResponse>>(`${this.apiUrl}`, {
+        params: httpParams,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  getAnimeGenres() {
+    return this.http
+      .get<Data<GenreResponse>>(`${JIKAN_API_BASE_URL}/genres/anime`)
+      .pipe(catchError(this.handleError));
+  }
+
+  private handleError({ status }: HttpErrorResponse) {
+    return throwError(() => `${status}: Something bad happened.`);
   }
 
   private buildParams(params?: AnimeQueryParams): HttpParams {

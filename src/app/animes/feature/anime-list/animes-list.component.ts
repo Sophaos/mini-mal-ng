@@ -1,17 +1,14 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
-import { AnimeService } from '../../data-access/anime.service';
 import {
   combineLatest,
-  switchMap,
   map,
   BehaviorSubject,
   distinctUntilChanged,
   debounceTime,
   tap,
 } from 'rxjs';
-import { getPagination } from 'src/app/shared/data-access/models/pagination';
 import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
 import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
 import { ParamData } from 'src/app/shared/data-access/models/paramData';
@@ -23,6 +20,15 @@ import {
   SORTS,
   STATUSES,
 } from '../../data-access/dropdownOptions';
+import { Store } from '@ngrx/store';
+import { AnimeState } from '../../data-access/anime.reducers';
+import {
+  selectAnimeGenres,
+  selectAnimeList,
+  selectAnimeListDataLoading,
+  selectAnimeListPagination,
+} from '../../data-access/anime.selectors';
+import { AnimeListPageActions } from '../../data-access/anime.actions';
 
 @Component({
   selector: 'app-animes-list',
@@ -39,27 +45,28 @@ export class AnimesListComponent implements OnInit {
   inputs$ = this.inputsChange.pipe(
     debounceTime(500),
     distinctUntilChanged(),
-    tap((res) => this.defaultChange(res))
+    tap((res) => {
+      this.defaultChange(res);
+    })
   );
 
-  animes$ = this.route.queryParamMap.pipe(
-    switchMap((queryParams) => this.getAnimes(queryParams))
-  );
-  genres$ = this.animeService.animeGenres$;
-
-  isLoading$ = this.animeService.isAnimeDataLoading$;
+  animes$ = this.store.select(selectAnimeList);
+  genres$ = this.store.select(selectAnimeGenres);
+  animeListDataLoading$ = this.store.select(selectAnimeListDataLoading);
+  pagination$ = this.store.select(selectAnimeListPagination);
 
   vm$ = combineLatest([
     this.animes$,
+    this.pagination$,
     this.genres$,
-    this.route.queryParamMap,
-    this.isLoading$,
+    this.animeListDataLoading$,
     this.inputs$,
   ]).pipe(
-    map(([animes, genres, queryParams, isLoading]) => ({
-      pagination: getPagination(queryParams, animes.pagination.total),
-      animes: { data: animes.data, isLoading },
+    map(([animes, pagination, genres, animeListDataLoading]) => ({
+      pagination,
+      animes,
       genres,
+      animeListDataLoading,
       filterDropdowns: this.getFilterDropdowns(genres),
       filterInputs: this.getFilterInputs(),
     }))
@@ -68,10 +75,11 @@ export class AnimesListComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private animeService: AnimeService
+    private store: Store<AnimeState>
   ) {}
 
   ngOnInit(): void {
+    this.store.dispatch(AnimeListPageActions.loadAnimeGenresData());
     const queryParams = this.route.snapshot.queryParams;
     const defaultQueryParams = {
       page: 1,
@@ -157,21 +165,6 @@ export class AnimesListComponent implements OnInit {
       },
     ];
   }
-
-  getAnimes = (queryParams: ParamMap) =>
-    this.animeService.getAnimeSearch$({
-      type: queryParams.get('type') ?? '',
-      status: queryParams.get('status') ?? '',
-      rating: queryParams.get('rating') ?? '',
-      order_by: queryParams.get('order_by') ?? '',
-      q: queryParams.get('q') ?? '',
-      min_score: queryParams.get('min_score') ?? '',
-      max_score: queryParams.get('max_score') ?? '',
-      genres: queryParams.get('genres') ?? '',
-      sort: queryParams.get('sort') ?? '',
-      page: queryParams.get('page') ?? 1,
-      limit: queryParams.get('limit') ?? 16,
-    });
 
   updateRouteQueryParams(updatedParams: RouteQueryParams): void {
     this.router.navigate([], {

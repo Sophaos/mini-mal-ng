@@ -7,7 +7,7 @@ import { YearsSeasonsData } from 'src/app/shared/data-access/models/yearsSeasons
 export const SeasonPageActions = createActionGroup({
   source: 'Season Page',
   events: {
-    'Load Media Data': props<SeasonParams>(),
+    'Load Media Data': props<{ params: SeasonParams }>(),
     'Load Season Data': emptyProps(),
   },
 });

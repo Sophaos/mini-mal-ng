@@ -38,7 +38,7 @@ export class SeasonEffects {
           limit: queryParams['limit'] ?? 16,
         };
 
-        return of(SeasonPageActions.loadMediaData(seasonParams));
+        return of(SeasonPageActions.loadMediaData({ params: seasonParams }));
       })
     )
   );
@@ -46,8 +46,8 @@ export class SeasonEffects {
   loadMediaData$ = createEffect(() =>
     this.actions$.pipe(
       ofType(SeasonPageActions.loadMediaData),
-      exhaustMap((params) =>
-        this.seasonService.getMediaData(params).pipe(
+      exhaustMap((action) =>
+        this.seasonService.getMediaData(action.params).pipe(
           map((response) => {
             const data: Media[] = response.data.map((item) => ({
               id: item.mal_id,

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { DropdownModule } from 'primeng/dropdown';
 import { AnimeDetailsComponent } from '../anime-details/anime-details.component';
 import { AnimesListComponent } from '../anime-list/animes-list.component';
 import { AnimeRoutingModule } from './animes-routing.module';
@@ -21,6 +20,10 @@ import { MediaRecommendationsComponent } from 'src/app/shared/ui/media-recommend
 import { SkeletonDataListComponent } from 'src/app/shared/ui/skeleton-data-list/skeleton-data-list.component';
 import { SkeletonMainPreviewComponent } from 'src/app/shared/ui/skeleton-main-preview/skeleton-main-preview.component';
 import { SkeletonPanelHeaderComponent } from 'src/app/shared/ui/skeleton-panel-header/skeleton-panel-header.component';
+import { animeReducer } from '../../data-access/anime.reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { StoreModule } from '@ngrx/store';
+import { AnimeEffects } from '../../data-access/anime.effects';
 
 @NgModule({
   declarations: [AnimesListComponent, AnimeDetailsComponent],
@@ -43,6 +46,8 @@ import { SkeletonPanelHeaderComponent } from 'src/app/shared/ui/skeleton-panel-h
     SkeletonDataListComponent,
     SkeletonMainPreviewComponent,
     SkeletonPanelHeaderComponent,
+    StoreModule.forFeature('anime', animeReducer),
+    EffectsModule.forFeature([AnimeEffects]),
   ],
   providers: [AnimeService],
 })
