@@ -11,7 +11,7 @@ import { SkeletonMainPreviewComponent } from 'src/app/shared/ui/skeleton-main-pr
 import { SkeletonPanelHeaderComponent } from 'src/app/shared/ui/skeleton-panel-header/skeleton-panel-header.component';
 import { EffectsModule } from '@ngrx/effects';
 import { StoreModule } from '@ngrx/store';
-import { homeReducer } from '../data-access/home.reducers';
+import { homeFeatureKey, homeReducer } from '../data-access/home.reducers';
 import { HomeEffects } from '../data-access/home.effects';
 
 @NgModule({
@@ -25,7 +25,7 @@ import { HomeEffects } from '../data-access/home.effects';
     RecommendationRowComponent,
     SkeletonMainPreviewComponent,
     SkeletonPanelHeaderComponent,
-    StoreModule.forFeature('home', homeReducer),
+    StoreModule.forFeature(homeFeatureKey, homeReducer),
     EffectsModule.forFeature([HomeEffects]),
   ],
   providers: [HomeService],

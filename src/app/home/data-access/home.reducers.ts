@@ -24,6 +24,8 @@ const intitialState: HomeState = {
   errorMessage: '',
 };
 
+export const homeFeatureKey = 'home';
+
 export const homeReducer = createReducer(
   intitialState,
   on(

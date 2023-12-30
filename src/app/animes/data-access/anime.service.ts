@@ -4,27 +4,10 @@ import {
   HttpParams,
 } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import {
-  BehaviorSubject,
-  Observable,
-  catchError,
-  finalize,
-  map,
-  switchMap,
-  throwError,
-  timer,
-} from 'rxjs';
+import { catchError, throwError } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
-import { Recommendation } from 'src/app/shared/data-access/models/recommendation';
-import { Media } from 'src/app/shared/data-access/models/media';
-import { Pagination } from 'src/app/shared/data-access/models/pagination';
-import { BasicDisplayData } from 'src/app/shared/data-access/models/basicDisplayData';
-import { DetailedReview } from 'src/app/shared/data-access/models/detailedReview';
-import { ImageData } from 'src/app/shared/data-access/models/imageData';
 import { Data } from 'src/app/shared/data-access/models/data';
-import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
 import { GenreResponse } from 'src/app/shared/data-access/response/genreResponse';
-import { DataWithPagination } from 'src/app/shared/data-access/models/dataWithPagination';
 import { DataWithPaginationResponse } from 'src/app/shared/data-access/response/dataWithPaginationResponse';
 import { MediaResponse } from 'src/app/shared/data-access/response/mediaReponse';
 import { CharacterDataResponse } from 'src/app/shared/data-access/response/characterResponse';
@@ -67,234 +50,9 @@ export class AnimeService {
   constructor(private http: HttpClient) {}
   readonly category = 'anime';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
-  private isAnimeDataLoadingSubject = new BehaviorSubject<boolean>(true);
-  private isAnimeDetailsLoadingSubject = new BehaviorSubject<boolean>(true);
-  private isAnimeCharactersLoadingSubject = new BehaviorSubject<boolean>(true);
-  private isAnimePicturesLoadingSubject = new BehaviorSubject<boolean>(true);
-  private isAnimeStaffLoadingSubject = new BehaviorSubject<boolean>(true);
-  private isAnimeReviewsLoadingSubject = new BehaviorSubject<boolean>(true);
-  private isAnimeRecommendationsLoadingSubject = new BehaviorSubject<boolean>(
-    true
-  );
-
-  isAnimeDataLoading$ = this.isAnimeDataLoadingSubject.asObservable();
-  isAnimeDetailsLoading$ = this.isAnimeDetailsLoadingSubject.asObservable();
-  isAnimeCharactersLoading$ =
-    this.isAnimeCharactersLoadingSubject.asObservable();
-  isAnimePicturesLoading$ = this.isAnimePicturesLoadingSubject.asObservable();
-  isAnimeStaffLoading$ = this.isAnimeStaffLoadingSubject.asObservable();
-  isAnimeReviewsLoading$ = this.isAnimeReviewsLoadingSubject.asObservable();
-  isAnimeRecommendationsLoading$ =
-    this.isAnimeRecommendationsLoadingSubject.asObservable();
-
-  getAnimeFullById$(id: number): Observable<Media> {
-    this.isAnimeDetailsLoadingSubject.next(true);
-    return this.http
-      .get<MediaDetailedDataResponse>(`${this.apiUrl}/${id}/full`)
-      .pipe(
-        map(
-          (response) =>
-            ({
-              id: response.data.mal_id,
-              title: response.data.title,
-              titleEnglish: response.data.title_english,
-              from: response.data.aired?.string,
-              episodes: response.data.episodes,
-              imageSrc: response.data.images.jpg.image_url,
-              synopsis: response.data.synopsis,
-              score: response.data.score,
-              members: response.data.members,
-              rank: response.data.rank,
-              popularity: response.data.popularity,
-              favorites: response.data.favorites,
-              source: response.data.source,
-              type: response.data.type,
-              rating: response.data.rating,
-              status: response.data.status,
-              duration: response.data.duration,
-              season: response.data.season,
-              year: response.data.year,
-              background: response.data.background,
-              imageLargeSrc: response.data.images.jpg.large_image_url,
-              relations: response.data.relations.map((r) => ({
-                title: r.relation,
-                informations: r.entry.map((e) => e.name),
-              })),
-              genres: response.data.genres.map((r) => r.name),
-              themes: response.data.themes.map((r) => r.name),
-              demographics: response.data.demographics.map((r) => r.name),
-              studios: response.data.studios.map((r) => r.name),
-              producers: response.data.producers.map((r) => r.name),
-              streaming: response.data.streaming.map((r) => r.name),
-              licensors: response.data.licensors.map((r) => r.name),
-              openings: response.data.theme.openings.map((r) => r),
-              endings: response.data.theme.endings.map((r) => r),
-            } satisfies Media)
-        ),
-        catchError((error) => {
-          console.error('Error fetching data:', error);
-          return [];
-        }),
-        finalize(() => {
-          this.isAnimeDetailsLoadingSubject.next(false);
-        })
-      );
-  }
-
-  getAnimeCharacters$(id: number): Observable<BasicDisplayData[]> {
-    this.isAnimeCharactersLoadingSubject.next(true);
-    return this.http
-      .get<Data<CharacterDataResponse>>(`${this.apiUrl}/${id}/characters`)
-      .pipe(
-        map((response) => {
-          const data: BasicDisplayData[] = response.data.map(
-            (item) =>
-              ({
-                imageSrc: item.character.images.jpg.image_url,
-                title: `${item.character.name} (${item.role})`,
-                informations: item.voice_actors.map(
-                  (v) => `${v.person.name} ${v.language}`
-                ),
-              } satisfies BasicDisplayData)
-          );
-          return data;
-        }),
-        catchError((error) => {
-          console.error('Error fetching data:', error);
-          return [];
-        }),
-        finalize(() => {
-          this.isAnimeCharactersLoadingSubject.next(false);
-        })
-      );
-  }
-
-  getAnimePictures$(id: number): Observable<ImageData[]> {
-    this.isAnimePicturesLoadingSubject.next(true);
-
-    return this.http.get<Data<Images>>(`${this.apiUrl}/${id}/pictures`).pipe(
-      map((response) => {
-        const data: ImageData[] = response.data.map(
-          (item) =>
-            ({
-              imageLarge: item.jpg.large_image_url,
-              imageSmall: item.jpg.small_image_url,
-            } satisfies ImageData)
-        );
-        return data;
-      }),
-      catchError((error) => {
-        console.error('Error fetching data:', error);
-        return [];
-      }),
-      finalize(() => {
-        this.isAnimePicturesLoadingSubject.next(false);
-      })
-    );
-  }
-
-  getAnimeStaff$(id: number): Observable<BasicDisplayData[]> {
-    this.isAnimeStaffLoadingSubject.next(true);
-
-    return timer(3500).pipe(
-      switchMap(() =>
-        this.http.get<Data<StaffResponse>>(`${this.apiUrl}/${id}/staff`).pipe(
-          map((response) => {
-            const data: BasicDisplayData[] = response.data.map(
-              (item) =>
-                ({
-                  imageSrc: item.person.images.jpg.image_url,
-                  title: `${item.person.name}`,
-                  informations: item.positions.map((v: string) => `${v}`),
-                } satisfies BasicDisplayData)
-            );
-            return data;
-          }),
-          catchError((error) => {
-            console.error('Error fetching data:', error);
-            return [];
-          }),
-          finalize(() => {
-            this.isAnimeStaffLoadingSubject.next(false);
-          })
-        )
-      )
-    );
-  }
-
-  getAnimeReviews$(id: number): Observable<DetailedReview[]> {
-    const params: AnimeQueryParams = { preliminary: 'true' };
-    const httpParams = this.buildParams(params);
-    this.isAnimeReviewsLoadingSubject.next(true);
-
-    return timer(3500).pipe(
-      switchMap(() =>
-        this.http
-          .get<Data<MediaReviewResponse>>(`${this.apiUrl}/${id}/reviews`, {
-            params: httpParams,
-          })
-          .pipe(
-            map((response) => {
-              const data: DetailedReview[] = response.data.map((item) => {
-                return {
-                  content: item.review,
-                  score: item.score,
-                  user: item.user.username,
-                  imageSrc: item.user.images.jpg.image_url,
-                  tags: [...item.tags],
-                  date: item.date,
-                } satisfies DetailedReview;
-              });
-              return data;
-            }),
-            catchError((error) => {
-              console.error('Error fetching data:', error);
-              return [];
-            }),
-            finalize(() => {
-              this.isAnimeReviewsLoadingSubject.next(false);
-            })
-          )
-      )
-    );
-  }
-
-  getAnimeRecommendations$(id: number): Observable<Recommendation[]> {
-    this.isAnimeRecommendationsLoadingSubject.next(false);
-
-    return timer(3500).pipe(
-      switchMap(() =>
-        this.http
-          .get<Data<MediaRecommendationResponse>>(
-            `${this.apiUrl}/${id}/recommendations`
-          )
-          .pipe(
-            map((response) =>
-              response.data.map(
-                (item) =>
-                  ({
-                    id: item.entry.mal_id,
-                    title: item.entry.title,
-                    votes: item.votes,
-                    imageSrc: item.entry.images.jpg.image_url,
-                  } satisfies Recommendation)
-              )
-            ),
-            catchError((error) => {
-              console.error('Error fetching data:', error);
-              return [];
-            }),
-            finalize(() => {
-              this.isAnimeRecommendationsLoadingSubject.next(false);
-            })
-          )
-      )
-    );
-  }
 
   getAnimeList(params?: AnimeQueryParams) {
     const httpParams = this.buildParams(params);
-    console.log(params, 'hello');
     return this.http
       .get<DataWithPaginationResponse<MediaResponse>>(`${this.apiUrl}`, {
         params: httpParams,
@@ -305,6 +63,48 @@ export class AnimeService {
   getAnimeGenres() {
     return this.http
       .get<Data<GenreResponse>>(`${JIKAN_API_BASE_URL}/genres/anime`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getAnimeRecommendations(id: string) {
+    return this.http
+      .get<Data<MediaRecommendationResponse>>(
+        `${this.apiUrl}/${id}/recommendations`
+      )
+      .pipe(catchError(this.handleError));
+  }
+
+  getAnimeReviews(id: string) {
+    const params: AnimeQueryParams = { preliminary: 'true' };
+    const httpParams = this.buildParams(params);
+    return this.http
+      .get<Data<MediaReviewResponse>>(`${this.apiUrl}/${id}/reviews`, {
+        params: httpParams,
+      })
+      .pipe(catchError(this.handleError));
+  }
+
+  getAnimeCharacters(id: string) {
+    return this.http
+      .get<Data<CharacterDataResponse>>(`${this.apiUrl}/${id}/characters`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getAnimeStaff(id: string) {
+    return this.http
+      .get<Data<StaffResponse>>(`${this.apiUrl}/${id}/staff`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getAnimePictures(id: string) {
+    return this.http
+      .get<Data<Images>>(`${this.apiUrl}/${id}/pictures`)
+      .pipe(catchError(this.handleError));
+  }
+
+  getAnimeFullById(id: string) {
+    return this.http
+      .get<MediaDetailedDataResponse>(`${this.apiUrl}/${id}/full`)
       .pipe(catchError(this.handleError));
   }
 

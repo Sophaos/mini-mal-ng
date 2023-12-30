@@ -23,6 +23,8 @@ const intitialState: SeasonState = {
   errorMessage: '',
 };
 
+export const seasonFeatureKey = 'season';
+
 export const seasonReducer = createReducer(
   intitialState,
   on(

@@ -1,7 +1,21 @@
-import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { combineLatest, map, switchMap, timer } from 'rxjs';
-import { AnimeService } from '../../data-access/anime.service';
+import { ChangeDetectionStrategy, Component } from '@angular/core';
+import { combineLatest, map } from 'rxjs';
+import { AnimeState } from '../../data-access/anime.reducers';
+import { Store } from '@ngrx/store';
+import {
+  selectAnimeCharacters,
+  selectAnimeCharactersLoading,
+  selectAnimeDetails,
+  selectAnimeDetailsLoading,
+  selectAnimePictures,
+  selectAnimePicturesLoading,
+  selectAnimeRecommendations,
+  selectAnimeRecommendationsLoading,
+  selectAnimeReviews,
+  selectAnimeReviewsLoading,
+  selectAnimeStaff,
+  selectAnimeStaffLoading,
+} from '../../data-access/anime.selectors';
 
 @Component({
   selector: 'app-anime-details',
@@ -9,51 +23,24 @@ import { AnimeService } from '../../data-access/anime.service';
   styleUrls: ['./anime-details.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class AnimeDetailsComponent implements OnInit {
-  isAnimeDetailsLoading$ = this.animeService.isAnimeDetailsLoading$;
-  isAnimePicturesLoading$ = this.animeService.isAnimePicturesLoading$;
-  isAnimeCharactersLoading$ = this.animeService.isAnimeCharactersLoading$;
+export class AnimeDetailsComponent {
+  isAnimeDetailsLoading$ = this.store.select(selectAnimeDetailsLoading);
+  isAnimePicturesLoading$ = this.store.select(selectAnimePicturesLoading);
+  isAnimeCharactersLoading$ = this.store.select(selectAnimeCharactersLoading);
 
-  isAnimeStaffLoading$ = this.animeService.isAnimeStaffLoading$;
-  isAnimeReviewsLoading$ = this.animeService.isAnimeReviewsLoading$;
-  isAnimeRecommendationsLoading$ =
-    this.animeService.isAnimeRecommendationsLoading$;
-
-  anime$ = this.route.paramMap.pipe(
-    switchMap((params) =>
-      this.animeService.getAnimeFullById$(Number(params.get('id') || 0))
-    )
+  isAnimeStaffLoading$ = this.store.select(selectAnimeStaffLoading);
+  isAnimeReviewsLoading$ = this.store.select(selectAnimeReviewsLoading);
+  isAnimeRecommendationsLoading$ = this.store.select(
+    selectAnimeRecommendationsLoading
   );
 
-  pictures$ = this.route.paramMap.pipe(
-    switchMap((params) =>
-      this.animeService.getAnimePictures$(Number(params.get('id') || 0))
-    )
-  );
+  anime$ = this.store.select(selectAnimeDetails);
+  pictures$ = this.store.select(selectAnimePictures);
+  characters$ = this.store.select(selectAnimeCharacters);
 
-  characters$ = this.route.paramMap.pipe(
-    switchMap((params) =>
-      this.animeService.getAnimeCharacters$(Number(params.get('id') || 0))
-    )
-  );
-
-  reviews$ = this.route.paramMap.pipe(
-    switchMap((params) =>
-      this.animeService.getAnimeReviews$(Number(params.get('id') || 0))
-    )
-  );
-
-  staff$ = this.route.paramMap.pipe(
-    switchMap((params) =>
-      this.animeService.getAnimeStaff$(Number(params.get('id') || 0))
-    )
-  );
-
-  recommendations$ = this.route.paramMap.pipe(
-    switchMap((params) =>
-      this.animeService.getAnimeRecommendations$(Number(params.get('id') || 0))
-    )
-  );
+  staff$ = this.store.select(selectAnimeStaff);
+  reviews$ = this.store.select(selectAnimeReviews);
+  recommendations$ = this.store.select(selectAnimeRecommendations);
 
   vmAnime$ = combineLatest([
     this.anime$,
@@ -111,9 +98,5 @@ export class AnimeDetailsComponent implements OnInit {
     )
   );
 
-  constructor(
-    private route: ActivatedRoute,
-    private animeService: AnimeService
-  ) {}
-  ngOnInit(): void {}
+  constructor(private store: Store<AnimeState>) {}
 }

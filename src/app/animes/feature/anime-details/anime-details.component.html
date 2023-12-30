@@ -1,6 +1,6 @@
 <div class="flex flex-column gap-1 mt-1">
   <ng-container *ngIf="vmAnime$ | async as vm; else mainLoading">
-    <ng-container *ngIf="!vm.isLoading; else mainLoading">
+    <ng-container *ngIf="!vm.isLoading && vm.anime; else mainLoading">
       <app-items-container [isCollapsed]="false">
         <app-main-preview-content
           [media]="vm.anime"

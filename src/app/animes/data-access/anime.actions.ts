@@ -6,6 +6,7 @@ import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption
 import { BasicDisplayData } from 'src/app/shared/data-access/models/basicDisplayData';
 import { DetailedReview } from 'src/app/shared/data-access/models/detailedReview';
 import { Recommendation } from 'src/app/shared/data-access/models/recommendation';
+import { ImageData } from 'src/app/shared/data-access/models/imageData';
 
 export const AnimeListPageActions = createActionGroup({
   source: 'Anime List Page',
@@ -32,12 +33,12 @@ export const AnimeListAPIActions = createActionGroup({
 export const AnimeDetailsPageActions = createActionGroup({
   source: 'Anime List Page',
   events: {
-    'Load Anime Details': props<{ id: number }>(),
-    'Load Anime Characters': props<{ id: number }>(),
-    'Load Anime Pictures': props<{ id: number }>(),
-    'Load Anime Staff': props<{ id: number }>(),
-    'Load Anime Reviews': props<{ id: number }>(),
-    'Load Anime Recommendations': props<{ id: number }>(),
+    'Load Anime Details': props<{ id: string }>(),
+    'Load Anime Characters': props<{ id: string }>(),
+    'Load Anime Pictures': props<{ id: string }>(),
+    'Load Anime Staff': props<{ id: string }>(),
+    'Load Anime Reviews': props<{ id: string }>(),
+    'Load Anime Recommendations': props<{ id: string }>(),
   },
 });
 
@@ -45,7 +46,7 @@ export const AnimeDetailsAPIActions = createActionGroup({
   source: 'Anime Details API',
   events: {
     'Anime Details Loaded Success': props<{
-      mediaData: DataWithPagination<Media>;
+      mediaData: Media;
     }>(),
     'Anime Characters Loaded Success': props<{
       characters: BasicDisplayData[];

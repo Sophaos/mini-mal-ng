@@ -18,7 +18,10 @@ import { SkeletonDataListComponent } from 'src/app/shared/ui/skeleton-data-list/
 import { StoreModule } from '@ngrx/store';
 import { SeasonEffects } from '../../data-access/season.effects';
 import { EffectsModule } from '@ngrx/effects';
-import { seasonReducer } from '../../data-access/season.reducers';
+import {
+  seasonFeatureKey,
+  seasonReducer,
+} from '../../data-access/season.reducers';
 
 @NgModule({
   declarations: [SeasonListComponent],
@@ -37,7 +40,7 @@ import { seasonReducer } from '../../data-access/season.reducers';
     DataViewComponent,
     DataViewFilterComponent,
     SkeletonDataListComponent,
-    StoreModule.forFeature('season', seasonReducer),
+    StoreModule.forFeature(seasonFeatureKey, seasonReducer),
     EffectsModule.forFeature([SeasonEffects]),
   ],
   providers: [SeasonsService],

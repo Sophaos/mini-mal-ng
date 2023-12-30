@@ -7,14 +7,11 @@ import {
 } from './anime.actions';
 import { Media } from 'src/app/shared/data-access/models/media';
 import { DataWithPagination } from 'src/app/shared/data-access/models/dataWithPagination';
-import {
-  YearsSeasonsData,
-  initialYearsSeasonsData,
-} from 'src/app/shared/data-access/models/yearsSeasonsData';
 import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
 import { BasicDisplayData } from 'src/app/shared/data-access/models/basicDisplayData';
 import { DetailedReview } from 'src/app/shared/data-access/models/detailedReview';
 import { Recommendation } from 'src/app/shared/data-access/models/recommendation';
+import { ImageData } from 'src/app/shared/data-access/models/imageData';
 
 export interface AnimeState {
   animeListDataLoading: boolean;
@@ -57,6 +54,8 @@ const intitialState: AnimeState = {
   recommendations: [],
   errorMessage: '',
 };
+
+export const animeFeatureKey = 'anime';
 
 export const animeReducer = createReducer(
   intitialState,
@@ -114,6 +113,174 @@ export const animeReducer = createReducer(
         genreDataLoading: true,
         errorMessage: '',
         genres: [],
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animeDetailsLoadedSuccess,
+    (state, { mediaData }) =>
+      ({
+        ...state,
+        animeLoading: false,
+        anime: mediaData,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animeDetailsLoadedFail,
+    (state, { message }) =>
+      ({
+        ...state,
+        animeLoading: false,
+        errorMessage: message,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsPageActions.loadAnimeDetails,
+    (state) =>
+      ({
+        ...state,
+        animeLoading: true,
+        errorMessage: '',
+        pictures: [],
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animePicturesLoadedSuccess,
+    (state, { images }) =>
+      ({
+        ...state,
+        animePicturesLoading: false,
+        pictures: images,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animePicturesLoadedFail,
+    (state, { message }) =>
+      ({
+        ...state,
+        animePicturesLoading: false,
+        errorMessage: message,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsPageActions.loadAnimePictures,
+    (state) =>
+      ({
+        ...state,
+        animePicturesLoading: true,
+        errorMessage: '',
+        pictures: [],
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animeCharactersLoadedSuccess,
+    (state, { characters }) =>
+      ({
+        ...state,
+        animeCharactersLoading: false,
+        characters,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animeCharactersLoadedFail,
+    (state, { message }) =>
+      ({
+        ...state,
+        animeCharactersLoading: false,
+        errorMessage: message,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsPageActions.loadAnimeCharacters,
+    (state) =>
+      ({
+        ...state,
+        animeCharactersLoading: true,
+        errorMessage: '',
+        characters: [],
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animeStaffLoadedSuccess,
+    (state, { staff }) =>
+      ({
+        ...state,
+        animeStaffLoading: false,
+        staff,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animeStaffLoadedFail,
+    (state, { message }) =>
+      ({
+        ...state,
+        animeStaffLoading: false,
+        errorMessage: message,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsPageActions.loadAnimeStaff,
+    (state) =>
+      ({
+        ...state,
+        animeStaffLoading: true,
+        errorMessage: '',
+        staff: [],
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animeReviewsLoadedSuccess,
+    (state, { reviews }) =>
+      ({
+        ...state,
+        animeReviewsLoading: false,
+        reviews,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animeReviewsLoadedFail,
+    (state, { message }) =>
+      ({
+        ...state,
+        animeReviewsLoading: false,
+        errorMessage: message,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsPageActions.loadAnimeReviews,
+    (state) =>
+      ({
+        ...state,
+        animeReviewsLoading: true,
+        errorMessage: '',
+        reviews: [],
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animeRecommendationsLoadedSuccess,
+    (state, { recommendations }) =>
+      ({
+        ...state,
+        animeRecommendationsLoading: false,
+        recommendations,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsAPIActions.animeRecommendationsLoadedFail,
+    (state, { message }) =>
+      ({
+        ...state,
+        animeRecommendationsLoading: false,
+        errorMessage: message,
+      } satisfies AnimeState)
+  ),
+  on(
+    AnimeDetailsPageActions.loadAnimeRecommendations,
+    (state) =>
+      ({
+        ...state,
+        animeRecommendationsLoading: true,
+        errorMessage: '',
+        recommendations: [],
       } satisfies AnimeState)
   )
 );
