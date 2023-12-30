@@ -22,12 +22,13 @@ import {
   AnimeListAPIActions,
   AnimeListPageActions,
 } from './anime.actions';
-import { AnimeQueryParams, AnimeService } from './anime.service';
+import { AnimeService } from './anime.service';
 import { isObjectEmpty } from 'src/app/shared/utils/routeUtils';
 import { ImageData } from 'src/app/shared/data-access/models/imageData';
 import { BasicDisplayData } from 'src/app/shared/data-access/models/basicDisplayData';
 import { DetailedReview } from 'src/app/shared/data-access/models/detailedReview';
 import { Recommendation } from 'src/app/shared/data-access/models/recommendation';
+import { AnimeQueryParams } from 'src/app/shared/data-access/models/animeQueryParams';
 
 @Injectable()
 export class AnimeEffects {

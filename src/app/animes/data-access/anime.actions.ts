@@ -1,12 +1,12 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
 import { DataWithPagination } from 'src/app/shared/data-access/models/dataWithPagination';
-import { AnimeQueryParams } from './anime.service';
 import { Media } from 'src/app/shared/data-access/models/media';
 import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
 import { BasicDisplayData } from 'src/app/shared/data-access/models/basicDisplayData';
 import { DetailedReview } from 'src/app/shared/data-access/models/detailedReview';
 import { Recommendation } from 'src/app/shared/data-access/models/recommendation';
 import { ImageData } from 'src/app/shared/data-access/models/imageData';
+import { AnimeQueryParams } from 'src/app/shared/data-access/models/animeQueryParams';
 
 export const AnimeListPageActions = createActionGroup({
   source: 'Anime List Page',

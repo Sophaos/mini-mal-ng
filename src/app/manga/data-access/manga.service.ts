@@ -11,7 +11,7 @@ import { DataWithPaginationResponse } from 'src/app/shared/data-access/response/
 import { GenreResponse } from 'src/app/shared/data-access/response/genreResponse';
 import { MediaResponse } from 'src/app/shared/data-access/response/mediaReponse';
 
-export interface AnimeQueryParams {
+export interface MangaQueryParams {
   filter?: string;
   page?: number | string;
   limit?: number | string;
@@ -31,10 +31,6 @@ export interface AnimeQueryParams {
   producers?: string;
   start_date?: string;
   end_date?: string;
-}
-
-export interface AnimeQueryParamsWithId extends AnimeQueryParams {
-  id: number;
 }
 
 @Injectable({
@@ -60,7 +56,7 @@ export class MangaService {
       })
     );
 
-  search$(params?: AnimeQueryParams): Observable<DataWithPagination<Media>> {
+  search$(params?: MangaQueryParams): Observable<DataWithPagination<Media>> {
     const httpParams = this.buildParams(params);
     return this.http
       .get<DataWithPaginationResponse<MediaResponse>>(`${this.apiUrl}`, {
@@ -93,7 +89,7 @@ export class MangaService {
       );
   }
 
-  private buildParams(params?: AnimeQueryParams): HttpParams {
+  private buildParams(params?: MangaQueryParams): HttpParams {
     let httpParams = new HttpParams();
     if (params?.q) {
       httpParams = httpParams.set('q', params.q);
