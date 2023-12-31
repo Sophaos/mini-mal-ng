@@ -5,6 +5,7 @@
     *ngFor="let filter of filterInputs"
     class="flex flex-column gap-2 border-round m-1"
   >
+    <ng-container *ngIf="inputs$ | async as input"></ng-container>
     <label htmlFor="username">{{ filter.label }}</label>
     <ng-container *ngIf="filter.type === 'string'">
       <input
@@ -12,22 +13,14 @@
         type="text"
         pInputText
         [(ngModel)]="filter.value"
-        (ngModelChange)="
-          filter.change
-            ? filter.change($event, filter.param)
-            : changeQueryParams($event, filter.param)
-        "
+        (ngModelChange)="inputChange($event, filter.param)"
       />
     </ng-container>
     <ng-container *ngIf="filter.type === 'number'">
       <p-inputNumber
         [id]="filter.label"
         [(ngModel)]="filter.value"
-        (ngModelChange)="
-          filter.change
-            ? filter.change($event, filter.param)
-            : changeQueryParams($event, filter.param)
-        "
+        (ngModelChange)="inputChange($event, filter.param)"
       />
     </ng-container>
   </div>
@@ -46,7 +39,7 @@
         (onChange)="
           filter.change
             ? filter.change($event.value, filter.param)
-            : changeQueryParamsMulti($event.value, filter.param)
+            : changeQueryParams($event.value, filter.param)
         "
       ></p-multiSelect>
     </ng-container>

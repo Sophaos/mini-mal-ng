@@ -49,7 +49,7 @@ export const selectSeasonOptions = createSelector(
   selectRouteParams,
   ({ seasonData }, routeParams) =>
     seasonData.find((s) => s.year === Number(routeParams['year']))
-      ?.seasonOptions
+      ?.seasonOptions ?? []
 );
 
 export const selectSeasonErrorMessage = createSelector(

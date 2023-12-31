@@ -29,6 +29,7 @@ import {
   selectAnimeListPagination,
 } from '../../data-access/anime.selectors';
 import { AnimeListPageActions } from '../../data-access/anime.actions';
+import { DEFAULT_PAGE_LIMIT } from 'src/app/shared/data-access/models/defaultPageLimit';
 
 @Component({
   selector: 'app-animes-list',
@@ -37,18 +38,18 @@ import { AnimeListPageActions } from '../../data-access/anime.actions';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class AnimesListComponent implements OnInit {
-  private inputsSubject = new BehaviorSubject<ParamData>({
-    value: '',
-    param: '',
-  });
-  inputsChange = this.inputsSubject.asObservable();
-  inputs$ = this.inputsChange.pipe(
-    debounceTime(500),
-    distinctUntilChanged(),
-    tap((res) => {
-      this.defaultChange(res);
-    })
-  );
+  // private inputsSubject = new BehaviorSubject<ParamData>({
+  //   value: '',
+  //   param: '',
+  // });
+  // inputsChange = this.inputsSubject.asObservable();
+  // inputs$ = this.inputsChange.pipe(
+  //   debounceTime(500),
+  //   distinctUntilChanged(),
+  //   tap((res) => {
+  //     this.defaultChange(res);
+  //   })
+  // );
 
   animes$ = this.store.select(selectAnimeList);
   genres$ = this.store.select(selectAnimeGenres);
@@ -60,7 +61,7 @@ export class AnimesListComponent implements OnInit {
     this.pagination$,
     this.genres$,
     this.animeListDataLoading$,
-    this.inputs$,
+    // this.inputs$,
   ]).pipe(
     map(([animes, pagination, genres, animeListDataLoading]) => ({
       pagination,
@@ -81,11 +82,7 @@ export class AnimesListComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(AnimeListPageActions.loadAnimeGenresData());
     const queryParams = this.route.snapshot.queryParams;
-    const defaultQueryParams = {
-      page: 1,
-      limit: 8,
-    };
-    const updatedQueryParams = { ...defaultQueryParams, ...queryParams };
+    const updatedQueryParams = { ...DEFAULT_PAGE_LIMIT, ...queryParams };
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: updatedQueryParams,
@@ -104,7 +101,7 @@ export class AnimesListComponent implements OnInit {
       {
         label: 'Genre(s)',
         value: this.route.snapshot.queryParams['genres']
-          ? this.route.snapshot.queryParams['genres'].split(',')
+          ? this.route.snapshot.queryParams['genres']
           : '',
         param: 'genres',
         options: genres,
@@ -144,24 +141,24 @@ export class AnimesListComponent implements OnInit {
         value: this.route.snapshot.queryParams['q'],
         param: 'q',
         type: 'string',
-        change: (event: string | number, param: string) =>
-          this.inputsSubject.next({ value: event, param }),
+        // change: (event: string | number, param: string) =>
+        //   this.inputsSubject.next({ value: event, param }),
       },
       {
         label: 'Min Score',
         value: this.route.snapshot.queryParams['min_score'],
         param: 'min_score',
         type: 'number',
-        change: (event: string | number, param: string) =>
-          this.inputsSubject.next({ value: event, param }),
+        // change: (event: string | number, param: string) =>
+        //   this.inputsSubject.next({ value: event, param }),
       },
       {
         label: 'Max Score',
         value: this.route.snapshot.queryParams['max_score'],
         param: 'max_score',
         type: 'number',
-        change: (event: string | number, param: string) =>
-          this.inputsSubject.next({ value: event, param }),
+        // change: (event: string | number, param: string) =>
+        //   this.inputsSubject.next({ value: event, param }),
       },
     ];
   }
@@ -187,8 +184,7 @@ export class AnimesListComponent implements OnInit {
   defaultChange(paramData: ParamData) {
     if (paramData.param === '') return;
     let updatedQueryParams = {
-      page: 1,
-      limit: 16,
+      ...DEFAULT_PAGE_LIMIT,
       [paramData.param]: paramData.value,
     };
     updatedQueryParams = {

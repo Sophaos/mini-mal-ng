@@ -8,6 +8,9 @@ import { InputNumberModule } from 'primeng/inputnumber';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { CardModule } from 'primeng/card';
 import { DropdownData } from '../../data-access/models/dropdownData';
+import { DEFAULT_PAGE_LIMIT } from '../../data-access/models/defaultPageLimit';
+import { ParamData } from '../../data-access/models/paramData';
+import { BehaviorSubject, debounceTime, distinctUntilChanged, tap } from 'rxjs';
 
 @Component({
   selector: 'app-data-view-filter',
@@ -32,11 +35,24 @@ export class DataViewFilterComponent {
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 
-  defaultChange(value: string | number, param: string) {
+  private inputsSubject = new BehaviorSubject<ParamData>({
+    value: '',
+    param: '',
+  });
+  inputsChange = this.inputsSubject.asObservable();
+  inputs$ = this.inputsChange.pipe(
+    debounceTime(500),
+    distinctUntilChanged(),
+    tap((res) => {
+      this.defaultChange(res);
+    })
+  );
+
+  defaultChange(paramData: ParamData) {
+    if (paramData.param === '') return;
     let updatedQueryParams = {
-      page: 1,
-      limit: 16,
-      [param]: value,
+      ...DEFAULT_PAGE_LIMIT,
+      [paramData.param]: paramData.value,
     };
     updatedQueryParams = {
       ...this.route.snapshot.queryParams,
@@ -50,10 +66,10 @@ export class DataViewFilterComponent {
   }
 
   changeQueryParams(event: string, param: string) {
-    this.defaultChange(event, param);
+    this.defaultChange({ value: event, param });
   }
 
-  changeQueryParamsMulti(event: string | number, param: string) {
-    this.defaultChange(event.toString(), param);
+  inputChange(event: string, param: string) {
+    this.inputsSubject.next({ value: event, param });
   }
 }

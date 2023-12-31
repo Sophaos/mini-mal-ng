@@ -7,7 +7,6 @@ import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption
 import { RouteQueryParams } from 'src/app/shared/data-access/models/routeQueryParams';
 import { Store } from '@ngrx/store';
 import {
-  selectMediaData,
   selectMediaDataLoading,
   selectMediaList,
   selectSeasonOptions,
@@ -17,6 +16,7 @@ import {
 import { SeasonPageActions } from '../../data-access/season.actions';
 import { MEDIAS } from '../../data-access/dropdownOptions';
 import { SeasonState } from '../../data-access/season.reducers';
+import { DEFAULT_PAGE_LIMIT } from 'src/app/shared/data-access/models/defaultPageLimit';
 
 @Component({
   selector: 'app-season-list',
@@ -42,9 +42,9 @@ export class SeasonListComponent implements OnInit {
       ([animes, mediaDataLoading, pagination, yearsOptions, seasonOptions]) => {
         return {
           pagination,
-          animes: animes,
+          animes,
           mediaDataLoading,
-          filters: this.getSeasonFilterData(yearsOptions, seasonOptions ?? []),
+          filters: this.getSeasonFilterData(yearsOptions, seasonOptions),
         };
       }
     )
@@ -59,11 +59,7 @@ export class SeasonListComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(SeasonPageActions.loadSeasonData());
     const queryParams = this.route.snapshot.queryParams;
-    const defaultQueryParams = {
-      page: 1,
-      limit: 8,
-    };
-    const updatedQueryParams = { ...defaultQueryParams, ...queryParams };
+    const updatedQueryParams = { ...DEFAULT_PAGE_LIMIT, ...queryParams };
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: updatedQueryParams,
@@ -81,14 +77,22 @@ export class SeasonListComponent implements OnInit {
         value: Number(this.route.snapshot.params['year']),
         param: 'year',
         options: years,
-        change: (event: string | number) => this.yearChange(event),
+        change: (event: string | number) =>
+          this.seasonRouteParamUpdate(
+            event,
+            this.route.snapshot.params['season']
+          ),
       },
       {
         label: 'Season',
         param: 'season',
         value: this.route.snapshot.params['season'],
         options: seasons,
-        change: (event: string | number) => this.seasonChange(event),
+        change: (event: string | number) =>
+          this.seasonRouteParamUpdate(
+            this.route.snapshot.params['year'],
+            event
+          ),
       },
       {
         label: 'Media',
@@ -99,26 +103,12 @@ export class SeasonListComponent implements OnInit {
     ];
   }
 
-  yearChange(event: string | number) {
-    this.router.navigate(
-      ['/season', event, this.route.snapshot.params['season']],
-      {
-        relativeTo: this.route,
-        queryParams: this.getQueryParamstWithDefaultPagination(),
-        queryParamsHandling: 'merge',
-      }
-    );
-  }
-
-  seasonChange(event: string | number) {
-    this.router.navigate(
-      ['/season', this.route.snapshot.params['year'], event],
-      {
-        relativeTo: this.route,
-        queryParams: this.getQueryParamstWithDefaultPagination(),
-        queryParamsHandling: 'merge',
-      }
-    );
+  seasonRouteParamUpdate(year: string | number, season: string | number) {
+    this.router.navigate(['/season', year, season], {
+      relativeTo: this.route,
+      queryParams: this.getQueryParamstWithDefaultPagination(),
+      queryParamsHandling: 'merge',
+    });
   }
 
   updateRouteQueryParams(updatedParams: RouteQueryParams): void {
@@ -141,8 +131,7 @@ export class SeasonListComponent implements OnInit {
   getQueryParamstWithDefaultPagination() {
     return {
       ...this.route.snapshot.queryParams,
-      page: 1,
-      limit: 8,
+      ...DEFAULT_PAGE_LIMIT,
     };
   }
 }

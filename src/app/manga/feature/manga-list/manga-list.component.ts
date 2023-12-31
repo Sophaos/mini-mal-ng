@@ -16,6 +16,7 @@ import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption
 import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
 import { ParamData } from 'src/app/shared/data-access/models/paramData';
 import { RouteQueryParams } from 'src/app/shared/data-access/models/routeQueryParams';
+import { DEFAULT_PAGE_LIMIT } from 'src/app/shared/data-access/models/defaultPageLimit';
 
 @Component({
   selector: 'app-manga-list',
@@ -102,11 +103,7 @@ export class MangaListComponent implements OnInit {
 
   ngOnInit(): void {
     const queryParams = this.route.snapshot.queryParams;
-    const defaultQueryParams = {
-      page: 1,
-      limit: 8,
-    };
-    const updatedQueryParams = { ...defaultQueryParams, ...queryParams };
+    const updatedQueryParams = { ...DEFAULT_PAGE_LIMIT, ...queryParams };
     this.router.navigate([], {
       relativeTo: this.route,
       queryParams: updatedQueryParams,
@@ -215,8 +212,7 @@ export class MangaListComponent implements OnInit {
   defaultChange(paramData: ParamData) {
     if (paramData.param === '') return;
     let updatedQueryParams = {
-      page: 1,
-      limit: 16,
+      ...DEFAULT_PAGE_LIMIT,
       [paramData.param]: paramData.value,
     };
     updatedQueryParams = {
