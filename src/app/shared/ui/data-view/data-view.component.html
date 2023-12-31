@@ -7,6 +7,10 @@
       <app-media-data-card [media]="anime" class="w-12" />
     </div>
   </div>
+  <app-paginator
+    [pagination]="pagination"
+    (onPageChange)="handlePageChange($event)"
+  />
 </ng-container>
 
 <ng-template #loading>

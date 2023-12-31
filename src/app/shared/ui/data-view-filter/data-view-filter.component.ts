@@ -6,11 +6,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InputTextModule } from 'primeng/inputtext';
 import { InputNumberModule } from 'primeng/inputnumber';
 import { MultiSelectModule } from 'primeng/multiselect';
-import { CardModule } from 'primeng/card';
 import { DropdownData } from '../../data-access/models/dropdownData';
 import { DEFAULT_PAGE_LIMIT } from '../../data-access/models/defaultPageLimit';
 import { ParamData } from '../../data-access/models/paramData';
 import { BehaviorSubject, debounceTime, distinctUntilChanged, tap } from 'rxjs';
+import { SkeletonDataViewFilterComponent } from '../skeleton-data-view-filter/skeleton-data-view-filter.component';
 
 @Component({
   selector: 'app-data-view-filter',
@@ -23,7 +23,7 @@ import { BehaviorSubject, debounceTime, distinctUntilChanged, tap } from 'rxjs';
     InputNumberModule,
     ReactiveFormsModule,
     MultiSelectModule,
-    CardModule,
+    SkeletonDataViewFilterComponent,
   ],
   templateUrl: './data-view-filter.component.html',
   styleUrls: ['./data-view-filter.component.scss'],
@@ -32,6 +32,7 @@ import { BehaviorSubject, debounceTime, distinctUntilChanged, tap } from 'rxjs';
 export class DataViewFilterComponent {
   @Input() filterDropdowns: DropdownData[] = [];
   @Input() filterInputs: DropdownData[] = [];
+  @Input() isLoading: boolean = false;
 
   constructor(private route: ActivatedRoute, private router: Router) {}
 

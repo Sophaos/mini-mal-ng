@@ -139,6 +139,9 @@ export const animeReducer = createReducer(
       ({
         ...state,
         animeLoading: true,
+        animeRecommendationsLoading: true, // used like this for api rate limit
+        animeReviewsLoading: true, // used like this for api rate limit
+        animeStaffLoading: true, // used like this for api rate limit
         errorMessage: '',
         pictures: [],
       } satisfies AnimeState)

@@ -2,10 +2,13 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { SeasonState } from './season.reducers';
 import { getRouterSelectors } from '@ngrx/router-store';
 import { getPagination } from 'src/app/shared/data-access/models/pagination';
+import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
+import { MEDIAS } from './dropdownOptions';
 
 export const selectSeasonState = createFeatureSelector<SeasonState>('season');
 
-export const { selectRouteParams, selectQueryParams } = getRouterSelectors();
+export const { selectRouteParams, selectQueryParams, selectRouteParam } =
+  getRouterSelectors();
 
 export const selectYearsSeasonsDataLoading = createSelector(
   selectSeasonState,
@@ -55,4 +58,34 @@ export const selectSeasonOptions = createSelector(
 export const selectSeasonErrorMessage = createSelector(
   selectSeasonState,
   ({ errorMessage }) => errorMessage
+);
+
+export const selectSeasonDropdownData = createSelector(
+  selectYearOptions,
+  selectSeasonOptions,
+  selectRouteParam('year'),
+  selectRouteParam('season'),
+  (yearsOptions, seasonsOptions, year, season) => {
+    console.log(year, 'hello');
+    const data: DropdownData[] = [
+      {
+        label: 'Year',
+        param: 'year',
+        value: year,
+        options: yearsOptions,
+      },
+      {
+        label: 'Season',
+        param: 'season',
+        value: season,
+        options: seasonsOptions,
+      },
+      {
+        label: 'Media',
+        param: 'filter',
+        options: MEDIAS,
+      },
+    ];
+    return data;
+  }
 );

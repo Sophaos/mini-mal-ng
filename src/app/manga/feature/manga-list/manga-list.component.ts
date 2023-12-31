@@ -191,22 +191,18 @@ export class MangaListComponent implements OnInit {
       limit: queryParams.get('limit') ?? 16,
     });
 
-  updateRouteQueryParams(updatedParams: RouteQueryParams): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: updatedParams,
-      queryParamsHandling: 'merge',
-    });
-  }
-
   handlePageChange(event: PaginatorState) {
     const currentParams = this.route.snapshot.queryParams;
-    const updatedParams: RouteQueryParams = {
+    const updatedQueryParams: RouteQueryParams = {
       ...currentParams,
       page: (event.page ?? 0) + 1,
       limit: event.rows,
     };
-    this.updateRouteQueryParams(updatedParams);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: updatedQueryParams,
+      queryParamsHandling: 'merge',
+    });
   }
 
   defaultChange(paramData: ParamData) {

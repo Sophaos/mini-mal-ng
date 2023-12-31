@@ -10,6 +10,7 @@ import { CardModule } from 'primeng/card';
 import { MainPreviewContentComponent } from '../main-preview-content/main-preview-content.component';
 import { PanelModule } from 'primeng/panel';
 import { Media } from '../../data-access/models/media';
+import { SkeletonMainPreviewComponent } from '../skeleton-main-preview/skeleton-main-preview.component';
 @Component({
   selector: 'app-main-preview',
   standalone: true,
@@ -24,6 +25,7 @@ import { Media } from '../../data-access/models/media';
     CardModule,
     MainPreviewContentComponent,
     PanelModule,
+    SkeletonMainPreviewComponent,
   ],
   templateUrl: './main-preview.component.html',
   styleUrls: ['./main-preview.component.scss'],
@@ -34,4 +36,5 @@ export class MainPreviewComponent {
   @Input() header!: string;
   @Input() link?: (string | number)[];
   @Input() queryParams: Params = {};
+  @Input() isLoading: boolean = false;
 }

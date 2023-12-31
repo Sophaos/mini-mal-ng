@@ -11,6 +11,7 @@ import { DetailedMediaComponent } from 'src/app/shared/ui/detailed-media/detaile
 import { ChipListComponent } from 'src/app/shared/ui/chip-list/chip-list.component';
 import { ImageData } from '../../data-access/models/imageData';
 import { Media } from '../../data-access/models/media';
+import { SkeletonMainPreviewComponent } from '../skeleton-main-preview/skeleton-main-preview.component';
 
 @Component({
   selector: 'app-main-preview-content',
@@ -25,6 +26,7 @@ import { Media } from '../../data-access/models/media';
     ReactiveFormsModule,
     DetailedMediaComponent,
     ChipListComponent,
+    SkeletonMainPreviewComponent,
   ],
   templateUrl: './main-preview-content.component.html',
   styleUrls: ['./main-preview-content.component.scss'],
@@ -34,4 +36,5 @@ export class MainPreviewContentComponent {
   @Input() media!: Media;
   @Input() isDetailed: boolean = false;
   @Input() pictures: ImageData[] = [];
+  @Input() isLoading: boolean = false;
 }

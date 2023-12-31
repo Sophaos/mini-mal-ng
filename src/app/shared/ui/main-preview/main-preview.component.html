@@ -1,4 +1,4 @@
-<div class="my-1">
+<div *ngIf="!isLoading; else loading" class="my-1">
   <p-panel [toggleable]="true">
     <ng-template pTemplate="header">
       <div>
@@ -29,3 +29,7 @@
     </p-carousel>
   </p-panel>
 </div>
+
+<ng-template #loading>
+  <app-skeleton-main-preview />
+</ng-template>

@@ -2,7 +2,7 @@ import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption
 
 export interface DropdownData {
   label: string;
-  value: string | number;
+  value?: string | number;
   param: string;
   type?: string;
   options?: DropdownOption[];

@@ -3,18 +3,18 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 import { combineLatest, map } from 'rxjs';
 import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
-import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
 import { RouteQueryParams } from 'src/app/shared/data-access/models/routeQueryParams';
 import { Store } from '@ngrx/store';
 import {
   selectMediaDataLoading,
   selectMediaList,
+  selectSeasonDropdownData,
   selectSeasonOptions,
   selectSeasonPagination,
   selectYearOptions,
+  selectYearsSeasonsDataLoading,
 } from '../../data-access/season.selectors';
 import { SeasonPageActions } from '../../data-access/season.actions';
-import { MEDIAS } from '../../data-access/dropdownOptions';
 import { SeasonState } from '../../data-access/season.reducers';
 import { DEFAULT_PAGE_LIMIT } from 'src/app/shared/data-access/models/defaultPageLimit';
 
@@ -26,28 +26,39 @@ import { DEFAULT_PAGE_LIMIT } from 'src/app/shared/data-access/models/defaultPag
 })
 export class SeasonListComponent implements OnInit {
   animes$ = this.store.select(selectMediaList);
-  mediaDataLoading$ = this.store.select(selectMediaDataLoading);
   pagination$ = this.store.select(selectSeasonPagination);
   yearsOptions$ = this.store.select(selectYearOptions);
   seasonOptions$ = this.store.select(selectSeasonOptions);
+  dropdowns$ = this.store.select(selectSeasonDropdownData);
+  mediaDataLoading$ = this.store.select(selectMediaDataLoading);
+  selectYearsSeasonsDataLoading = this.store.select(
+    selectYearsSeasonsDataLoading
+  );
 
-  vm$ = combineLatest([
+  filters$ = combineLatest([
+    this.dropdowns$,
+    this.selectYearsSeasonsDataLoading,
+  ]).pipe(
+    map(([dropdowns, isLoading]) => {
+      return {
+        filters: this.addRouteData(dropdowns),
+        isLoading,
+      };
+    })
+  );
+
+  data$ = combineLatest([
     this.animes$,
     this.mediaDataLoading$,
     this.pagination$,
-    this.yearsOptions$,
-    this.seasonOptions$,
   ]).pipe(
-    map(
-      ([animes, mediaDataLoading, pagination, yearsOptions, seasonOptions]) => {
-        return {
-          pagination,
-          animes,
-          mediaDataLoading,
-          filters: this.getSeasonFilterData(yearsOptions, seasonOptions),
-        };
-      }
-    )
+    map(([animes, isLoading, pagination]) => {
+      return {
+        pagination,
+        animes,
+        isLoading,
+      };
+    })
   );
 
   constructor(
@@ -67,40 +78,29 @@ export class SeasonListComponent implements OnInit {
     });
   }
 
-  getSeasonFilterData(
-    years: DropdownOption[],
-    seasons: DropdownOption[]
-  ): DropdownData[] {
-    return [
-      {
-        label: 'Year',
-        value: Number(this.route.snapshot.params['year']),
-        param: 'year',
-        options: years,
-        change: (event: string | number) =>
-          this.seasonRouteParamUpdate(
-            event,
-            this.route.snapshot.params['season']
-          ),
-      },
-      {
-        label: 'Season',
-        param: 'season',
-        value: this.route.snapshot.params['season'],
-        options: seasons,
-        change: (event: string | number) =>
-          this.seasonRouteParamUpdate(
-            this.route.snapshot.params['year'],
-            event
-          ),
-      },
-      {
-        label: 'Media',
-        value: this.route.snapshot.queryParams['filter'],
-        param: 'filter',
-        options: MEDIAS,
-      },
-    ];
+  addRouteData(dropdowns: DropdownData[]) {
+    return dropdowns.map((d) => {
+      if (d.param === 'year') {
+        return {
+          ...d,
+          change: (event: string | number) =>
+            this.seasonRouteParamUpdate(
+              event,
+              this.route.snapshot.params['season']
+            ),
+        };
+      } else if (d.param === 'season') {
+        return {
+          ...d,
+          change: (event: string | number) =>
+            this.seasonRouteParamUpdate(
+              this.route.snapshot.params['year'],
+              event
+            ),
+        };
+      }
+      return { ...d, value: this.route.snapshot.queryParams[d.param] };
+    });
   }
 
   seasonRouteParamUpdate(year: string | number, season: string | number) {
@@ -111,21 +111,17 @@ export class SeasonListComponent implements OnInit {
     });
   }
 
-  updateRouteQueryParams(updatedParams: RouteQueryParams): void {
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams: updatedParams,
-      queryParamsHandling: 'merge',
-    });
-  }
-
   handlePageChange(event: PaginatorState) {
-    const updatedParams: RouteQueryParams = {
+    const updatedQueryParams: RouteQueryParams = {
       ...this.route.snapshot.queryParams,
       page: (event.page ?? 0) + 1,
       limit: event.rows,
     };
-    this.updateRouteQueryParams(updatedParams);
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams: updatedQueryParams,
+      queryParamsHandling: 'merge',
+    });
   }
 
   getQueryParamstWithDefaultPagination() {

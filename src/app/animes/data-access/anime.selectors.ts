@@ -2,6 +2,8 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { AnimeState, animeFeatureKey } from './anime.reducers';
 import { getRouterSelectors } from '@ngrx/router-store';
 import { getPagination } from 'src/app/shared/data-access/models/pagination';
+import { MEDIAS, ORDERS, RATINGS, SORTS, STATUSES } from './dropdownOptions';
+import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
 
 export const selectAnimeState =
   createFeatureSelector<AnimeState>(animeFeatureKey);
@@ -106,4 +108,44 @@ export const selectAnimeRecommendationsLoading = createSelector(
 export const selectAnimeErrorMessage = createSelector(
   selectAnimeState,
   ({ errorMessage }) => errorMessage
+);
+
+export const selectAnimeDropdownData = createSelector(
+  selectAnimeGenres,
+  (genres) => {
+    const data: DropdownData[] = [
+      {
+        label: 'Media',
+        param: 'type',
+        options: MEDIAS,
+      },
+      {
+        label: 'Genre(s)',
+        param: 'genres',
+        options: genres,
+        multi: true,
+      },
+      {
+        label: 'Status',
+        param: 'status',
+        options: STATUSES,
+      },
+      {
+        label: 'Rating',
+        param: 'rating',
+        options: RATINGS,
+      },
+      {
+        label: 'Order By',
+        param: 'order_by',
+        options: ORDERS,
+      },
+      {
+        label: 'Sort',
+        param: 'sort',
+        options: SORTS,
+      },
+    ];
+    return data;
+  }
 );

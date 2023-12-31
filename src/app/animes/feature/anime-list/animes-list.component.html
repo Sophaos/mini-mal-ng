@@ -1,18 +1,14 @@
-<ng-container *ngIf="vm$ | async as vm; else loading">
-  <app-data-view-filter
-    [filterDropdowns]="vm.filterDropdowns"
-    [filterInputs]="vm.filterInputs"
-  />
-  <app-data-view
-    [isLoading]="vm.animeListDataLoading"
-    [data]="vm.animes ?? []"
-  />
-  <app-paginator
-    [pagination]="vm.pagination"
-    (onPageChange)="handlePageChange($event)"
-  />
-</ng-container>
+<app-data-view-filter
+  *ngIf="filters$ | async as vm"
+  [filterDropdowns]="vm.filterDropdowns"
+  [filterInputs]="vm.filterInputs"
+  [isLoading]="vm.isLoading"
+/>
 
-<ng-template #loading>
-  <app-skeleton-data-list />
-</ng-template>
+<app-data-view
+  *ngIf="data$ | async as vm"
+  [isLoading]="vm.isLoading"
+  [data]="vm.animes ?? []"
+  [pagination]="vm.pagination"
+  (onPageChange)="handlePageChange($event)"
+/>

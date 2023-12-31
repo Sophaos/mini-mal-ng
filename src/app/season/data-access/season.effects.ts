@@ -101,7 +101,7 @@ export class SeasonEffects {
               (s: SeasonData) =>
                 ({
                   label: s.year,
-                  value: s.year,
+                  value: s.year.toString(),
                 } satisfies DropdownOption)
             );
             return SeasonAPIActions.seasonsDataLoadedSuccess({
