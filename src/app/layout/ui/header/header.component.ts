@@ -38,6 +38,10 @@ export class HeaderComponent implements OnInit {
         routerLink: '/animes',
       },
       {
+        label: 'Mangas',
+        routerLink: '/mangas',
+      },
+      {
         label: 'Season',
         routerLink: seasonUrl,
       },

@@ -66,7 +66,7 @@ export class DataViewFilterComponent {
     });
   }
 
-  changeQueryParams(event: string, param: string) {
+  changeQueryParams(event: string | number, param: string) {
     this.defaultChange({ value: event, param });
   }
 

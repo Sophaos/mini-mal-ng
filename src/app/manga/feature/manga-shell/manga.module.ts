@@ -7,6 +7,13 @@ import { ItemsContainerComponent } from 'src/app/shared/ui/items-container/items
 import { MangaListComponent } from '../manga-list/manga-list.component';
 import { MangaService } from '../../data-access/manga.service';
 import { MangaRoutingModule } from './manga-routing.module';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import {
+  mangaFeatureKey,
+  mangaReducer,
+} from '../../data-access/manga.reducers';
+import { MangaEffects } from '../../data-access/manga.effects';
 
 @NgModule({
   declarations: [MangaListComponent],
@@ -17,6 +24,8 @@ import { MangaRoutingModule } from './manga-routing.module';
     PaginatorComponent,
     DataViewFilterComponent,
     ItemsContainerComponent,
+    StoreModule.forFeature(mangaFeatureKey, mangaReducer),
+    EffectsModule.forFeature([MangaEffects]),
   ],
   providers: [MangaService],
 })

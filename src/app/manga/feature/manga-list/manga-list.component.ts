@@ -17,6 +17,16 @@ import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
 import { ParamData } from 'src/app/shared/data-access/models/paramData';
 import { RouteQueryParams } from 'src/app/shared/data-access/models/routeQueryParams';
 import { DEFAULT_PAGE_LIMIT } from 'src/app/shared/data-access/models/defaultPageLimit';
+import { MangaState } from '../../data-access/manga.reducers';
+import { Store } from '@ngrx/store';
+import {
+  selectMangaDropdownData,
+  selectMangaGenresLoading,
+  selectMangaList,
+  selectMangaListDataLoading,
+  selectMangaListPagination,
+} from '../../data-access/manga.selectors';
+import { MangaListPageActions } from '../../data-access/manga.actions';
 
 @Component({
   selector: 'app-manga-list',
@@ -25,83 +35,60 @@ import { DEFAULT_PAGE_LIMIT } from 'src/app/shared/data-access/models/defaultPag
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MangaListComponent implements OnInit {
-  private inputsSubject = new BehaviorSubject<ParamData>({
-    value: '',
-    param: '',
-  });
-  inputsChange = this.inputsSubject.asObservable();
-  inputs$ = this.inputsChange.pipe(
-    debounceTime(500),
-    distinctUntilChanged(),
-    tap((res) => this.defaultChange(res))
+  mangas$ = this.store.select(selectMangaList);
+  dropdowns$ = this.store.select(selectMangaDropdownData);
+  mangaListDataLoading$ = this.store.select(selectMangaListDataLoading);
+  pagination$ = this.store.select(selectMangaListPagination);
+  genresLoading$ = this.store.select(selectMangaGenresLoading);
+
+  filters$ = combineLatest([this.dropdowns$, this.genresLoading$]).pipe(
+    map(([dropdowns, isLoading]) => {
+      return {
+        filterDropdowns: this.addRouteData(dropdowns),
+        filterInputs: this.addRouteData(this.filterInputs),
+        isLoading,
+      };
+    })
   );
 
-  animes$ = this.route.queryParamMap.pipe(
-    switchMap((queryParams) => this.getMangas(queryParams))
-  );
-  genres$ = this.mangaService.genres$;
-
-  vm$ = combineLatest([
-    this.animes$,
-    this.genres$,
-    this.route.queryParamMap,
-    this.inputs$,
+  data$ = combineLatest([
+    this.mangas$,
+    this.pagination$,
+    this.mangaListDataLoading$,
   ]).pipe(
-    map(([animes, genres, queryParams]) => ({
-      pagination: getPagination(queryParams, animes.pagination.total),
+    map(([animes, pagination, isLoading]) => ({
+      pagination,
       animes,
-      genres,
-      filterDropdowns: this.getFilterDropdowns(genres),
-      filterInputs: this.getFilterInputs(),
+      isLoading,
     }))
   );
 
-  medias: DropdownOption[] = [
-    { value: '', label: 'None' },
-    { value: 'manga', label: 'Manga' },
-    { value: 'novel', label: 'Novel' },
-    { value: 'lightnovel', label: 'Lightnovel' },
-    { value: 'oneshot', label: 'Oneshot' },
-    { value: 'doujin', label: 'Doujin' },
-    { value: 'manhwa', label: 'Manhwa' },
-    { value: 'manhua', label: 'Manhua' },
-  ];
-
-  statuses: DropdownOption[] = [
-    { value: '', label: 'None' },
-    { value: 'publishing', label: 'Publishing' },
-    { value: 'complete', label: 'Complete' },
-    { value: 'hiatus', label: 'Hiatus' },
-    { value: 'discontinued', label: 'Discontinued' },
-    { value: 'upcoming', label: 'Upcoming' },
-  ];
-
-  orders: DropdownOption[] = [
-    { value: '', label: 'None' },
-    { value: 'title', label: 'Title' },
-    { value: 'start_date', label: 'Start Date' },
-    { value: 'end_date', label: 'End Date' },
-    { value: 'chapters', label: 'Chapters' },
-    { value: 'volumes', label: 'Volumes' },
-    { value: 'score', label: 'Score' },
-    { value: 'rank', label: 'Rank' },
-    { value: 'popularity', label: 'Popularity' },
-    { value: 'favorites', label: 'Favorites' },
-  ];
-
-  sorts: DropdownOption[] = [
-    { value: '', label: 'None' },
-    { value: 'desc', label: 'Descending' },
-    { value: 'asc', label: 'Ascending' },
+  filterInputs: DropdownData[] = [
+    {
+      label: 'Filter',
+      param: 'q',
+      type: 'string',
+    },
+    {
+      label: 'Min Score',
+      param: 'min_score',
+      type: 'number',
+    },
+    {
+      label: 'Max Score',
+      param: 'max_score',
+      type: 'number',
+    },
   ];
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private mangaService: MangaService
+    private store: Store<MangaState>
   ) {}
 
   ngOnInit(): void {
+    this.store.dispatch(MangaListPageActions.loadMangaGenresData());
     const queryParams = this.route.snapshot.queryParams;
     const updatedQueryParams = { ...DEFAULT_PAGE_LIMIT, ...queryParams };
     this.router.navigate([], {
@@ -111,85 +98,11 @@ export class MangaListComponent implements OnInit {
     });
   }
 
-  getFilterDropdowns(genres: DropdownOption[]): DropdownData[] {
-    return [
-      {
-        label: 'Media',
-        value: this.route.snapshot.queryParams['type'],
-        param: 'type',
-        options: this.medias,
-      },
-      {
-        label: 'Genre(s)',
-        value: this.route.snapshot.queryParams['genres']
-          ? this.route.snapshot.queryParams['genres'].split(',')
-          : '',
-        param: 'genres',
-        options: genres,
-      },
-      {
-        label: 'Status',
-        value: this.route.snapshot.queryParams['status'],
-        param: 'status',
-        options: this.statuses,
-      },
-      {
-        label: 'Order By',
-        value: this.route.snapshot.queryParams['order_by'],
-        param: 'order_by',
-        options: this.orders,
-      },
-      {
-        label: 'Sort',
-        value: this.route.snapshot.queryParams['sort'],
-        param: 'sort',
-        options: this.sorts,
-      },
-    ];
-  }
-
-  getFilterInputs(): DropdownData[] {
-    return [
-      {
-        label: 'Filter',
-        value: this.route.snapshot.queryParams['q'],
-        param: 'q',
-        type: 'string',
-        change: (event: string | number, param: string) =>
-          this.inputsSubject.next({ value: event, param }),
-      },
-      {
-        label: 'Min Score',
-        value: this.route.snapshot.queryParams['min_score'],
-        param: 'min_score',
-        type: 'number',
-        change: (event: string | number, param: string) =>
-          this.inputsSubject.next({ value: event, param }),
-      },
-      {
-        label: 'Max Score',
-        value: this.route.snapshot.queryParams['max_score'],
-        param: 'max_score',
-        type: 'number',
-        change: (event: string | number, param: string) =>
-          this.inputsSubject.next({ value: event, param }),
-      },
-    ];
-  }
-
-  getMangas = (queryParams: ParamMap) =>
-    this.mangaService.search$({
-      type: queryParams.get('type') ?? '',
-      status: queryParams.get('status') ?? '',
-      order_by: queryParams.get('order_by') ?? '',
-      q: queryParams.get('q') ?? '',
-      min_score: queryParams.get('min_score') ?? '',
-      max_score: queryParams.get('max_score') ?? '',
-      genres: queryParams.get('genres') ?? '',
-      sort: queryParams.get('sort') ?? '',
-      page: queryParams.get('page') ?? 1,
-      limit: queryParams.get('limit') ?? 16,
+  addRouteData(dropdowns: DropdownData[]) {
+    return dropdowns.map((d) => {
+      return { ...d, value: this.route.snapshot.queryParams[d.param] };
     });
+  }
 
   handlePageChange(event: PaginatorState) {
     const currentParams = this.route.snapshot.queryParams;

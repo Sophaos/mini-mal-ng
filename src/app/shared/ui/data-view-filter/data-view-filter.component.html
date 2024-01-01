@@ -39,8 +39,8 @@
         optionValue="value"
         (ngModelChange)="
           filter.change
-            ? filter.change($event.value, filter.param)
-            : changeQueryParams($event.value, filter.param)
+            ? filter.change($event, filter.param)
+            : changeQueryParams($event, filter.param)
         "
       ></p-multiSelect>
     </ng-container>

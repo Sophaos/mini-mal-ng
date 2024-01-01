@@ -1,6 +1,10 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import {
+  HttpClient,
+  HttpErrorResponse,
+  HttpParams,
+} from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, throwError } from 'rxjs';
 import { JIKAN_API_BASE_URL } from '../../shared/data-access/apiUrl';
 import { Media } from 'src/app/shared/data-access/models/media';
 import { Pagination } from 'src/app/shared/data-access/models/pagination';
@@ -41,52 +45,65 @@ export class MangaService {
   readonly category = 'manga';
   readonly apiUrl = `${JIKAN_API_BASE_URL}/${this.category}`;
 
-  genres$ = this.http
-    .get<Data<GenreResponse>>(`${JIKAN_API_BASE_URL}/genres/manga`)
-    .pipe(
-      map((response) => {
-        const data: DropdownOption[] = response.data.map(
-          (item) =>
-            ({
-              value: item.mal_id.toString(),
-              label: item.name,
-            } satisfies DropdownOption)
-        );
-        return data;
-      })
-    );
-
-  search$(params?: MangaQueryParams): Observable<DataWithPagination<Media>> {
+  getMangaList(params?: MangaQueryParams) {
     const httpParams = this.buildParams(params);
     return this.http
       .get<DataWithPaginationResponse<MediaResponse>>(`${this.apiUrl}`, {
         params: httpParams,
       })
-      .pipe(
-        map((response) => {
-          const data: Media[] = response.data.map(
-            (item) =>
-              ({
-                id: item.mal_id,
-                title: item.title,
-                titleEnglish: item.title_english,
-                from: item.aired?.from,
-                episodes: item.episodes,
-                genres: item.genres.map((r) => r.name),
-                imageSrc: item.images.jpg.image_url,
-                synopsis: item.synopsis,
-                score: item.score,
-                members: item.members,
-              } satisfies Media)
-          );
-          const pagination: Pagination = {
-            first: response.pagination.current_page,
-            rows: response.pagination.items.per_page,
-            total: response.pagination.items.total,
-          };
-          return { data, pagination };
-        })
-      );
+      .pipe(catchError(this.handleError));
+  }
+
+  getMangaGenres() {
+    return this.http
+      .get<Data<GenreResponse>>(`${JIKAN_API_BASE_URL}/genres/manga`)
+      .pipe(catchError(this.handleError));
+  }
+
+  // getAnimeRecommendations(id: string) {
+  //   return this.http
+  //     .get<Data<MediaRecommendationResponse>>(
+  //       `${this.apiUrl}/${id}/recommendations`
+  //     )
+  //     .pipe(catchError(this.handleError));
+  // }
+
+  // getAnimeReviews(id: string) {
+  //   const params: AnimeQueryParams = { preliminary: 'true' };
+  //   const httpParams = this.buildParams(params);
+  //   return this.http
+  //     .get<Data<MediaReviewResponse>>(`${this.apiUrl}/${id}/reviews`, {
+  //       params: httpParams,
+  //     })
+  //     .pipe(catchError(this.handleError));
+  // }
+
+  // getAnimeCharacters(id: string) {
+  //   return this.http
+  //     .get<Data<CharacterDataResponse>>(`${this.apiUrl}/${id}/characters`)
+  //     .pipe(catchError(this.handleError));
+  // }
+
+  // getAnimeStaff(id: string) {
+  //   return this.http
+  //     .get<Data<StaffResponse>>(`${this.apiUrl}/${id}/staff`)
+  //     .pipe(catchError(this.handleError));
+  // }
+
+  // getAnimePictures(id: string) {
+  //   return this.http
+  //     .get<Data<Images>>(`${this.apiUrl}/${id}/pictures`)
+  //     .pipe(catchError(this.handleError));
+  // }
+
+  // getAnimeFullById(id: string) {
+  //   return this.http
+  //     .get<MediaDetailedDataResponse>(`${this.apiUrl}/${id}/full`)
+  //     .pipe(catchError(this.handleError));
+  // }
+
+  private handleError({ status }: HttpErrorResponse) {
+    return throwError(() => `${status}: Something bad happened.`);
   }
 
   private buildParams(params?: MangaQueryParams): HttpParams {
