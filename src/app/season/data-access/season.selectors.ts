@@ -66,7 +66,6 @@ export const selectSeasonDropdownData = createSelector(
   selectRouteParam('year'),
   selectRouteParam('season'),
   (yearsOptions, seasonsOptions, year, season) => {
-    console.log(year, 'hello');
     const data: DropdownData[] = [
       {
         label: 'Year',

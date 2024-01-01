@@ -1,10 +1,13 @@
 <ng-container *ngIf="!isLoading; else loading">
-  <div class="flex flex-row flex-wrap border-1 surface-border py-2">
+  <div
+    *ngIf="data.length > 0; else empty"
+    class="flex flex-row flex-wrap border-1 surface-border py-2"
+  >
     <div
-      *ngFor="let anime of data"
+      *ngFor="let media of data"
       class="flex flex-row flex-wrap col-12 sm:col-12 md:col-6 lg:col-4 xl:col-3 p-2"
     >
-      <app-media-data-card [media]="anime" class="w-12" />
+      <app-media-data-card [media]="media" class="w-12" />
     </div>
   </div>
   <app-paginator
@@ -12,6 +15,10 @@
     (onPageChange)="handlePageChange($event)"
   />
 </ng-container>
+
+<ng-template #empty>
+  <p class="m-5">There are no avaible items with these settings.</p>
+</ng-template>
 
 <ng-template #loading>
   <app-skeleton-data-view />

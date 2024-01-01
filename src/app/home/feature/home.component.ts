@@ -33,8 +33,6 @@ export class HomeComponent implements OnInit {
     selectRecentAnimeRecommendationsLoading
   );
 
-  // isLoading$ = this.store.select(selectPageLoading);
-
   vm$ = combineLatest([
     this.topAiringAnimes$,
     this.animeReviews$,
