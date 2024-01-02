@@ -19,7 +19,6 @@ export interface MangaState {
   mangaLoading: boolean;
   mangaPicturesLoading: boolean;
   mangaCharactersLoading: boolean;
-  mangaStaffLoading: boolean;
   mangaReviewsLoading: boolean;
   mangaRecommendationsLoading: boolean;
 
@@ -28,7 +27,6 @@ export interface MangaState {
   manga?: Media;
   pictures: ImageData[];
   characters: BasicDisplayData[];
-  staff: BasicDisplayData[];
   reviews: DetailedReview[];
   recommendations: Recommendation[];
   errorMessage: string;
@@ -40,7 +38,6 @@ const intitialState: MangaState = {
   mangaLoading: false,
   mangaPicturesLoading: false,
   mangaCharactersLoading: false,
-  mangaStaffLoading: false,
   mangaReviewsLoading: false,
   mangaRecommendationsLoading: false,
 
@@ -49,7 +46,6 @@ const intitialState: MangaState = {
   genres: [],
   pictures: [],
   characters: [],
-  staff: [],
   reviews: [],
   recommendations: [],
   errorMessage: '',
@@ -141,7 +137,6 @@ export const mangaReducer = createReducer(
         mangaLoading: true,
         mangaRecommendationsLoading: true, // used like this for api rate limit
         mangaReviewsLoading: true, // used like this for api rate limit
-        mangaStaffLoading: true, // used like this for api rate limit
         errorMessage: '',
         pictures: [],
       } satisfies MangaState)
@@ -200,34 +195,6 @@ export const mangaReducer = createReducer(
         mangaCharactersLoading: true,
         errorMessage: '',
         characters: [],
-      } satisfies MangaState)
-  ),
-  on(
-    MangaDetailsAPIActions.mangaStaffLoadedSuccess,
-    (state, { staff }) =>
-      ({
-        ...state,
-        mangaStaffLoading: false,
-        staff,
-      } satisfies MangaState)
-  ),
-  on(
-    MangaDetailsAPIActions.mangaStaffLoadedFail,
-    (state, { message }) =>
-      ({
-        ...state,
-        mangaStaffLoading: false,
-        errorMessage: message,
-      } satisfies MangaState)
-  ),
-  on(
-    MangaDetailsPageActions.loadMangaStaff,
-    (state) =>
-      ({
-        ...state,
-        mangaStaffLoading: true,
-        errorMessage: '',
-        staff: [],
       } satisfies MangaState)
   ),
   on(

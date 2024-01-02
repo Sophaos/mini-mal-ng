@@ -5,11 +5,9 @@
     [link]="['/season', currentYear, currentSeason]"
     [isLoading]="vm.topAiringAnimesLoading"
   />
-  <div
-    class="flex flex-column xl:flex-row lg:flex-row md:flex-row flex-wrap gap-1 mt-1 w-full"
-  >
+  <div class="flex flex-column xl:flex-row lg:flex-row gap-1 mt-1 w-full">
     <app-items-container
-      title="Latest Anime Review"
+      title="Latest Reviews"
       class="flex-1"
       [isCollapsed]="false"
     >
@@ -23,7 +21,7 @@
       </div>
     </app-items-container>
     <app-items-container
-      title="Latest Anime Recommendations"
+      title="Latest Recommendations"
       class="flex-1"
       [isCollapsed]="false"
     >

@@ -14,6 +14,11 @@ import { DataWithPagination } from 'src/app/shared/data-access/models/dataWithPa
 import { DataWithPaginationResponse } from 'src/app/shared/data-access/response/dataWithPaginationResponse';
 import { GenreResponse } from 'src/app/shared/data-access/response/genreResponse';
 import { MediaResponse } from 'src/app/shared/data-access/response/mediaReponse';
+import { MediaRecommendationResponse } from 'src/app/shared/data-access/response/mediaRecommendationResponse';
+import { CharacterDataResponse } from 'src/app/shared/data-access/response/characterResponse';
+import { Images } from 'src/app/shared/data-access/response/imageResponse';
+import { MediaDetailedDataResponse } from 'src/app/shared/data-access/response/mediaDetailedResponse';
+import { MediaReviewResponse } from 'src/app/shared/data-access/response/mediaReviewResponse';
 
 export interface MangaQueryParams {
   filter?: string;
@@ -35,6 +40,7 @@ export interface MangaQueryParams {
   producers?: string;
   start_date?: string;
   end_date?: string;
+  preliminary?: string;
 }
 
 @Injectable({
@@ -60,47 +66,41 @@ export class MangaService {
       .pipe(catchError(this.handleError));
   }
 
-  // getAnimeRecommendations(id: string) {
-  //   return this.http
-  //     .get<Data<MediaRecommendationResponse>>(
-  //       `${this.apiUrl}/${id}/recommendations`
-  //     )
-  //     .pipe(catchError(this.handleError));
-  // }
+  getMangaRecommendations(id: string) {
+    return this.http
+      .get<Data<MediaRecommendationResponse>>(
+        `${this.apiUrl}/${id}/recommendations`
+      )
+      .pipe(catchError(this.handleError));
+  }
 
-  // getAnimeReviews(id: string) {
-  //   const params: AnimeQueryParams = { preliminary: 'true' };
-  //   const httpParams = this.buildParams(params);
-  //   return this.http
-  //     .get<Data<MediaReviewResponse>>(`${this.apiUrl}/${id}/reviews`, {
-  //       params: httpParams,
-  //     })
-  //     .pipe(catchError(this.handleError));
-  // }
+  getMangaReviews(id: string) {
+    const params: MangaQueryParams = { preliminary: 'true' };
+    const httpParams = this.buildParams(params);
+    return this.http
+      .get<Data<MediaReviewResponse>>(`${this.apiUrl}/${id}/reviews`, {
+        params: httpParams,
+      })
+      .pipe(catchError(this.handleError));
+  }
 
-  // getAnimeCharacters(id: string) {
-  //   return this.http
-  //     .get<Data<CharacterDataResponse>>(`${this.apiUrl}/${id}/characters`)
-  //     .pipe(catchError(this.handleError));
-  // }
+  getMangaCharacters(id: string) {
+    return this.http
+      .get<Data<CharacterDataResponse>>(`${this.apiUrl}/${id}/characters`)
+      .pipe(catchError(this.handleError));
+  }
 
-  // getAnimeStaff(id: string) {
-  //   return this.http
-  //     .get<Data<StaffResponse>>(`${this.apiUrl}/${id}/staff`)
-  //     .pipe(catchError(this.handleError));
-  // }
+  getMangaPictures(id: string) {
+    return this.http
+      .get<Data<Images>>(`${this.apiUrl}/${id}/pictures`)
+      .pipe(catchError(this.handleError));
+  }
 
-  // getAnimePictures(id: string) {
-  //   return this.http
-  //     .get<Data<Images>>(`${this.apiUrl}/${id}/pictures`)
-  //     .pipe(catchError(this.handleError));
-  // }
-
-  // getAnimeFullById(id: string) {
-  //   return this.http
-  //     .get<MediaDetailedDataResponse>(`${this.apiUrl}/${id}/full`)
-  //     .pipe(catchError(this.handleError));
-  // }
+  getMangaFullById(id: string) {
+    return this.http
+      .get<MediaDetailedDataResponse>(`${this.apiUrl}/${id}/full`)
+      .pipe(catchError(this.handleError));
+  }
 
   private handleError({ status }: HttpErrorResponse) {
     return throwError(() => `${status}: Something bad happened.`);

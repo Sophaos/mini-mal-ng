@@ -7,7 +7,7 @@
       *ngFor="let media of data"
       class="flex flex-row flex-wrap col-12 sm:col-12 md:col-6 lg:col-4 xl:col-3 p-2"
     >
-      <app-media-data-card [media]="media" class="w-12" />
+      <app-media-data-card [media]="media" class="w-12" [type]="type" />
     </div>
   </div>
   <app-paginator

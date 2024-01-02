@@ -15,4 +15,5 @@ import { Media } from '../../data-access/models/media';
 })
 export class MediaDataCardComponent {
   @Input() media!: Media;
+  @Input() type: 'animes' | 'mangas' = 'animes';
 }

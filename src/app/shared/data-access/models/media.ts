@@ -5,7 +5,7 @@ export interface Media {
   title: string;
   titleEnglish?: string;
   from?: string;
-  episodes: number;
+  episodes?: number;
   genres: string[];
   imageSrc: string;
   synopsis: string;

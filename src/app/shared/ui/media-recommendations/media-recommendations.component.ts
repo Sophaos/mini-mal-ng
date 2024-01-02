@@ -13,4 +13,5 @@ import { Recommendation } from '../../data-access/models/recommendation';
 })
 export class MediaRecommendationsComponent {
   @Input() recommendations!: Recommendation[];
+  @Input() type: 'animes' | 'mangas' = 'animes';
 }

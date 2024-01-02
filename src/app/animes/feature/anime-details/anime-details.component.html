@@ -6,6 +6,7 @@
           [media]="vm.anime"
           [isDetailed]="true"
           [pictures]="vm.pictures"
+          type="animes"
         />
       </app-items-container>
       <app-items-container
@@ -57,7 +58,7 @@
           <app-staff [staff]="vm.staff" />
         </div>
       </app-items-container>
-      <app-items-container title="Latest Anime Review" [isCollapsed]="false">
+      <app-items-container title="Latest Reviews" [isCollapsed]="false">
         <div class="max-h-30rem overflow-auto">
           <ng-container *ngFor="let review of vm.reviews">
             <app-detailed-review class="w-12" [review]="review" />

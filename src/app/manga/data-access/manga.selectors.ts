@@ -62,11 +62,6 @@ export const selectMangaCharacters = createSelector(
   ({ characters }) => characters
 );
 
-export const selectMangaStaff = createSelector(
-  selectMangaState,
-  ({ staff }) => staff
-);
-
 export const selectMangaReviews = createSelector(
   selectMangaState,
   ({ reviews }) => reviews
@@ -90,11 +85,6 @@ export const selectMangaPicturesLoading = createSelector(
 export const selectMangaCharactersLoading = createSelector(
   selectMangaState,
   ({ mangaCharactersLoading }) => mangaCharactersLoading
-);
-
-export const selectMangaStaffLoading = createSelector(
-  selectMangaState,
-  ({ mangaStaffLoading }) => mangaStaffLoading
 );
 
 export const selectMangaReviewsLoading = createSelector(

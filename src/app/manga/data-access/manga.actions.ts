@@ -36,7 +36,6 @@ export const MangaDetailsPageActions = createActionGroup({
     'Load Manga Details': props<{ id: string }>(),
     'Load Manga Characters': props<{ id: string }>(),
     'Load Manga Pictures': props<{ id: string }>(),
-    'Load Manga Staff': props<{ id: string }>(),
     'Load Manga Reviews': props<{ id: string }>(),
     'Load Manga Recommendations': props<{ id: string }>(),
   },
@@ -54,9 +53,6 @@ export const MangaDetailsAPIActions = createActionGroup({
     'Manga Pictures Loaded Success': props<{
       images: ImageData[];
     }>(),
-    'Manga Staff Loaded Success': props<{
-      staff: BasicDisplayData[];
-    }>(),
     'Manga Reviews Loaded Success': props<{
       reviews: DetailedReview[];
     }>(),
@@ -66,7 +62,6 @@ export const MangaDetailsAPIActions = createActionGroup({
     'Manga Details Loaded Fail': props<{ message: string }>(),
     'Manga Characters Loaded Fail': props<{ message: string }>(),
     'Manga Pictures Loaded Fail': props<{ message: string }>(),
-    'Manga Staff Loaded Fail': props<{ message: string }>(),
     'Manga Reviews Loaded Fail': props<{ message: string }>(),
     'Manga Recommendations Loaded Fail': props<{ message: string }>(),
   },

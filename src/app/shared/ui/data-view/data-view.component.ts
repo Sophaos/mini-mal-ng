@@ -31,6 +31,7 @@ export class DataViewComponent {
   @Input() isLoading: boolean = true;
   @Input({ required: true }) pagination!: Pagination;
   @Output() onPageChange = new EventEmitter<PaginatorState>();
+  @Input() type: 'animes' | 'mangas' = 'animes';
 
   handlePageChange(event: PaginatorState) {
     this.onPageChange.emit(event);

@@ -16,7 +16,7 @@
       layout="vertical"
       class="hidden xl:block lg:block md:block"
     ></p-divider>
-    <div class="flex-1">
+    <div *ngIf="type === 'animes'" class="flex-1">
       <p-divider align="center">Airing Time</p-divider>
       <app-label-info label="Season">
         <a
@@ -27,7 +27,6 @@
         </a>
       </app-label-info>
       <app-label-info label="Aired" [value]="media.from" />
-      <app-label-info label="Status" [value]="media.status" />
       <app-label-info label="Duration" [value]="media.duration" />
       <app-label-info label="Episodes" [value]="media.episodes" />
     </div>
@@ -38,8 +37,9 @@
     <div class="flex-1">
       <p-divider align="center">Informations</p-divider>
       <app-label-info label="Media" [value]="media.type" />
-      <app-label-info label="Source" [value]="media.source" />
-      <app-label-info label="Rating" [value]="media.rating" />
+      <app-label-info label="Status" [value]="media.status" />
+      <app-label-info label="Source" [value]="media.source ?? 'N/A'" />
+      <app-label-info label="Rating" [value]="media.rating ?? 'N/A'" />
     </div>
   </div>
   <p-divider></p-divider>

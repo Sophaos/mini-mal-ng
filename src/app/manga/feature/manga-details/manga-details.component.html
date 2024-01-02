@@ -1,1 +1,93 @@
-<p>manga-details works!</p>
+<div class="flex flex-column gap-1 mt-1">
+  <ng-container *ngIf="vmManga$ | async as vm; else mainLoading">
+    <ng-container *ngIf="!vm.isLoading && vm.manga; else mainLoading">
+      <app-items-container [isCollapsed]="false">
+        <app-main-preview-content
+          [media]="vm.manga"
+          [isDetailed]="true"
+          [pictures]="vm.pictures"
+          type="mangas"
+        />
+      </app-items-container>
+      <app-items-container
+        *ngIf="vm.manga.background"
+        title="Background"
+        [isCollapsed]="false"
+      >
+        <div>{{ vm.manga.background }}</div>
+      </app-items-container>
+      <app-items-container title="Relations" [isCollapsed]="true">
+        <div class="h-7rem overflow-auto">
+          <app-relations
+            *ngIf="vm.manga.relations"
+            [relations]="vm.manga.relations"
+          />
+        </div>
+      </app-items-container>
+      <div class="flex flex-column xl:flex-row lg:flex-row md:flex-row gap-1">
+        <app-theme
+          *ngIf="vm.manga.openings"
+          class="flex-1"
+          [data]="vm.manga.openings"
+          title="Opening Theme"
+          [isCollapsed]="true"
+        />
+        <app-theme
+          *ngIf="vm.manga.endings"
+          class="flex-1"
+          [data]="vm.manga.endings"
+          title="Ending Theme"
+          [isCollapsed]="true"
+        />
+      </div>
+      <app-items-container
+        title="Characters"
+        [isCollapsed]="false"
+        class="flex-1"
+      >
+        <div class="h-20rem overflow-auto">
+          <app-characters [characters]="vm.characters" />
+        </div>
+      </app-items-container>
+    </ng-container>
+  </ng-container>
+  <ng-container *ngIf="vmExternal$ | async as vm; else externalLoading">
+    <ng-container *ngIf="!vm.isLoading; else externalLoading">
+      <app-items-container title="Latest Reviews" [isCollapsed]="false">
+        <div class="max-h-30rem overflow-auto">
+          <ng-container *ngFor="let review of vm.reviews">
+            <app-detailed-review class="w-12" [review]="review" />
+          </ng-container>
+        </div>
+      </app-items-container>
+      <app-items-container title="Recommendations" [isCollapsed]="false">
+        <div class="max-h-30rem overflow-auto">
+          <app-media-recommendations
+            *ngIf="vm.recommendations && vm.recommendations.length > 0"
+            [recommendations]="vm.recommendations"
+            type="mangas"
+          />
+        </div>
+      </app-items-container>
+    </ng-container>
+  </ng-container>
+</div>
+
+<ng-template #mainLoading>
+  <div class="flex flex-column gap-1">
+    <app-skeleton-main-preview />
+    <app-skeleton-panel-header />
+    <div class="flex flex-column xl:flex-row lg:flex-row md:flex-row gap-1">
+      <app-skeleton-panel-header class="flex-1" />
+      <app-skeleton-panel-header class="flex-1" />
+    </div>
+    <app-skeleton-panel-header />
+  </div>
+</ng-template>
+<ng-template #externalLoading>
+  <div class="flex flex-column gap-1">
+    <app-skeleton-panel-header />
+    <app-skeleton-panel-header />
+    <app-skeleton-panel-header />
+  </div>
+</ng-template>

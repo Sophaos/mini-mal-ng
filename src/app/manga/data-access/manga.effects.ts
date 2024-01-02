@@ -55,27 +55,26 @@ export class MangaEffects {
     )
   );
 
-  // loadMangaDataFromRouter$ = createEffect(() =>
-  //   this.store.select(selectRouteParams).pipe(
-  //     switchMap((routeParams) => {
-  //       if (routeParams === undefined || routeParams['id'] === undefined)
-  //         return EMPTY;
-  //       const id = routeParams['id'];
-  //       return concat(
-  //         of(
-  //           MangaDetailsPageActions.loadMangaDetails({ id }),
-  //           MangaDetailsPageActions.loadMangaPictures({ id }),
-  //           MangaDetailsPageActions.loadMangaCharacters({ id })
-  //         ),
-  //         of(
-  //           MangaDetailsPageActions.loadMangaStaff({ id }),
-  //           MangaDetailsPageActions.loadMangaReviews({ id }),
-  //           MangaDetailsPageActions.loadMangaRecommendations({ id })
-  //         ).pipe(delay(3000))
-  //       );
-  //     })
-  //   )
-  // );
+  loadMangaDataFromRouter$ = createEffect(() =>
+    this.store.select(selectRouteParams).pipe(
+      switchMap((routeParams) => {
+        if (routeParams === undefined || routeParams['id'] === undefined)
+          return EMPTY;
+        const id = routeParams['id'];
+        return concat(
+          of(
+            MangaDetailsPageActions.loadMangaDetails({ id }),
+            MangaDetailsPageActions.loadMangaPictures({ id }),
+            MangaDetailsPageActions.loadMangaCharacters({ id })
+          ),
+          of(
+            MangaDetailsPageActions.loadMangaReviews({ id }),
+            MangaDetailsPageActions.loadMangaRecommendations({ id })
+          ).pipe(delay(3000))
+        );
+      })
+    )
+  );
 
   loadMangaListData$ = createEffect(() =>
     this.actions$.pipe(
@@ -139,207 +138,171 @@ export class MangaEffects {
     )
   );
 
-  // loadMangaDetails$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(MangaDetailsPageActions.loadMangaDetails),
-  //     exhaustMap((action) =>
-  //       this.mangaService.getMangaFullById(action.id).pipe(
-  //         map((response) => {
-  //           const mediaData = {
-  //             id: response.data.mal_id,
-  //             title: response.data.title,
-  //             titleEnglish: response.data.title_english,
-  //             from: response.data.aired?.string,
-  //             episodes: response.data.episodes,
-  //             imageSrc: response.data.images.jpg.image_url,
-  //             synopsis: response.data.synopsis,
-  //             score: response.data.score,
-  //             members: response.data.members,
-  //             rank: response.data.rank,
-  //             popularity: response.data.popularity,
-  //             favorites: response.data.favorites,
-  //             source: response.data.source,
-  //             type: response.data.type,
-  //             rating: response.data.rating,
-  //             status: response.data.status,
-  //             duration: response.data.duration,
-  //             season: response.data.season,
-  //             year: response.data.year,
-  //             background: response.data.background,
-  //             imageLargeSrc: response.data.images.jpg.large_image_url,
-  //             relations: response.data.relations.map((r) => ({
-  //               title: r.relation,
-  //               informations: r.entry.map((e) => e.name),
-  //             })),
-  //             genres: response.data.genres.map((r) => r.name),
-  //             themes: response.data.themes.map((r) => r.name),
-  //             demographics: response.data.demographics.map((r) => r.name),
-  //             studios: response.data.studios.map((r) => r.name),
-  //             producers: response.data.producers.map((r) => r.name),
-  //             streaming: response.data.streaming.map((r) => r.name),
-  //             licensors: response.data.licensors.map((r) => r.name),
-  //             openings: response.data.theme.openings.map((r) => r),
-  //             endings: response.data.theme.endings.map((r) => r),
-  //           } satisfies Media;
-  //           return MangaDetailsAPIActions.mangaDetailsLoadedSuccess({
-  //             mediaData,
-  //           });
-  //         }),
-  //         catchError((error) =>
-  //           of(
-  //             MangaDetailsAPIActions.mangaDetailsLoadedFail({ message: error })
-  //           )
-  //         )
-  //       )
-  //     )
-  //   )
-  // );
+  loadMangaDetails$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MangaDetailsPageActions.loadMangaDetails),
+      exhaustMap((action) =>
+        this.mangaService.getMangaFullById(action.id).pipe(
+          map((response) => {
+            const mediaData = {
+              id: response.data.mal_id,
+              title: response.data.title,
+              titleEnglish: response.data.title_english,
+              // from: response.data.aired?.string,
+              // episodes: response.data.episodes,
+              imageSrc: response.data.images.jpg.image_url,
+              synopsis: response.data.synopsis,
+              score: response.data.score,
+              members: response.data.members,
+              rank: response.data.rank,
+              popularity: response.data.popularity,
+              favorites: response.data.favorites,
+              source: response.data.source,
+              type: response.data.type,
+              rating: response.data.rating,
+              status: response.data.status,
+              duration: response.data.duration,
+              season: response.data.season,
+              year: response.data.year,
+              background: response.data.background,
+              imageLargeSrc: response.data.images.jpg.large_image_url,
+              relations: response.data.relations.map((r) => ({
+                title: r.relation,
+                informations: r.entry.map((e) => e.name),
+              })),
+              genres: response.data.genres.map((r) => r.name),
+              demographics: response.data.demographics.map((r) => r.name),
+            } satisfies Media;
+            return MangaDetailsAPIActions.mangaDetailsLoadedSuccess({
+              mediaData,
+            });
+          }),
+          catchError((error) =>
+            of(
+              MangaDetailsAPIActions.mangaDetailsLoadedFail({ message: error })
+            )
+          )
+        )
+      )
+    )
+  );
 
-  // loadMangaPictures$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(MangaDetailsPageActions.loadMangaPictures),
-  //     exhaustMap((action) =>
-  //       this.mangaService.getMangaPictures(action.id).pipe(
-  //         map((response) => {
-  //           const images: ImageData[] = response.data.map(
-  //             (item) =>
-  //               ({
-  //                 imageLarge: item.jpg.large_image_url,
-  //                 imageSmall: item.jpg.small_image_url,
-  //               } satisfies ImageData)
-  //           );
-  //           return MangaDetailsAPIActions.mangaPicturesLoadedSuccess({
-  //             images,
-  //           });
-  //         }),
-  //         catchError((error) =>
-  //           of(
-  //             MangaDetailsAPIActions.mangaPicturesLoadedFail({ message: error })
-  //           )
-  //         )
-  //       )
-  //     )
-  //   )
-  // );
+  loadMangaPictures$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MangaDetailsPageActions.loadMangaPictures),
+      exhaustMap((action) =>
+        this.mangaService.getMangaPictures(action.id).pipe(
+          map((response) => {
+            const images: ImageData[] = response.data.map(
+              (item) =>
+                ({
+                  imageLarge: item.jpg.large_image_url,
+                  imageSmall: item.jpg.small_image_url,
+                } satisfies ImageData)
+            );
+            return MangaDetailsAPIActions.mangaPicturesLoadedSuccess({
+              images,
+            });
+          }),
+          catchError((error) =>
+            of(
+              MangaDetailsAPIActions.mangaPicturesLoadedFail({ message: error })
+            )
+          )
+        )
+      )
+    )
+  );
 
-  // loadMangaCharacters$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(MangaDetailsPageActions.loadMangaCharacters),
-  //     exhaustMap((action) =>
-  //       this.mangaService.getMangaCharacters(action.id).pipe(
-  //         map((response) => {
-  //           const characters: BasicDisplayData[] = response.data.map(
-  //             (item) =>
-  //               ({
-  //                 imageSrc: item.character.images.jpg.image_url,
-  //                 title: `${item.character.name} (${item.role})`,
-  //                 informations: item.voice_actors.map(
-  //                   (v) => `${v.person.name} ${v.language}`
-  //                 ),
-  //               } satisfies BasicDisplayData)
-  //           );
-  //           return MangaDetailsAPIActions.mangaCharactersLoadedSuccess({
-  //             characters,
-  //           });
-  //         }),
-  //         catchError((error) =>
-  //           of(
-  //             MangaDetailsAPIActions.mangaCharactersLoadedFail({
-  //               message: error,
-  //             })
-  //           )
-  //         )
-  //       )
-  //     )
-  //   )
-  // );
+  loadMangaCharacters$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MangaDetailsPageActions.loadMangaCharacters),
+      exhaustMap((action) =>
+        this.mangaService.getMangaCharacters(action.id).pipe(
+          map((response) => {
+            const characters: BasicDisplayData[] = response.data.map(
+              (item) =>
+                ({
+                  imageSrc: item.character.images.jpg.image_url,
+                  title: `${item.character.name} (${item.role})`,
+                } satisfies BasicDisplayData)
+            );
+            return MangaDetailsAPIActions.mangaCharactersLoadedSuccess({
+              characters,
+            });
+          }),
+          catchError((error) =>
+            of(
+              MangaDetailsAPIActions.mangaCharactersLoadedFail({
+                message: error,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 
-  // loadMangaStaff$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(MangaDetailsPageActions.loadMangaStaff),
-  //     exhaustMap((action) =>
-  //       this.mangaService.getMangaStaff(action.id).pipe(
-  //         map((response) => {
-  //           const staff: BasicDisplayData[] = response.data.map(
-  //             (item) =>
-  //               ({
-  //                 imageSrc: item.person.images.jpg.image_url,
-  //                 title: `${item.person.name}`,
-  //                 informations: item.positions.map((v: string) => `${v}`),
-  //               } satisfies BasicDisplayData)
-  //           );
-  //           return MangaDetailsAPIActions.mangaStaffLoadedSuccess({
-  //             staff,
-  //           });
-  //         }),
-  //         catchError((error) =>
-  //           of(MangaDetailsAPIActions.mangaStaffLoadedFail({ message: error }))
-  //         )
-  //       )
-  //     )
-  //   )
-  // );
+  loadMangaReviews$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MangaDetailsPageActions.loadMangaReviews),
+      exhaustMap((action) =>
+        this.mangaService.getMangaReviews(action.id).pipe(
+          map((response) => {
+            const reviews: DetailedReview[] = response.data.map((item) => {
+              return {
+                content: item.review,
+                score: item.score,
+                user: item.user.username,
+                imageSrc: item.user.images.jpg.image_url,
+                tags: [...item.tags],
+                date: item.date,
+              } satisfies DetailedReview;
+            });
+            return MangaDetailsAPIActions.mangaReviewsLoadedSuccess({
+              reviews,
+            });
+          }),
+          catchError((error) =>
+            of(
+              MangaDetailsAPIActions.mangaReviewsLoadedFail({ message: error })
+            )
+          )
+        )
+      )
+    )
+  );
 
-  // loadMangaReviews$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(MangaDetailsPageActions.loadMangaReviews),
-  //     exhaustMap((action) =>
-  //       this.mangaService.getMangaReviews(action.id).pipe(
-  //         map((response) => {
-  //           const reviews: DetailedReview[] = response.data.map((item) => {
-  //             return {
-  //               content: item.review,
-  //               score: item.score,
-  //               user: item.user.username,
-  //               imageSrc: item.user.images.jpg.image_url,
-  //               tags: [...item.tags],
-  //               date: item.date,
-  //             } satisfies DetailedReview;
-  //           });
-  //           return MangaDetailsAPIActions.mangaReviewsLoadedSuccess({
-  //             reviews,
-  //           });
-  //         }),
-  //         catchError((error) =>
-  //           of(
-  //             MangaDetailsAPIActions.mangaReviewsLoadedFail({ message: error })
-  //           )
-  //         )
-  //       )
-  //     )
-  //   )
-  // );
-
-  // loadMangaRecommendations$ = createEffect(() =>
-  //   this.actions$.pipe(
-  //     ofType(MangaDetailsPageActions.loadMangaRecommendations),
-  //     exhaustMap((action) =>
-  //       this.mangaService.getMangaRecommendations(action.id).pipe(
-  //         map((response) => {
-  //           const recommendations = response.data.map(
-  //             (item) =>
-  //               ({
-  //                 id: item.entry.mal_id,
-  //                 title: item.entry.title,
-  //                 votes: item.votes,
-  //                 imageSrc: item.entry.images.jpg.image_url,
-  //               } satisfies Recommendation)
-  //           );
-  //           return MangaDetailsAPIActions.mangaRecommendationsLoadedSuccess({
-  //             recommendations,
-  //           });
-  //         }),
-  //         catchError((error) =>
-  //           of(
-  //             MangaDetailsAPIActions.mangaRecommendationsLoadedFail({
-  //               message: error,
-  //             })
-  //           )
-  //         )
-  //       )
-  //     )
-  //   )
-  // );
+  loadMangaRecommendations$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(MangaDetailsPageActions.loadMangaRecommendations),
+      exhaustMap((action) =>
+        this.mangaService.getMangaRecommendations(action.id).pipe(
+          map((response) => {
+            const recommendations = response.data.map(
+              (item) =>
+                ({
+                  id: item.entry.mal_id,
+                  title: item.entry.title,
+                  votes: item.votes,
+                  imageSrc: item.entry.images.jpg.image_url,
+                } satisfies Recommendation)
+            );
+            return MangaDetailsAPIActions.mangaRecommendationsLoadedSuccess({
+              recommendations,
+            });
+          }),
+          catchError((error) =>
+            of(
+              MangaDetailsAPIActions.mangaRecommendationsLoadedFail({
+                message: error,
+              })
+            )
+          )
+        )
+      )
+    )
+  );
 
   constructor(
     private mangaService: MangaService,

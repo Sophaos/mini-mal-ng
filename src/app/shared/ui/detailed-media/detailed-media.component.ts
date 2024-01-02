@@ -22,4 +22,5 @@ import { Media } from '../../data-access/models/media';
 })
 export class DetailedMediaComponent {
   @Input() media!: Media;
+  @Input() type: 'animes' | 'mangas' = 'animes';
 }

@@ -37,4 +37,5 @@ export class MainPreviewContentComponent {
   @Input() isDetailed: boolean = false;
   @Input() pictures: ImageData[] = [];
   @Input() isLoading: boolean = false;
+  @Input() type: 'animes' | 'mangas' = 'animes';
 }

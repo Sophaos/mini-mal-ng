@@ -20,7 +20,7 @@
       </ng-container>
     </div>
     <p class="font-italic">{{ media.synopsis }}</p>
-    <app-detailed-media *ngIf="isDetailed" [media]="media" />
+    <app-detailed-media *ngIf="isDetailed" [media]="media" [type]="type" />
   </div>
   <div class="w-12 xl:w-5 flex justify-content-center px-4">
     <img
