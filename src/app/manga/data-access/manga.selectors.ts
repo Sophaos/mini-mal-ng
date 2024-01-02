@@ -4,13 +4,12 @@ import { getRouterSelectors } from '@ngrx/router-store';
 import { getPagination } from 'src/app/shared/data-access/models/pagination';
 import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
 import { MEDIAS, ORDERS, SORTS, STATUSES } from './dropdownOptions';
-// import { MEDIAS, ORDERS, RATINGS, SORTS, STATUSES } from './dropdownOptions';
-// import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
 
 export const selectMangaState =
   createFeatureSelector<MangaState>(mangaFeatureKey);
 
-export const { selectRouteParams, selectQueryParams } = getRouterSelectors();
+export const { selectRouteParams, selectQueryParams, selectUrl } =
+  getRouterSelectors();
 
 export const selectMangaListDataLoading = createSelector(
   selectMangaState,
@@ -135,4 +134,9 @@ export const selectMangaDropdownData = createSelector(
     ];
     return data;
   }
+);
+
+export const selectUrlFirstSegment = createSelector(
+  selectUrl,
+  (url) => url.split('/')[1].split('?')[0]
 );

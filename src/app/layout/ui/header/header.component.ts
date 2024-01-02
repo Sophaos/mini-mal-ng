@@ -37,18 +37,18 @@ export class HeaderComponent implements OnInit {
       {
         label: 'Animes',
         routerLink: '/animes',
-        queryParams: {},
+        queryParams: { page: 1, limit: 16 },
         replaceUrl: true,
       },
       {
         label: 'Mangas',
         routerLink: '/mangas',
-        queryParams: {},
+        queryParams: { page: 1, limit: 16 },
       },
       {
         label: 'Season',
         routerLink: seasonUrl,
-        queryParams: {},
+        queryParams: { page: 1, limit: 16 },
       },
     ];
   }

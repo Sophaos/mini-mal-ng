@@ -15,7 +15,11 @@ import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption
 import { Pagination } from 'src/app/shared/data-access/models/pagination';
 import { AnimeState } from './anime.reducers';
 import { Store } from '@ngrx/store';
-import { selectRouteParams, selectQueryParams } from './anime.selectors';
+import {
+  selectRouteParams,
+  selectQueryParams,
+  selectUrlFirstSegment,
+} from './anime.selectors';
 import {
   AnimeDetailsAPIActions,
   AnimeDetailsPageActions,
@@ -37,21 +41,26 @@ export class AnimeEffects {
       switchMap((queryParams) => {
         if (queryParams === undefined || isObjectEmpty(queryParams))
           return EMPTY;
-        const animeParams: AnimeQueryParams = {
-          type: queryParams['type'] ?? '',
-          status: queryParams['status'] ?? '',
-          rating: queryParams['rating'] ?? '',
-          order_by: queryParams['order_by'] ?? '',
-          q: queryParams['q'] ?? '',
-          min_score: queryParams['min_score'] ?? '',
-          max_score: queryParams['max_score'] ?? '',
-          genres: queryParams['genres'] ?? '',
-          sort: queryParams['sort'] ?? '',
-          page: queryParams['page'] ?? '',
-          limit: queryParams['limit'] ?? '',
-        };
-        return of(
-          AnimeListPageActions.loadAnimeListData({ params: animeParams })
+        return this.store.select(selectUrlFirstSegment).pipe(
+          switchMap((segment) => {
+            if (segment != 'animes') return EMPTY;
+            const animeParams: AnimeQueryParams = {
+              type: queryParams['type'] ?? '',
+              status: queryParams['status'] ?? '',
+              rating: queryParams['rating'] ?? '',
+              order_by: queryParams['order_by'] ?? '',
+              q: queryParams['q'] ?? '',
+              min_score: queryParams['min_score'] ?? '',
+              max_score: queryParams['max_score'] ?? '',
+              genres: queryParams['genres'] ?? '',
+              sort: queryParams['sort'] ?? '',
+              page: queryParams['page'] ?? '',
+              limit: queryParams['limit'] ?? '',
+            };
+            return of(
+              AnimeListPageActions.loadAnimeListData({ params: animeParams })
+            );
+          })
         );
       })
     )

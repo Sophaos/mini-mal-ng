@@ -15,7 +15,11 @@ import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption
 import { Pagination } from 'src/app/shared/data-access/models/pagination';
 import { MangaState } from './manga.reducers';
 import { Store } from '@ngrx/store';
-import { selectRouteParams, selectQueryParams } from './manga.selectors';
+import {
+  selectRouteParams,
+  selectQueryParams,
+  selectUrlFirstSegment,
+} from './manga.selectors';
 import {
   MangaDetailsAPIActions,
   MangaDetailsPageActions,
@@ -36,20 +40,25 @@ export class MangaEffects {
       switchMap((queryParams) => {
         if (queryParams === undefined || isObjectEmpty(queryParams))
           return EMPTY;
-        const mangaParams: MangaQueryParams = {
-          type: queryParams['type'] ?? '',
-          status: queryParams['status'] ?? '',
-          order_by: queryParams['order_by'] ?? '',
-          q: queryParams['q'] ?? '',
-          min_score: queryParams['min_score'] ?? '',
-          max_score: queryParams['max_score'] ?? '',
-          genres: queryParams['genres'] ?? '',
-          sort: queryParams['sort'] ?? '',
-          page: queryParams['page'] ?? 1,
-          limit: queryParams['limit'] ?? 16,
-        };
-        return of(
-          MangaListPageActions.loadMangaListData({ params: mangaParams })
+        return this.store.select(selectUrlFirstSegment).pipe(
+          switchMap((segment) => {
+            if (segment != 'mangas') return EMPTY;
+            const mangaParams: MangaQueryParams = {
+              type: queryParams['type'] ?? '',
+              status: queryParams['status'] ?? '',
+              order_by: queryParams['order_by'] ?? '',
+              q: queryParams['q'] ?? '',
+              min_score: queryParams['min_score'] ?? '',
+              max_score: queryParams['max_score'] ?? '',
+              genres: queryParams['genres'] ?? '',
+              sort: queryParams['sort'] ?? '',
+              page: queryParams['page'] ?? 1,
+              limit: queryParams['limit'] ?? 16,
+            };
+            return of(
+              MangaListPageActions.loadMangaListData({ params: mangaParams })
+            );
+          })
         );
       })
     )

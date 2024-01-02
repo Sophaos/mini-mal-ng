@@ -8,7 +8,8 @@ import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
 export const selectAnimeState =
   createFeatureSelector<AnimeState>(animeFeatureKey);
 
-export const { selectRouteParams, selectQueryParams } = getRouterSelectors();
+export const { selectRouteParams, selectQueryParams, selectUrl } =
+  getRouterSelectors();
 
 export const selectAnimeListDataLoading = createSelector(
   selectAnimeState,
@@ -108,6 +109,11 @@ export const selectAnimeRecommendationsLoading = createSelector(
 export const selectAnimeErrorMessage = createSelector(
   selectAnimeState,
   ({ errorMessage }) => errorMessage
+);
+
+export const selectUrlFirstSegment = createSelector(
+  selectUrl,
+  (url) => url.split('/')[1].split('?')[0]
 );
 
 export const selectAnimeDropdownData = createSelector(
