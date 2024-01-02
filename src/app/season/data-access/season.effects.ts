@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import {
+  EMPTY,
   catchError,
   exhaustMap,
   map,
@@ -16,7 +17,7 @@ import { SeasonData } from 'src/app/shared/data-access/models/seasonData';
 import { Pagination } from 'src/app/shared/data-access/models/pagination';
 import { SeasonState } from './season.reducers';
 import { Store } from '@ngrx/store';
-import { ROUTER_NAVIGATION } from '@ngrx/router-store';
+import { ROUTER_NAVIGATION, RouterNavigationAction } from '@ngrx/router-store';
 import { selectRouteParams, selectQueryParams } from './season.selectors';
 import { getCurrentSeason } from 'src/app/shared/utils/currentSeason';
 
@@ -29,7 +30,10 @@ export class SeasonEffects {
         this.store.select(selectRouteParams),
         this.store.select(selectQueryParams)
       ),
-      switchMap(([_, routeParams, queryParams]) => {
+      switchMap(([route, routeParams, queryParams]) => {
+        const routeData: RouterNavigationAction = route;
+        const segment = routeData.payload.event.url.split('/')[1].split('?')[0];
+        if (segment !== 'season') return EMPTY;
         const seasonParams = {
           year: routeParams['year'] ?? new Date().getFullYear(),
           season: routeParams['season'] ?? getCurrentSeason(),
