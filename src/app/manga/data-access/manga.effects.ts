@@ -8,6 +8,7 @@ import {
   exhaustMap,
   map,
   of,
+  retry,
   switchMap,
 } from 'rxjs';
 import { Media } from 'src/app/shared/data-access/models/media';
@@ -90,6 +91,7 @@ export class MangaEffects {
       ofType(MangaListPageActions.loadMangaListData),
       exhaustMap((action) =>
         this.mangaService.getMangaList(action.params).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const data: Media[] = response.data.map(
               (item) =>
@@ -128,6 +130,7 @@ export class MangaEffects {
       ofType(MangaListPageActions.loadMangaGenresData),
       exhaustMap(() =>
         this.mangaService.getMangaGenres().pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const genres: DropdownOption[] = response.data.map((item) => ({
               value: item.mal_id.toString(),
@@ -152,13 +155,12 @@ export class MangaEffects {
       ofType(MangaDetailsPageActions.loadMangaDetails),
       exhaustMap((action) =>
         this.mangaService.getMangaFullById(action.id).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const mediaData = {
               id: response.data.mal_id,
               title: response.data.title,
               titleEnglish: response.data.title_english,
-              // from: response.data.aired?.string,
-              // episodes: response.data.episodes,
               imageSrc: response.data.images.jpg.image_url,
               synopsis: response.data.synopsis,
               score: response.data.score,
@@ -201,6 +203,7 @@ export class MangaEffects {
       ofType(MangaDetailsPageActions.loadMangaPictures),
       exhaustMap((action) =>
         this.mangaService.getMangaPictures(action.id).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const images: ImageData[] = response.data.map(
               (item) =>
@@ -228,6 +231,7 @@ export class MangaEffects {
       ofType(MangaDetailsPageActions.loadMangaCharacters),
       exhaustMap((action) =>
         this.mangaService.getMangaCharacters(action.id).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const characters: BasicDisplayData[] = response.data.map(
               (item) =>
@@ -257,6 +261,7 @@ export class MangaEffects {
       ofType(MangaDetailsPageActions.loadMangaReviews),
       exhaustMap((action) =>
         this.mangaService.getMangaReviews(action.id).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const reviews: DetailedReview[] = response.data.map((item) => {
               return {
@@ -287,6 +292,7 @@ export class MangaEffects {
       ofType(MangaDetailsPageActions.loadMangaRecommendations),
       exhaustMap((action) =>
         this.mangaService.getMangaRecommendations(action.id).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const recommendations = response.data.map(
               (item) =>

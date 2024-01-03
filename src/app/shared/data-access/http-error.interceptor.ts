@@ -22,9 +22,10 @@ export class HttpErrorInterceptor implements HttpInterceptor {
     return next.handle(request).pipe(
       catchError((error: HttpErrorResponse) => {
         this.messageService.add({
-          severity: 'error',
+          severity: 'warn',
           summary: error.statusText,
-          detail: `${error.message} `,
+          detail: `${error.message}. Retry attempt ongoing.`,
+          life: 5000,
         });
 
         console.error(error.message);

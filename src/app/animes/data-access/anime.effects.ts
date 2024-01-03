@@ -8,6 +8,7 @@ import {
   exhaustMap,
   map,
   of,
+  retry,
   switchMap,
 } from 'rxjs';
 import { Media } from 'src/app/shared/data-access/models/media';
@@ -93,6 +94,7 @@ export class AnimeEffects {
       ofType(AnimeListPageActions.loadAnimeListData),
       exhaustMap((action) =>
         this.animeService.getAnimeList(action.params).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const data: Media[] = response.data.map(
               (item) =>
@@ -131,6 +133,7 @@ export class AnimeEffects {
       ofType(AnimeListPageActions.loadAnimeGenresData),
       exhaustMap(() =>
         this.animeService.getAnimeGenres().pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const genres: DropdownOption[] = response.data.map((item) => ({
               value: item.mal_id.toString(),
@@ -155,6 +158,7 @@ export class AnimeEffects {
       ofType(AnimeDetailsPageActions.loadAnimeDetails),
       exhaustMap((action) =>
         this.animeService.getAnimeFullById(action.id).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const mediaData = {
               id: response.data.mal_id,
@@ -211,6 +215,7 @@ export class AnimeEffects {
       ofType(AnimeDetailsPageActions.loadAnimePictures),
       exhaustMap((action) =>
         this.animeService.getAnimePictures(action.id).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const images: ImageData[] = response.data.map(
               (item) =>
@@ -238,6 +243,7 @@ export class AnimeEffects {
       ofType(AnimeDetailsPageActions.loadAnimeCharacters),
       exhaustMap((action) =>
         this.animeService.getAnimeCharacters(action.id).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const characters: BasicDisplayData[] = response.data.map(
               (item) =>
@@ -270,6 +276,7 @@ export class AnimeEffects {
       ofType(AnimeDetailsPageActions.loadAnimeStaff),
       exhaustMap((action) =>
         this.animeService.getAnimeStaff(action.id).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const staff: BasicDisplayData[] = response.data.map(
               (item) =>
@@ -296,6 +303,7 @@ export class AnimeEffects {
       ofType(AnimeDetailsPageActions.loadAnimeReviews),
       exhaustMap((action) =>
         this.animeService.getAnimeReviews(action.id).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const reviews: DetailedReview[] = response.data.map((item) => {
               return {
@@ -326,6 +334,7 @@ export class AnimeEffects {
       ofType(AnimeDetailsPageActions.loadAnimeRecommendations),
       exhaustMap((action) =>
         this.animeService.getAnimeRecommendations(action.id).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const recommendations = response.data.map(
               (item) =>

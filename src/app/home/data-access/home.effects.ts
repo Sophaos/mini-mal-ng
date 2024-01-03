@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import { catchError, exhaustMap, map, of, retry } from 'rxjs';
 import { HomeAPIActions, HomePageActions } from './home.actions';
 import { HomeService } from './home.service';
 import { Media } from 'src/app/shared/data-access/models/media';
@@ -14,6 +14,7 @@ export class HomeEffects {
       ofType(HomePageActions.loadTopAiringAnimes),
       exhaustMap(() =>
         this.homeService.getTopAiringAnimes().pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const topAiringAnimes: Media[] = response.data.map(
               (item) =>
@@ -48,6 +49,7 @@ export class HomeEffects {
       ofType(HomePageActions.loadRecentAnimeReviews),
       exhaustMap(() =>
         this.homeService.getRecentAnimeReviews().pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const currentDate = new Date();
             const recentAnimeReviews: Review[] = response.data
@@ -85,6 +87,7 @@ export class HomeEffects {
       ofType(HomePageActions.loadRecentAnimeRecommendations),
       exhaustMap(() =>
         this.homeService.getRecentAnimeRecommendations().pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const currentDate = new Date();
             const recentAnimeRecommendations: HomeRecommendation[] =

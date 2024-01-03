@@ -6,6 +6,7 @@ import {
   exhaustMap,
   map,
   of,
+  retry,
   switchMap,
   withLatestFrom,
 } from 'rxjs';
@@ -52,6 +53,7 @@ export class SeasonEffects {
       ofType(SeasonPageActions.loadMediaData),
       exhaustMap((action) =>
         this.seasonService.getMediaData(action.params).pipe(
+          retry({ count: 3, delay: 1500 }),
           map((response) => {
             const data: Media[] = response.data.map((item) => ({
               id: item.mal_id,
@@ -87,6 +89,7 @@ export class SeasonEffects {
       ofType(SeasonPageActions.loadSeasonData),
       exhaustMap(() =>
         this.seasonService.getSeasonData().pipe(
+          retry({ count: 3, delay: 1500 }),
           map((res) => {
             const seasonData: SeasonData[] = res.data.map(
               (item) =>
