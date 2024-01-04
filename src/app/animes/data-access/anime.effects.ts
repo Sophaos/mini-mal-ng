@@ -72,18 +72,23 @@ export class AnimeEffects {
       switchMap((routeParams) => {
         if (routeParams === undefined || routeParams['id'] === undefined)
           return EMPTY;
-        const id = routeParams['id'];
-        return concat(
-          of(
-            AnimeDetailsPageActions.loadAnimeDetails({ id }),
-            AnimeDetailsPageActions.loadAnimePictures({ id }),
-            AnimeDetailsPageActions.loadAnimeCharacters({ id })
-          ),
-          of(
-            AnimeDetailsPageActions.loadAnimeStaff({ id }),
-            AnimeDetailsPageActions.loadAnimeReviews({ id }),
-            AnimeDetailsPageActions.loadAnimeRecommendations({ id })
-          ).pipe(delay(3000))
+        return this.store.select(selectUrlFirstSegment).pipe(
+          switchMap((segment) => {
+            if (segment != 'animes') return EMPTY;
+            const id = routeParams['id'];
+            return concat(
+              of(
+                AnimeDetailsPageActions.loadAnimeDetails({ id }),
+                AnimeDetailsPageActions.loadAnimePictures({ id }),
+                AnimeDetailsPageActions.loadAnimeCharacters({ id })
+              ),
+              of(
+                AnimeDetailsPageActions.loadAnimeStaff({ id }),
+                AnimeDetailsPageActions.loadAnimeReviews({ id }),
+                AnimeDetailsPageActions.loadAnimeRecommendations({ id })
+              ).pipe(delay(3000))
+            );
+          })
         );
       })
     )

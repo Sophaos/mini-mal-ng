@@ -70,17 +70,22 @@ export class MangaEffects {
       switchMap((routeParams) => {
         if (routeParams === undefined || routeParams['id'] === undefined)
           return EMPTY;
-        const id = routeParams['id'];
-        return concat(
-          of(
-            MangaDetailsPageActions.loadMangaDetails({ id }),
-            MangaDetailsPageActions.loadMangaPictures({ id }),
-            MangaDetailsPageActions.loadMangaCharacters({ id })
-          ),
-          of(
-            MangaDetailsPageActions.loadMangaReviews({ id }),
-            MangaDetailsPageActions.loadMangaRecommendations({ id })
-          ).pipe(delay(3000))
+        return this.store.select(selectUrlFirstSegment).pipe(
+          switchMap((segment) => {
+            if (segment != 'mangas') return EMPTY;
+            const id = routeParams['id'];
+            return concat(
+              of(
+                MangaDetailsPageActions.loadMangaDetails({ id }),
+                MangaDetailsPageActions.loadMangaPictures({ id }),
+                MangaDetailsPageActions.loadMangaCharacters({ id })
+              ),
+              of(
+                MangaDetailsPageActions.loadMangaReviews({ id }),
+                MangaDetailsPageActions.loadMangaRecommendations({ id })
+              ).pipe(delay(3000))
+            );
+          })
         );
       })
     )
