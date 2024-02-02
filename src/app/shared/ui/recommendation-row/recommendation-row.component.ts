@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterLink } from '@angular/router';
-import { HomeRecommendation } from '../../data-access/models/homeReview';
+import { HomeRecommendation } from '../../data-access/models/homeRecommendation';
 
 @Component({
   selector: 'app-recommendation-row',

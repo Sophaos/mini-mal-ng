@@ -34,47 +34,6 @@ export class SeasonsService {
   private isSeasonDataLoadingSubject = new BehaviorSubject<boolean>(true);
   isSeasonDataLoading$ = this.isSeasonDataLoadingSubject.asObservable();
 
-  getSeasonData$(params: SeasonParams): Observable<DataWithPagination<Media>> {
-    const httpParams = this.buildParams(params);
-    this.isSeasonDataLoadingSubject.next(true);
-    return this.http
-      .get<DataWithPaginationResponse<MediaResponse>>(
-        `${this.apiUrl}/${params.year}/${params.season}`,
-        {
-          params: httpParams,
-        }
-      )
-      .pipe(
-        map((response) => {
-          const data: Media[] = response.data.map((item) => ({
-            id: item.mal_id,
-            title: item.title,
-            titleEnglish: item.title_english,
-            from: item.aired?.from,
-            episodes: item.episodes,
-            genres: item.genres.map((r) => r.name),
-            imageSrc: item.images.jpg.image_url,
-            synopsis: item.synopsis,
-            score: item.score,
-            members: item.members,
-          }));
-          const pagination: Pagination = {
-            first: response.pagination.current_page,
-            rows: response.pagination.items.per_page,
-            total: response.pagination.items.total,
-          };
-          return { data, pagination };
-        }),
-        catchError((error) => {
-          console.error('Error fetching data:', error);
-          return [];
-        }),
-        finalize(() => {
-          this.isSeasonDataLoadingSubject.next(false);
-        })
-      );
-  }
-
   getMediaData(params: SeasonParams) {
     const httpParams = this.buildParams(params);
     return this.http

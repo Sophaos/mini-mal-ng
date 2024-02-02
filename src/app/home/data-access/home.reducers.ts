@@ -2,7 +2,7 @@ import { createReducer, on } from '@ngrx/store';
 import { HomeAPIActions, HomePageActions } from './home.actions';
 import { Media } from 'src/app/shared/data-access/models/media';
 import { Review } from 'src/app/shared/data-access/models/review';
-import { HomeRecommendation } from 'src/app/shared/data-access/models/homeReview';
+import { HomeRecommendation } from 'src/app/shared/data-access/models/homeRecommendation';
 
 export interface HomeState {
   topAiringAnimesLoading: boolean;
@@ -79,7 +79,7 @@ export const homeReducer = createReducer(
     (state) =>
       ({
         ...state,
-        recentAnimeRecommendationsLoading: true,
+        recentAnimeReviewsLoading: true,
         errorMessage: '',
         recentAnimeReviews: [],
       } satisfies HomeState)

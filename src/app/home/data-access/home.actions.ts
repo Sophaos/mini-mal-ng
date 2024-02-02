@@ -1,5 +1,5 @@
 import { createActionGroup, emptyProps, props } from '@ngrx/store';
-import { HomeRecommendation } from 'src/app/shared/data-access/models/homeReview';
+import { HomeRecommendation } from 'src/app/shared/data-access/models/homeRecommendation';
 import { Media } from 'src/app/shared/data-access/models/media';
 import { Review } from 'src/app/shared/data-access/models/review';
 

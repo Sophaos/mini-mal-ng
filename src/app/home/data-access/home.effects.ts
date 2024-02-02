@@ -5,7 +5,7 @@ import { HomeAPIActions, HomePageActions } from './home.actions';
 import { HomeService } from './home.service';
 import { Media } from 'src/app/shared/data-access/models/media';
 import { Review } from 'src/app/shared/data-access/models/review';
-import { HomeRecommendation } from 'src/app/shared/data-access/models/homeReview';
+import { HomeRecommendation } from 'src/app/shared/data-access/models/homeRecommendation';
 
 @Injectable()
 export class HomeEffects {
