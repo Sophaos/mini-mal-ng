@@ -1,18 +1,10 @@
 import { ChangeDetectionStrategy, Component, OnInit } from '@angular/core';
-import { ActivatedRoute, Router, ParamMap } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { PaginatorState } from 'primeng/paginator';
 import {
-  BehaviorSubject,
-  debounceTime,
-  distinctUntilChanged,
-  tap,
-  switchMap,
   combineLatest,
   map,
 } from 'rxjs';
-import { getPagination } from 'src/app/shared/data-access/models/pagination';
-import { MangaService } from '../../data-access/manga.service';
-import { DropdownOption } from 'src/app/shared/data-access/models/dropdownOption';
 import { DropdownData } from 'src/app/shared/data-access/models/dropdownData';
 import { ParamData } from 'src/app/shared/data-access/models/paramData';
 import { RouteQueryParams } from 'src/app/shared/data-access/models/routeQueryParams';
