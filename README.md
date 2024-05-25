@@ -1,4 +1,4 @@
-# Mini-MAL
+# Mini-MAL-NG
 
 A minimal version of MyAnimeList built with Angular using the JIKAN API to visualize upcoming anime and manga, as well as their details.
 
