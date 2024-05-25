@@ -4,6 +4,8 @@ A minimal version of MyAnimeList built with Angular using the JIKAN API to visua
 
 You can access the live web app here: [Mini-MAL-NG Web App](https://sophaos-mini-mal-ng.netlify.app/home)
 
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.4.
+
 ## Motivation
 
 My motivation was to build an application using Redux in Angular with a public API to view the details of anime and manga, similar to MyAnimeList, using the principles of reactive programming.
