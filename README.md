@@ -4,6 +4,11 @@ A minimal version of MyAnimeList built with Angular using the JIKAN API to visua
 
 You can access the live web app here: [Mini-MAL-NG Web App](https://sophaos-mini-mal-ng.netlify.app/home)
 
+![image](https://github.com/Sophaos/mini-mal-ng/assets/54873061/1b727d8f-e970-45db-aa67-982bb663821a)
+![image](https://github.com/Sophaos/mini-mal-ng/assets/54873061/e255dbc2-b79e-4086-b35d-597ed2c98710)
+![image](https://github.com/Sophaos/mini-mal-ng/assets/54873061/500698f1-b1e5-441c-a6ee-e4fd2aa1f0c3)
+![image](https://github.com/Sophaos/mini-mal-ng/assets/54873061/5d49cb79-7c52-49dc-9830-586696eab479)
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.4.
 
 ## Motivation
